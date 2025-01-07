@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MyWindowClass</class>
+ <widget class="QWidget" name="MyWindowClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MyWindow</string>
+  </property>
+  <widget class="QWidget" name="widget_Top" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1921</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255,255,255);</string>
+   </property>
+   <widget class="QLabel" name="label_Logo">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Logo</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_DateTime">
+    <property name="geometry">
+     <rect>
+      <x>1390</x>
+      <y>30</y>
+      <width>301</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(106,150,186);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Operator">
+    <property name="geometry">
+     <rect>
+      <x>1750</x>
+      <y>30</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Admin</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>90</y>
+     <width>161</width>
+     <height>991</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(106,150,186);</string>
+   </property>
+   <widget class="QPushButton" name="pushButton_Exit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>860</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>Exit</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_RobotInMain">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>50</y>
+      <width>81</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>robot1.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_MainFrame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>180</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>主页</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_AutoTreat">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>250</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>机械臂自动治疗</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_IntensiveTreat">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>320</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>重点穴位治疗</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_AccountManage">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>450</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>账号管理</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_EquipInfo">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>520</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>设备信息</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_SetUp">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>600</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>设置</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_FinishOrganize">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>380</y>
+      <width>140</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">
+QPushButton {
+    background-color:rgb(106,150,186);
+    color: white;
+	border-top-right-radius:15px;
+	border-bottom-right-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+    </property>
+    <property name="text">
+     <string>治疗结束整理</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStackedWidget" name="stackedWidget_Pags">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>90</y>
+     <width>1760</width>
+     <height>990</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="page"/>
+   <widget class="QWidget" name="page_2"/>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

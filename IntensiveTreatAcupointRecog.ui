@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IntensiveTreatAcupointRecogClass</class>
+ <widget class="QWidget" name="IntensiveTreatAcupointRecogClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1760</width>
+    <height>990</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>IntensiveTreatAcupointRecog</string>
+  </property>
+  <widget class="QRadioButton" name="radioButton_DaZhuiLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>270</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_JieXiRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>790</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_NeiGuanZhengRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>470</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_YaoYanLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>330</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_KunLunRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>720</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_FengFuRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>210</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Select">
+   <property name="geometry">
+    <rect>
+     <x>970</x>
+     <y>110</y>
+     <width>561</width>
+     <height>721</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>acupoint.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>40</y>
+     <width>341</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Agency FB</family>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string>重点疼痛部位舒缓治疗</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>100</y>
+     <width>1600</width>
+     <height>760</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(228,244,251);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_FengChiRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>140</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Manual">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>730</y>
+     <width>151</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(18,205,224);
+border-radius:5px;</string>
+   </property>
+   <property name="text">
+    <string>手动微调</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_WeiYangLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>660</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Back">
+   <property name="geometry">
+    <rect>
+     <x>1390</x>
+     <y>900</y>
+     <width>90</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(98,157,207);
+border-radius:15px;</string>
+   </property>
+   <property name="text">
+    <string>返回</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Image">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>190</y>
+     <width>740</width>
+     <height>464</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border:2px solid rgb(186,195,200);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>humanbody1.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>1290</x>
+     <y>40</y>
+     <width>201</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string>自动治疗开始</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Instruct">
+   <property name="geometry">
+    <rect>
+     <x>1570</x>
+     <y>740</y>
+     <width>81</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>instruct.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_JieXiLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>790</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_WeiZhongRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>590</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_WeiZhongLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>590</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>40</y>
+     <width>170</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string>人体穴位识别</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_ChiZeRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>400</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_YaoYanRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>330</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_ChiZeLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>400</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>1030</x>
+     <y>40</y>
+     <width>170</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string>耐受力测试</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_WeiYangRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>660</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_BiGuanFanRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>530</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LastStep">
+   <property name="geometry">
+    <rect>
+     <x>1510</x>
+     <y>900</y>
+     <width>90</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(98,157,207);
+border-radius:15px;</string>
+   </property>
+   <property name="text">
+    <string>上一项</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_KunLunLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>730</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>90</y>
+     <width>54</width>
+     <height>2</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_DaZhuiRight">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>270</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_NextStep">
+   <property name="geometry">
+    <rect>
+     <x>1620</x>
+     <y>900</y>
+     <width>90</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(98,157,207);
+border-radius:15px;</string>
+   </property>
+   <property name="text">
+    <string>下一项</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>40</y>
+     <width>170</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>24</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(135,206,250);</string>
+   </property>
+   <property name="text">
+    <string>治疗时间设定</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_NeiGuanZhengLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>460</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_FengChiLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>140</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_FengFuLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>210</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_BiGuanFanLeft">
+   <property name="geometry">
+    <rect>
+     <x>950</x>
+     <y>530</y>
+     <width>89</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ReconBegin">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>730</y>
+     <width>140</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:rgb(18,205,224);
+border-radius:5px;</string>
+   </property>
+   <property name="text">
+    <string>开始识别</string>
+   </property>
+  </widget>
+  <zorder>label_7</zorder>
+  <zorder>radioButton_DaZhuiLeft</zorder>
+  <zorder>radioButton_JieXiRight</zorder>
+  <zorder>radioButton_NeiGuanZhengRight</zorder>
+  <zorder>radioButton_YaoYanLeft</zorder>
+  <zorder>radioButton_KunLunRight</zorder>
+  <zorder>radioButton_FengFuRight</zorder>
+  <zorder>label_Select</zorder>
+  <zorder>label</zorder>
+  <zorder>radioButton_FengChiRight</zorder>
+  <zorder>pushButton_Manual</zorder>
+  <zorder>radioButton_WeiYangLeft</zorder>
+  <zorder>pushButton_Back</zorder>
+  <zorder>label_Image</zorder>
+  <zorder>label_6</zorder>
+  <zorder>label_Instruct</zorder>
+  <zorder>radioButton_JieXiLeft</zorder>
+  <zorder>radioButton_WeiZhongRight</zorder>
+  <zorder>radioButton_WeiZhongLeft</zorder>
+  <zorder>label_4</zorder>
+  <zorder>radioButton_ChiZeRight</zorder>
+  <zorder>radioButton_YaoYanRight</zorder>
+  <zorder>radioButton_ChiZeLeft</zorder>
+  <zorder>label_5</zorder>
+  <zorder>radioButton_WeiYangRight</zorder>
+  <zorder>radioButton_BiGuanFanRight</zorder>
+  <zorder>pushButton_LastStep</zorder>
+  <zorder>radioButton_KunLunLeft</zorder>
+  <zorder>label_3</zorder>
+  <zorder>radioButton_DaZhuiRight</zorder>
+  <zorder>pushButton_NextStep</zorder>
+  <zorder>label_2</zorder>
+  <zorder>radioButton_NeiGuanZhengLeft</zorder>
+  <zorder>radioButton_FengChiLeft</zorder>
+  <zorder>radioButton_FengFuLeft</zorder>
+  <zorder>radioButton_BiGuanFanLeft</zorder>
+  <zorder>pushButton_ReconBegin</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

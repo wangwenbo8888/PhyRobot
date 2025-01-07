@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Header Files\3DCamera">
+      <UniqueIdentifier>{963b6462-ee90-4329-84d1-e7b46dec6269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3DCamera">
+      <UniqueIdentifier>{f9449fc3-372b-4cb1-a4b9-ae9c0642f5e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\AutoTreat">
+      <UniqueIdentifier>{2e5f1e1c-3870-4a11-a6e2-00cc80e7bffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AutoTreat">
+      <UniqueIdentifier>{9b312d97-d8ed-498f-ad30-319d74c8fba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AutoTreat">
+      <UniqueIdentifier>{13fb5abe-15b9-49ad-9362-23fecd317264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\IntensiveTreat">
+      <UniqueIdentifier>{d4ab0b56-ad43-4dba-897d-98e7de618f4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\IntensiveTreat">
+      <UniqueIdentifier>{0e4abed7-2472-453c-b799-bdb183595a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IntensiveTreat">
+      <UniqueIdentifier>{0334386e-d75a-4bea-83c2-4af0efd4c040}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="PhysicalTherapyRobot.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="PhysicalTherapyRobot.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtMoc Include="PhysicalTherapyRobot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <ClCompile Include="PhysicalTherapyRobot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraGrabber.cpp">
+      <Filter>Source Files\3DCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HomePage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccoutManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EquipInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetUp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FinishOrganize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreat.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatAcupointRecog.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatFinish.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatInstruction.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatOnGoing.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatPrePrepare.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatSetTime.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatToleranceTest.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreat.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatAcupointRecog.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatBegin.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatFinish.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatOnGoing.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatPalliativeCare.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatSetTime.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensiveTreatToleranceTest.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="EquipBreakdown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CameraGrabber.h">
+      <Filter>Header Files\3DCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PhysicalTherapyRobot.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MyWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="HomePage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AccoutManager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="EquipInfo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SetUp.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FinishOrganize.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreat.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatAcupointRecog.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatFinish.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatInstruction.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatOnGoing.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatPrePrepare.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatSetTime.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatToleranceTest.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreat.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatAcupointRecog.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatBegin.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatFinish.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatOnGoing.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatPalliativeCare.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatSetTime.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="IntensiveTreatToleranceTest.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="EquipBreakdown.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MyWindow.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="HomePage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AccoutManager.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="EquipInfo.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="SetUp.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FinishOrganize.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreat.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatAcupointRecog.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatBegin.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatFinish.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatInstruction.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatOnGoing.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatPrePrepare.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatSetTime.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatToleranceTest.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreat.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatAcupointRecog.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatBegin.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatFinish.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatOnGoing.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatPalliativeCare.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatSetTime.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="IntensiveTreatToleranceTest.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="EquipBreakdown.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>
