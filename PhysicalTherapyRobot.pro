@@ -41,6 +41,7 @@ INCLUDEPATH += \
      E:\workspace\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include \
 ##     E:\workspace\PhysicalTherapyRobot\opencv450\win\include \
      E:\workspace\PhysicalTherapyRobot\opencv430\win\include \
+     E:\workspace\PhysicalTherapyRobot\opencv430\win\include\opencv2 \
      E:\workspace\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include
 
 LIBS += \

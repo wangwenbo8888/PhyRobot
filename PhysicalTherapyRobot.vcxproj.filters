@@ -139,6 +139,9 @@
     <ClCompile Include="EquipBreakdown.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="oder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraGrabber.h">
@@ -224,6 +227,9 @@
       <Filter>Header Files\IntensiveTreat</Filter>
     </QtMoc>
     <QtMoc Include="EquipBreakdown.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="oder.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

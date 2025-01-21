@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_IntensiveTreat.h"
@@ -10,13 +10,15 @@
 #include "IntensiveTreatBegin.h"
 #include "IntensiveTreatOnGoing.h"
 #include "IntensiveTreatFinish.h"
+#include "MyWindow.h"
 
+class MyWindow;
 class IntensiveTreat : public QWidget
 {
 	Q_OBJECT
 
 public:
-	IntensiveTreat(QWidget *parent = nullptr);
+	IntensiveTreat(MyWindow* window,QWidget *parent = nullptr);
 	~IntensiveTreat();
 
 	void SetWidgetPalliativeCare();
@@ -33,6 +35,11 @@ public:
 
 	void SetWidgetFinish();
 
+	void FinishReturn();
+
+    MyWindow* GetWindow();
+
+
 private:
 	Ui::IntensiveTreatClass ui;
 
@@ -43,4 +50,6 @@ private:
 	QSharedPointer<IntensiveTreatBegin> m_pIntensiveTreatBegin;
 	QSharedPointer<IntensiveTreatOnGoing> m_pIntensiveTreatOnGoing;
 	QSharedPointer<IntensiveTreatFinish> m_pIntensiveTreatFinish;
+
+    MyWindow* m_pWindow;
 };

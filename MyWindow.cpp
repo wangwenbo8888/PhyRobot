@@ -64,6 +64,33 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot,QWidget *parent)
 
 	ui.pushButton_MainFrame->click();
 	//ui.stackedWidget_Pags->setCurrentWidget(m_pHomePage.get());
+
+    connect(od.sktDashboard, &QTcpSocket::connected, this, &MyWindow::sktDashboard_connected);
+    connect(od.sktDashboard, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MyWindow::sktDashboard_error);
+    connect(od.sktDashboard, &QTcpSocket::readyRead, this, &MyWindow::sktDashboard_readyRead);
+    connect(od.sktDashboard, &QTcpSocket::disconnected, this, &MyWindow::sktDashboard_disconnected);
+
+    connect(od.sktwork, &QTcpSocket::connected, this, &MyWindow::sktwork_connected);
+    connect(od.sktwork, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MyWindow::sktwork_error);
+    connect(od.sktwork, &QTcpSocket::readyRead, this, &MyWindow::sktwork_readyRead);
+    connect(od.sktwork, &QTcpSocket::disconnected, this, &MyWindow::sktwork_disconnected);
+
+    connect(od.sktmsg8, &QTcpSocket::connected, this, &MyWindow::sktmsg8_connected);
+    connect(od.sktmsg8, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MyWindow::sktmsg8_error);
+    connect(od.sktmsg8, &QTcpSocket::readyRead, this, &MyWindow::sktmsg8_readyRead);
+    connect(od.sktmsg8, &QTcpSocket::disconnected, this, &MyWindow::sktmsg8_disconnected);
+
+    connect(od.sktmsg200, &QTcpSocket::connected, this, &MyWindow::sktmsg200_connected);
+    connect(od.sktmsg200, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MyWindow::sktmsg200_error);
+    connect(od.sktmsg200, &QTcpSocket::readyRead, this, &MyWindow::sktmsg200_readyRead);
+    connect(od.sktmsg200, &QTcpSocket::disconnected, this, &MyWindow::sktmsg200_disconnected);
+
+    connect(od.sktmsgreturn, &QTcpSocket::connected, this, &MyWindow::sktmsgreturn_connected);
+    connect(od.sktmsgreturn, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error), this, &MyWindow::sktmsgreturn_error);
+    connect(od.sktmsgreturn, &QTcpSocket::readyRead, this, &MyWindow::sktmsgreturn_readyRead);
+    connect(od.sktmsgreturn, &QTcpSocket::disconnected, this, &MyWindow::sktmsgreturn_disconnected);
+
+    MyWindow_connect();
 }
 
 MyWindow::~MyWindow()
@@ -197,4 +224,343 @@ void MyWindow::On_timeout()
 	text.append(" ");
 	text.append(timeString);
 	ui.label_DateTime->setText(QObject::tr(text.toStdString().c_str()));
+}
+
+void MyWindow::SetWidgetHomePage()
+{
+    ui.stackedWidget_Pags->setCurrentWidget(m_pHomePage.get());
+}
+
+void MyWindow::MyWindow_connect()
+{
+    od.init(ip);
+    qDebug() << "Connect to " << od.server << endl;
+}
+
+void MyWindow::pause()
+{
+    pausebit = 1;
+}
+
+void MyWindow::WorkContinue()
+{
+    pausebit = 0;
+}
+
+void MyWindow::sktDashboard_connected()
+{
+    cnt[pDashboard] = 1;
+    qDebug() << "sktDashboard_connected" << endl;
+}
+
+void MyWindow::sktDashboard_readyRead()
+{
+    qDebug() << "sktDashboard_readyRead" << endl;
+    QByteArray msg = od.sktDashboard->readAll();
+    qDebug() << msg << endl;
+}
+
+void MyWindow::sktDashboard_error()
+{
+    qDebug() << "sktDashboard_error:" << od.sktDashboard->errorString() << endl;
+    //emit robotmessage(od.sktDashboard->errorString());
+}
+
+void MyWindow::sktDashboard_disconnected()
+{
+    qDebug() << "sktDashboard_disconnected" << endl;
+}
+
+
+
+void MyWindow::sktwork_connected()
+{
+    cnt[pwork] = 1;
+    qDebug() << "sktDashboard_connected" << endl;
+}
+
+void MyWindow::sktwork_error()
+{
+    qDebug() << "sktwork_error:" << od.sktwork->errorString() << endl;
+}
+
+void MyWindow::sktwork_readyRead()
+{
+    qDebug() << "sktwork_readyRead" << endl;
+    QByteArray msg = od.sktwork->readAll();
+     qDebug() << msg << endl;
+}
+
+void MyWindow::sktwork_disconnected()
+{
+    qDebug() << "sktwork_disconnected" << endl;
+}
+
+
+
+void MyWindow::sktmsg8_connected()
+{
+    cnt[pmsg8] = 1;
+    qDebug() << "sktmsg8_connected" << endl;
+}
+
+void MyWindow::sktmsg8_error()
+{
+    qDebug() << "sktmsg8_error:" << od.sktmsg8->errorString() << endl;
+}
+
+void MyWindow::sktmsg8_readyRead()
+{
+    //qDebug() << "sktmsg8_readyRead" << endl;
+    QByteArray msg = od.sktmsg8->readAll();
+    //qDebug() << msg << endl;
+}
+
+void MyWindow::sktmsg8_disconnected()
+{
+    qDebug() << "sktmsg8_disconnected" << endl;
+}
+
+
+
+void MyWindow::sktmsg200_connected()
+{
+    cnt[pmsg200] = 1;
+    qDebug() << "sktmsg200_connected" << endl;
+}
+
+void MyWindow::sktmsg200_error()
+{
+//    qDebug() << "sktmsg200_error:" << od.sktmsg200->errorString() << endl;
+}
+
+void MyWindow::sktmsg200_readyRead()
+{
+    //qDebug() << "sktmsg200_readyRead" << endl;
+    QByteArray msg = od.sktmsg200->readAll();
+    //qDebug() << msg << endl;
+}
+
+void MyWindow::sktmsg200_disconnected()
+{
+    qDebug() << "sktmsg200_disconnected" << endl;
+}
+
+
+
+void MyWindow::sktmsgreturn_connected()
+{
+    cnt[pmsgreturn] = 1;
+    qDebug() << "sktmsgreturn_connected" << endl;
+}
+
+void MyWindow::sktmsgreturn_error()
+{
+    qDebug() << "sktmsgreturn_error:" << od.sktmsgreturn->errorString() << endl;
+}
+
+void MyWindow::sktmsgreturn_readyRead()
+{
+    //qDebug() << "sktmsgreturn_readyRead" << endl;
+    QByteArray msg = od.sktmsgreturn->readAll();
+    //qDebug() << msg << endl;
+}
+
+void MyWindow::sktmsgreturn_disconnected()
+{
+    qDebug() << "sktmsgreturn_disconnected" << endl;
+}
+
+void MyWindow::sendodr(QByteArray odr)
+{
+    if(cnt[pDashboard])
+    {
+        od.sktDashboard->write(odr);
+        qDebug() << "Send Dash board oder: " << odr;
+    }
+    qsleep(2000);
+}
+
+
+void MyWindow::sendrunodr(QByteArray odr)
+{
+    if(cnt[pwork])
+    {
+        od.sktwork->write(odr);
+        qDebug() << "Send run oder: " << odr;
+    }
+}
+
+void MyWindow::GetSixForceData()
+{
+    sendodr("GetSixForceData()");
+}
+
+void MyWindow::PositiveSolution(double J1, double J2, double J3, double J4, double J5, double J6, int User, int Tool)
+{
+    sendodr("PositiveSolution(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+               QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "," +
+               QByteArray::number(User) + "," + QByteArray::number(Tool) + ")");
+}
+
+void MyWindow::InverseSolution(double X, double Y, double Z, double Rx, double Ry, double Rz,
+                          int User, int Tool, int isJointNear, QString JointNear)
+{
+    if(isJointNear)
+    {
+        sendodr("InverseSolution(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+                   QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "," +
+                   QByteArray::number(User) + "," + QByteArray::number(Tool) + "," +
+                   QByteArray::number(isJointNear) + "," + JointNear.toLatin1() + ")");
+    } else {
+        sendodr("InverseSolution(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+                   QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "," +
+                   QByteArray::number(User) + "," + QByteArray::number(Tool) + ")");
+    }
+}
+
+void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t, float lookahead_time, float gain) {
+    sendrunodr("ServoJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+               QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "," +
+               QByteArray::number(double(t)) + "," + QByteArray::number(double(lookahead_time)) + "," + QByteArray::number(double(gain)) + ")");
+}
+
+
+void MyWindow::MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz)
+{
+    sendrunodr("MovJ(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+               QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+}
+
+void MyWindow::go()
+{
+//    p3d toArmiarm20p7e = toArm(iarm[2][0].p[7].e/* + iarm[0][0].p[7].e*/) / mm;        //去除中心点偏移
+//    p3d iarm20p7pd = p3d(iarm[2][0].p[7].d[0].s, iarm[2][0].p[7].d[1].s, iarm[2][0].p[7].d[2].s);
+//    p3d toArmiarm20p7pd = toArmR(iarm20p7pd);
+//    MovJ(toArmiarm20p7e.x, toArmiarm20p7e.y, toArmiarm20p7e.z,
+//    toArmiarm20p7pd.x, toArmiarm20p7pd.y, toArmiarm20p7pd.z);
+
+    MovJ(-20, -376, 1134, -90, 2, 179.5);
+    qsleep_pause(17000);
+
+    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+    qsleep_pause(17000);
+    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(8000);
+    MovJ(-160, -675.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(8000);
+    MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(7000);
+
+    MovJ(-20, -376, 1134, -90, 2, 179.5);
+    qsleep_pause(17000);
+
+    m_pAutoTreat->SetWidgetTreatFinish();
+
+////    ServoJ(0, 0, 0, 0, 0, 0);
+////    qsleep(30000);
+//    for (int i = 0; i < workmap_arm.size(); ++i) {
+//        p3d p = workmap_arm[i];
+//        //@@@ MovJ(p.x, p.y, p.z, 0, 0, 0);                                   //穴位3D坐标，需要谨慎验证。
+//        qsleep(3000);
+//    }
+}
+
+std::vector<cv::Point> MyWindow::detect(std::string img_path, std::string ModelPath)
+{
+    DCSP_INIT_PARAM params;
+    params.ModelPath = ModelPath;
+    params.ModelType = YOLO_POSE_V8;
+    params.classesNum = 1;
+    params.RectConfidenceThreshold = 0.6f;
+    params.iouThreshold = 0.5f;
+    params.CudaEnable = false;
+    params.LogSeverityLevel = 3;
+    params.imgSize = {640, 640};
+
+    DCSP_CORE* p1 = new DCSP_CORE;
+    char* ret = p1->CreateSession(params);
+
+    //std::cout << img_path << std::endl;
+    cv::Mat img = cv::imread(img_path);
+    //cv::imshow("TEST_ORIGIN", img);
+    std::vector<cv::Point> re;
+    std::vector<DCSP_RESULT> res;
+    p1->RunSession(img, res);
+    for (int i = 0; i < res.size(); i++)
+    {
+        cv::rectangle(img, res.at(i).box, cv::Scalar(125, 123, 0), 3);
+        re.push_back(cv::Point(res.at(i).box.x, res.at(i).box.y));
+    }
+#if 1
+    cv::Mat img2;
+    cv::resize(img, img2, img.size());
+    cv::imshow("TEST_ORIGIN", img2);
+    //cv::destroyAllWindows();
+#endif //1
+    return re;
+    //cv::imwrite("E:\\output\\" + std::to_string(k) + ".png", img);
+
+//    PositiveSolution(iarm[2][0].p[0].d[1].s, iarm[2][0].p[1].d[0].s, iarm[2][0].p[2].d[0].s,
+//            iarm[2][0].p[3].d[0].s, iarm[2][0].p[4].d[1].s, iarm[2][0].p[5].d[0].s, 0, 0);
+//    InverseSolution(iarm[2][0].p[0].d[1].s, iarm[2][0].p[1].d[0].s, iarm[2][0].p[2].d[0].s,
+//            iarm[2][0].p[3].d[0].s, iarm[2][0].p[4].d[1].s, iarm[2][0].p[5].d[0].s, 0, 0);
+
+////    orb.start();
+//    qsleep(10000);                                                            //扫描10秒钟。
+////    orb.stop();
+
+////    workmap = orb.getPosition(dtt.forward(orb.colorRawMat));
+//    workmap_arm.clear();
+//    gm44d m_orb2arm = getm(p3d(0,0,0), iarm[0][0].p[7].e);                    //相机坐标系转机械臂坐标系的矩阵   //
+//    for (int i = 0; i < workmap.size(); ++i)
+//    {
+//        workmap_arm << m_orb2arm * workmap[i];
+//    }
+}
+
+void MyWindow::stop()
+{
+    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+    qsleep_pause(17000);
+    MovJ(-20, -376, 1134, -90, 2, 179.5);
+    qsleep_pause(17000);
+    sendodr("DisableRobot()");
+}
+
+void MyWindow::setip(QString ip)
+{
+    this->ip = ip;
+}
+
+void MyWindow::qsleep(int msec)
+{
+    QTimer t;
+    t.setInterval(msec);
+    t.start();
+    QEventLoop loop;
+    connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+    loop.exec();
+}
+
+void MyWindow::qsleep_pause(int msec)
+{
+    qsleep(msec);
+    while(pausebit)
+    {
+        qsleep(100);
+    }
+}
+
+void MyWindow::poweron()
+{
+    pw = 1;
+    //sendodr("PowerOn()");
+    //qsleep(10000);
+    sendodr("DisableRobot");
+    sendodr("EnableRobot(1.5,0,0,0)");
+    //sendodr("BrakeControl(1,1)");
+    sendodr("SpeedFactor(10)");
+    sendodr("RobotMode()");
+    pw = 0;
 }

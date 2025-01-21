@@ -3,6 +3,8 @@
 #include <QWidget>
 #include "ui_AutoTreatOnGoing.h"
 
+#include <QTimer>
+
 class AutoTreat;
 class AutoTreatOnGoing : public QWidget
 {
@@ -11,6 +13,12 @@ class AutoTreatOnGoing : public QWidget
 public:
 	AutoTreatOnGoing(AutoTreat* treat,QWidget *parent = nullptr);
 	~AutoTreatOnGoing();
+
+	void TimerStart();
+
+	void TimerStop();
+
+	void TimerContinue();
 
 public slots:
 	void On_pushButton_Back_Clicked();
@@ -21,8 +29,14 @@ public slots:
 
 	void On_pushButton_Stop_Clicked();
 
+	void On_TimeOut();
+
 private:
 	Ui::AutoTreatOnGoingClass ui;
 
 	AutoTreat* m_pAutoTreat;
+
+	QTimer* m_pTimer;
+
+	quint64 m_iTotalTime;
 };

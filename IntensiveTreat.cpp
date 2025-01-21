@@ -1,7 +1,10 @@
 #include "IntensiveTreat.h"
 
-IntensiveTreat::IntensiveTreat(QWidget *parent)
-	: QWidget(parent)
+#include "MyWindow.h"
+
+IntensiveTreat::IntensiveTreat(MyWindow* window, QWidget *parent)
+	: m_pWindow(window)
+	, QWidget(parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::FramelessWindowHint);
@@ -58,6 +61,11 @@ void IntensiveTreat::SetWidgetToleranceTest()
 	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatToleranceTest.get());
 }
 
+MyWindow* IntensiveTreat::GetWindow()
+{
+    return m_pWindow;
+}
+
 void IntensiveTreat::SetWidgetBegin()
 {
 	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatBegin.get());
@@ -65,10 +73,16 @@ void IntensiveTreat::SetWidgetBegin()
 
 void IntensiveTreat::SetWidgetOnGoing()
 {
+	m_pIntensiveTreatOnGoing->TimerStart();
 	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatOnGoing.get());
 }
 
 void IntensiveTreat::SetWidgetFinish()
 {
 	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatFinish.get());
+}
+
+void IntensiveTreat::FinishReturn()
+{
+	m_pWindow->SetWidgetHomePage();
 }

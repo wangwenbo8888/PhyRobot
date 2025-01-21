@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.12.8_msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;network;</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -122,6 +122,7 @@
     <ClCompile Include="IntensiveTreatPalliativeCare.cpp" />
     <ClCompile Include="IntensiveTreatSetTime.cpp" />
     <ClCompile Include="IntensiveTreatToleranceTest.cpp" />
+    <ClCompile Include="oder.cpp" />
     <ClCompile Include="SetUp.cpp" />
     <QtRcc Include="PhysicalTherapyRobot.qrc" />
     <QtUic Include="AccoutManager.ui" />
@@ -182,6 +183,7 @@
     <QtMoc Include="IntensiveTreatOnGoing.h" />
     <QtMoc Include="IntensiveTreatFinish.h" />
     <QtMoc Include="EquipBreakdown.h" />
+    <QtMoc Include="oder.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

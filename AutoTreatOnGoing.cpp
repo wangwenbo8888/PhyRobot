@@ -1,6 +1,7 @@
-#include "AutoTreatOnGoing.h"
+﻿#include "AutoTreatOnGoing.h"
 
 #include "AutoTreat.h"
+#include "MyWindow.h"
 
 AutoTreatOnGoing::AutoTreatOnGoing(AutoTreat* treat, QWidget *parent)
 	: m_pAutoTreat(treat)
@@ -20,10 +21,21 @@ AutoTreatOnGoing::AutoTreatOnGoing(AutoTreat* treat, QWidget *parent)
 
 	disconnect(ui.pushButton_WorkStop, SIGNAL(clicked()), this, SLOT(On_pushButton_Stop_Clicked()));
 	connect(ui.pushButton_WorkStop, SIGNAL(clicked()), this, SLOT(On_pushButton_Stop_Clicked()));
+
+	m_pTimer = new QTimer(this);
+
+	m_pTimer->setInterval(1000);
+	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(On_TimeOut()));
+	//m_pTimer->start();
 }
 
 AutoTreatOnGoing::~AutoTreatOnGoing()
 {
+	if (m_pTimer!=NULL)
+	{
+		delete m_pTimer;
+		m_pTimer = NULL;
+	}
 }
 
 void AutoTreatOnGoing::On_pushButton_Back_Clicked()
@@ -33,15 +45,149 @@ void AutoTreatOnGoing::On_pushButton_Back_Clicked()
 
 void AutoTreatOnGoing::On_pushButton_WorkContinue_Clicked()
 {
+	TimerContinue();
 	//m_pAutoTreat->SetWidgetTreatFinish();
+    m_pAutoTreat->GetWindow()->WorkContinue();
 }
 
 void AutoTreatOnGoing::On_pushButton_Pause_Clicked()
 {
-
+	TimerStop();
+    m_pAutoTreat->GetWindow()->pause();
 }
 
 void AutoTreatOnGoing::On_pushButton_Stop_Clicked()
 {
+	TimerStop();
+    m_pAutoTreat->GetWindow()->stop();
+}
 
+void AutoTreatOnGoing::On_TimeOut()
+{
+	--m_iTotalTime;
+	QString time("00");
+	time.append(":");
+	int min = m_iTotalTime / 60;
+	int second = m_iTotalTime % 60;
+	if (min == 0)
+	{
+		time.append("00");
+	}
+	else if (min < 10)
+	{
+		time.append("0");
+		time.append(QString::number(min));
+	}
+	else
+	{
+		time.append(QString::number(min));
+	}
+	time.append(":");
+	if (second == 0)
+	{
+		time.append("00");
+	}
+	else if (second < 10)
+	{
+		time.append("0");
+		time.append(QString::number(second));
+	}
+	else
+	{
+		time.append(QString::number(second));
+	}
+
+	ui.label_10->setText(time);
+}
+
+void AutoTreatOnGoing::TimerStart()
+{
+	if (m_pTimer!=NULL)
+	{
+		m_pTimer->start();
+		m_iTotalTime = 3600;
+		QString time("00");
+		time.append(":");
+		int min = m_iTotalTime / 60;
+		int second = m_iTotalTime % 60;
+		if (min == 0)
+		{
+			time.append("00");
+		}
+		else if (min < 10)
+		{
+			time.append("0");
+			time.append(QString::number(min));
+		}
+		else
+		{
+			time.append(QString::number(min));
+		}
+		time.append(":");
+		if (second==0)
+		{
+			time.append("00");
+		}
+		else if (second < 10)
+		{
+			time.append("0");
+			time.append(QString::number(second));
+		}
+		else
+		{
+			time.append(QString::number(second));
+		}
+
+		ui.label_10->setText(time);
+	}
+}
+
+void AutoTreatOnGoing::TimerContinue()
+{
+	if (m_pTimer != NULL)
+	{
+		m_pTimer->start();
+		//m_iTotalTime = 3600;
+		QString time("00");
+		time.append(":");
+		int min = m_iTotalTime / 60;
+		int second = m_iTotalTime % 60;
+		if (min == 0)
+		{
+			time.append("00");
+		}
+		else if (min < 10)
+		{
+			time.append("0");
+			time.append(QString::number(min));
+		}
+		else
+		{
+			time.append(QString::number(min));
+		}
+		time.append(":");
+		if (second == 0)
+		{
+			time.append("00");
+		}
+		else if (second < 10)
+		{
+			time.append("0");
+			time.append(QString::number(second));
+		}
+		else
+		{
+			time.append(QString::number(second));
+		}
+
+		ui.label_10->setText(time);
+	}
+}
+
+void AutoTreatOnGoing::TimerStop()
+{
+	if (m_pTimer != NULL)
+	{
+		m_pTimer->stop();
+	}
 }

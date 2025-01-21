@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_AutoTreat.h"
@@ -12,12 +12,13 @@
 #include "AutoTreatOnGoing.h"
 #include "AutoTreatFinish.h"
 
+class MyWindow;
 class AutoTreat : public QWidget
 {
 	Q_OBJECT
 
 public:
-	AutoTreat(QWidget *parent = nullptr);
+    AutoTreat(MyWindow* window,QWidget *parent = nullptr);
 	~AutoTreat();
 
 	void SetWidgetInstruction();
@@ -34,7 +35,14 @@ public:
 
 	void SetWidgetTreatOnGoing();
 
-	void SetWidgetTreatFinish();
+    void SetWidgetTreatFinish();
+
+    MyWindow* GetWindow()
+    {
+        return m_pWindow;
+    }
+
+	void FinishReturn();
 
 private:
 	Ui::AutoTreatClass ui;
@@ -47,4 +55,6 @@ private:
 	QSharedPointer<AutoTreatBegin> m_pAutoTreatBegin;
 	QSharedPointer<AutoTreatOnGoing> m_pAutoTreatOnGoing;
 	QSharedPointer<AutoTreatFinish> m_pAutoTreatFinish;
+
+    MyWindow* m_pWindow;
 };

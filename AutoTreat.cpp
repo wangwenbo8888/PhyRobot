@@ -1,7 +1,9 @@
-#include "AutoTreat.h"
+﻿#include "AutoTreat.h"
 
-AutoTreat::AutoTreat(QWidget *parent)
-	: QWidget(parent)
+#include "MyWindow.h"
+AutoTreat::AutoTreat(MyWindow* window,QWidget *parent)
+    : m_pWindow(window)
+    , QWidget(parent)
 {
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::FramelessWindowHint);
@@ -72,10 +74,16 @@ void AutoTreat::SetWidgetTreatBegin()
 
 void AutoTreat::SetWidgetTreatOnGoing()
 {
+	m_pAutoTreatOnGoing->TimerStart();
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatOnGoing.get());
 }
 
 void AutoTreat::SetWidgetTreatFinish()
 {
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatFinish.get());
+}
+
+void AutoTreat::FinishReturn()
+{
+	m_pWindow->SetWidgetHomePage();
 }

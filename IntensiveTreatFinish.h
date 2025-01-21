@@ -12,6 +12,9 @@ public:
 	IntensiveTreatFinish(IntensiveTreat* treat, QWidget *parent = nullptr);
 	~IntensiveTreatFinish();
 
+public slots:
+	void On_PushButton_FinishReturn();
+
 private:
 	Ui::IntensiveTreatFinishClass ui;
 

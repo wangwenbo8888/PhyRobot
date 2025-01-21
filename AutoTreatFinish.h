@@ -12,6 +12,9 @@ public:
 	AutoTreatFinish(AutoTreat* treat,QWidget *parent = nullptr);
 	~AutoTreatFinish();
 
+public slots:
+	void On_PushButton_FinishReturn();
+
 private:
 	Ui::AutoTreatFinishClass ui;
 
