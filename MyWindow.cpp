@@ -155,6 +155,7 @@ void MyWindow::On_pushButton_FinishOrganize_Clicked()
 	ui.pushButton_EquipInfo->setDown(false);
 	ui.pushButton_SetUp->setDown(false);
 
+    m_pFinishOrganize->InitState();
 	ui.stackedWidget_Pags->setCurrentWidget(m_pFinishOrganize.get());
 }
 
@@ -346,8 +347,6 @@ void MyWindow::sktmsg200_disconnected()
     qDebug() << "sktmsg200_disconnected" << endl;
 }
 
-
-
 void MyWindow::sktmsgreturn_connected()
 {
     cnt[pmsgreturn] = 1;
@@ -452,8 +451,16 @@ void MyWindow::go()
     MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
     qsleep_pause(7000);
 
+    for (uint i = 0; i < points.size(); ++i)
+    {
+        //MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
+        qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
+    }
+
     MovJ(-20, -376, 1134, -90, 2, 179.5);
     qsleep_pause(17000);
+
+
 
     m_pAutoTreat->SetWidgetTreatFinish();
 
@@ -466,7 +473,7 @@ void MyWindow::go()
 //    }
 }
 
-std::vector<cv::Point> MyWindow::detect(std::string img_path, std::string ModelPath)
+std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath)
 {
     DCSP_INIT_PARAM params;
     params.ModelPath = ModelPath;
@@ -482,7 +489,7 @@ std::vector<cv::Point> MyWindow::detect(std::string img_path, std::string ModelP
     char* ret = p1->CreateSession(params);
 
     //std::cout << img_path << std::endl;
-    cv::Mat img = cv::imread(img_path);
+    //cv::Mat img = cv::imread(img);
     //cv::imshow("TEST_ORIGIN", img);
     std::vector<cv::Point> re;
     std::vector<DCSP_RESULT> res;
@@ -563,4 +570,27 @@ void MyWindow::poweron()
     sendodr("SpeedFactor(10)");
     sendodr("RobotMode()");
     pw = 0;
+}
+
+void MyWindow::getImage()
+{
+    obCapture(colorRawMat, point);
+    std::vector<cv::Point> base = detect(colorRawMat, u8"debug/yolov8_640_640_v15.onnx");
+    points = get3Dpoints(base) /* *m */;   //需要一个变换矩阵m
+    //todo: 点的顺序  //
+    qDebug() << "points: " ;
+    for (int i = 0; i < points.size(); ++i) {
+        qDebug() << &points[i];
+    }
+}
+
+std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base)
+{
+    std::vector<cv::Point3d> points;
+    for (uint i = 0; i < base.size(); ++i)
+    {
+        OBColorPoint* pointA = point + int(base[i].y) * 1280 + int(base[i].x);                                     //宽0->1279，高0-719
+        points.push_back(cv::Point3d(double(pointA->x), double(pointA->y), double(pointA->z)));
+    }
+    return points;
 }

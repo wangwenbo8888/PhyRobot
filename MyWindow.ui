@@ -47,7 +47,7 @@
    <widget class="QLabel" name="label_DateTime">
     <property name="geometry">
      <rect>
-      <x>1390</x>
+      <x>1360</x>
       <y>30</y>
       <width>301</width>
       <height>31</height>
@@ -69,10 +69,10 @@
    <widget class="QLabel" name="label_Operator">
     <property name="geometry">
      <rect>
-      <x>1750</x>
-      <y>30</y>
-      <width>111</width>
-      <height>41</height>
+      <x>1800</x>
+      <y>10</y>
+      <width>81</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -83,6 +83,44 @@
     </property>
     <property name="text">
      <string>Admin</string>
+    </property>
+    <property name="pixmap">
+     <pixmap>admin.png</pixmap>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_Wifi">
+    <property name="geometry">
+     <rect>
+      <x>1700</x>
+      <y>20</y>
+      <width>31</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>wifi2.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_UserImage">
+    <property name="geometry">
+     <rect>
+      <x>1750</x>
+      <y>20</y>
+      <width>54</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>admin.png</pixmap>
     </property>
    </widget>
   </widget>

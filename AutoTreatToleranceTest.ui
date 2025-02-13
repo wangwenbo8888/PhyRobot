@@ -276,7 +276,17 @@ background-color:rgb(98,157,207);
 border-radius:20px;</string>
    </property>
    <property name="text">
-    <string>+</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>耐力+.png</normaloff>耐力+.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
    </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_FengFuLeft">
@@ -364,7 +374,17 @@ background-color:rgb(98,157,207);;
 border-radius:20px;</string>
    </property>
    <property name="text">
-    <string>-</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>耐力-.png</normaloff>耐力-.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_WholeTest">

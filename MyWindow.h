@@ -16,6 +16,8 @@
 #include "oder.h"
 #include "inference.h"
 
+#include "CameraGrabber.h"
+
 enum RobotPort
 {
     pDashboard,
@@ -46,8 +48,10 @@ public:
 
     void go();
 
-    std::vector<cv::Point> detect(std::string img_path, std::string ModelPath);
+    std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath);
 
+    void getImage();
+    std::vector<cv::Point3d> get3Dpoints(std::vector<cv::Point> base);
 public slots:
 	void On_PushButton_Exit_Clicked();
 
@@ -120,4 +124,8 @@ private:
     void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 0.1f, float lookahead_time = 50.0f, float gain = 500.0f);
     ////detecter dtt;
     void setip(QString ip);
+    std::vector<cv::Point3d> points;
+    cv::Mat colorRawMat;
+    OBColorPoint* point;
+
 };

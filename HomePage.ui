@@ -92,6 +92,22 @@ QPushButton:disabled {
      <string>指导开始</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_AutoTreat">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>80</y>
+      <width>241</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>自动治疗标识.png</pixmap>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame_Intensive">
    <property name="geometry">
@@ -172,6 +188,22 @@ QPushButton:disabled {
      <string>指导开始</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_IntensiveImage">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>90</y>
+      <width>231</width>
+      <height>221</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>重点穴位.png</pixmap>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
@@ -250,6 +282,22 @@ QPushButton:disabled {
     </property>
     <property name="text">
      <string>开始</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>90</y>
+      <width>221</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>结束整理.png</pixmap>
     </property>
    </widget>
   </widget>

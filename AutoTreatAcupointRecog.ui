@@ -227,9 +227,9 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label_Image">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>70</x>
      <y>160</y>
-     <width>740</width>
+     <width>921</width>
      <height>464</height>
     </rect>
    </property>
@@ -240,7 +240,7 @@ border-radius:15px;</string>
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>humanbody1.png</pixmap>
+    <pixmap>人体.png</pixmap>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_ReconBegin">
@@ -267,6 +267,16 @@ border-radius:5px;</string>
    <property name="text">
     <string>开始识别</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>开始识别.png</normaloff>开始识别.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_Manual">
    <property name="geometry">
@@ -292,11 +302,21 @@ border-radius:5px;</string>
    <property name="text">
     <string>手动微调</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>手动微调.png</normaloff>手动微调.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
   </widget>
   <widget class="QLabel" name="label_Select">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>1010</x>
      <y>80</y>
      <width>561</width>
      <height>721</height>
@@ -328,7 +348,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_FengChiLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>110</y>
      <width>89</width>
      <height>21</height>
@@ -341,7 +361,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_FengFuLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>180</y>
      <width>89</width>
      <height>21</height>
@@ -354,7 +374,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_DaZhuiLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>240</y>
      <width>89</width>
      <height>21</height>
@@ -367,7 +387,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_YaoYanLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>300</y>
      <width>89</width>
      <height>21</height>
@@ -380,7 +400,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_ChiZeLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>370</y>
      <width>89</width>
      <height>21</height>
@@ -393,7 +413,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_NeiGuanZhengLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>430</y>
      <width>89</width>
      <height>21</height>
@@ -406,7 +426,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_BiGuanFanLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>500</y>
      <width>89</width>
      <height>21</height>
@@ -419,7 +439,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_WeiZhongLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>560</y>
      <width>89</width>
      <height>21</height>
@@ -432,7 +452,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_WeiYangLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>630</y>
      <width>89</width>
      <height>21</height>
@@ -445,7 +465,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_KunLunLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>700</y>
      <width>89</width>
      <height>21</height>
@@ -458,7 +478,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_JieXiLeft">
    <property name="geometry">
     <rect>
-     <x>960</x>
+     <x>1010</x>
      <y>760</y>
      <width>89</width>
      <height>21</height>
@@ -471,7 +491,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_JieXiRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>760</y>
      <width>89</width>
      <height>21</height>
@@ -484,7 +504,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_KunLunRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>690</y>
      <width>89</width>
      <height>21</height>
@@ -497,7 +517,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_WeiYangRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>630</y>
      <width>89</width>
      <height>21</height>
@@ -510,7 +530,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_WeiZhongRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>560</y>
      <width>89</width>
      <height>21</height>
@@ -523,7 +543,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_BiGuanFanRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>500</y>
      <width>89</width>
      <height>21</height>
@@ -536,7 +556,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_NeiGuanZhengRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>440</y>
      <width>89</width>
      <height>21</height>
@@ -549,7 +569,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_ChiZeRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>370</y>
      <width>89</width>
      <height>21</height>
@@ -562,7 +582,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_YaoYanRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>300</y>
      <width>89</width>
      <height>21</height>
@@ -575,7 +595,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_DaZhuiRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>240</y>
      <width>89</width>
      <height>21</height>
@@ -588,7 +608,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_FengFuRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>180</y>
      <width>89</width>
      <height>21</height>
@@ -601,7 +621,7 @@ border-radius:5px;</string>
   <widget class="QRadioButton" name="radioButton_FengChiRight">
    <property name="geometry">
     <rect>
-     <x>1540</x>
+     <x>1560</x>
      <y>110</y>
      <width>89</width>
      <height>21</height>

@@ -55,7 +55,7 @@ LIBS += \
       E:/workspace/PhysicalTherapyRobot/opencv430/win/x64/vc14/lib/opencv_img_hash430d.lib \
       E:/workspace/PhysicalTherapyRobot/opencv430/win/x64/vc14/lib/opencv_world430d.lib \
       E:/workspace/PhysicalTherapyRobot/OrbbecSDK_v1.10.12/SDK/lib/OrbbecSDK.lib \
-#     E:/workspace/PhysicalTherapyRobot/OrbbecSDK_v1.10.12/SDK/lib/depthengine_2_0.dll \
+#      E:/workspace/PhysicalTherapyRobot/OrbbecSDK_v1.10.12/SDK/lib/depthengine_2_0.dll \
       E:/workspace/PhysicalTherapyRobot/onnxruntime/v1.12.1/win/x64/lib/onnxruntime.lib
 
 

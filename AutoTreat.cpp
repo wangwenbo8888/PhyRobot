@@ -49,6 +49,7 @@ void AutoTreat::SetWidgetInstruction()
 
 void AutoTreat::SetWidgetPrePrepare()
 {
+	m_pAutoTreatPrePrepare->SetFirstStep();
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatPrePrepare.get());
 }
 

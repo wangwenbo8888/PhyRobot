@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include "ui_AutoTreatAcupointRecog.h"
@@ -17,8 +17,12 @@ public slots:
 
 	void on_Pushbutton_LastStep_Clicked();
 
+	void on_Pushbutton_RecogBegin_Clicked();
+
+    void on_Pushbutton_Manual_Clicked();
+
 private:
 	Ui::AutoTreatAcupointRecogClass ui;
 
-	AutoTreat* m_pAutoTreat;
+    AutoTreat* m_pAutoTreat;
 };

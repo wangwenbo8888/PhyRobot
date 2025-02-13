@@ -14,10 +14,29 @@ AutoTreatAcupointRecog::AutoTreatAcupointRecog(AutoTreat* treat, QWidget *parent
 
 	disconnect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
 	connect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
+
+	disconnect(ui.pushButton_ReconBegin, SIGNAL(clicked()), this, SLOT(on_Pushbutton_RecogBegin_Clicked()));
+	connect(ui.pushButton_ReconBegin, SIGNAL(clicked()), this, SLOT(on_Pushbutton_RecogBegin_Clicked()));
+
+	disconnect(ui.pushButton_Manual, SIGNAL(clicked()), this, SLOT(on_Pushbutton_Manual_Clicked()));
+	connect(ui.pushButton_Manual, SIGNAL(clicked()), this, SLOT(on_Pushbutton_Manual_Clicked()));
 }
 
 AutoTreatAcupointRecog::~AutoTreatAcupointRecog()
 {
+}
+
+// 开始识别
+void AutoTreatAcupointRecog::on_Pushbutton_RecogBegin_Clicked()
+{
+    //GetRGBDAndColor();
+    //m_pAutoTreat->GetWindow()->obCapture();
+}
+
+// 手动调整
+void AutoTreatAcupointRecog::on_Pushbutton_Manual_Clicked()
+{
+
 }
 
 void AutoTreatAcupointRecog::on_Pushbutton_LastStep_Clicked()

@@ -1,5 +1,67 @@
 <RCC>
-    <qresource prefix="/PhysicalTherapyRobot">
-        <file>finish.png</file>
+    <qresource prefix="/">
+        <file>-.png</file>
+        <file>--.png</file>
+        <file>+.png</file>
+        <file>++.png</file>
+        <file>00.png</file>
+        <file>0.png</file>
+        <file>1.png</file>
+        <file>2.png</file>
+        <file>3.png</file>
+        <file>4.png</file>
+        <file>5.png</file>
+        <file>6.png</file>
+        <file>7.png</file>
+        <file>8.png</file>
+        <file>9.png</file>
+        <file>11.png</file>
+        <file>22.png</file>
+        <file>33.png</file>
+        <file>44.png</file>
+        <file>55.png</file>
+        <file>66.png</file>
+        <file>77.png</file>
+        <file>88.png</file>
+        <file>99.png</file>
+        <file>robot (2).png</file>
+        <file>robot.png</file>
+        <file>robot1.png</file>
+        <file>shutdown.png</file>
+        <file>wifi1.png</file>
+        <file>wifi2.png</file>
+        <file>背景.png</file>
+        <file>背景2.png</file>
+        <file>播放键.png</file>
+        <file>查询.png</file>
+        <file>更多.png</file>
+        <file>机械臂标识.png</file>
+        <file>结束整理.png</file>
+        <file>进度条.png</file>
+        <file>开始识别.png</file>
+        <file>耐力-.png</file>
+        <file>耐力--.png</file>
+        <file>耐力+.png</file>
+        <file>耐力++.png</file>
+        <file>耐力测试框.png</file>
+        <file>屏保底.png</file>
+        <file>人体.png</file>
+        <file>上一首.png</file>
+        <file>时间框.png</file>
+        <file>手动微调.png</file>
+        <file>未点击效果.jpg</file>
+        <file>下一首.png</file>
+        <file>穴位.png</file>
+        <file>穴位识别.png</file>
+        <file>穴位未选.png</file>
+        <file>穴位选择.png</file>
+        <file>音乐标识.png</file>
+        <file>音量键大.png</file>
+        <file>音量键小.png</file>
+        <file>账号管理.png</file>
+        <file>重点穴位.png</file>
+        <file>自动治疗标识.png</file>
+        <file>GrayHook.png</file>
+        <file>GreenHook.png</file>
     </qresource>
 </RCC>

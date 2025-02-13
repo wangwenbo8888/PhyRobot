@@ -8,4 +8,5 @@ HomePage::HomePage(QWidget *parent)
 }
 
 HomePage::~HomePage()
-{}
+{
+}

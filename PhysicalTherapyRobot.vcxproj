@@ -65,11 +65,20 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\opencv430\win\include;..\PhysicalTherapyRobot\opencv430\win\include\opencv2;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>OrbbecSDK.lib;opencv_world430d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\opencv\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OrbbecSDK.lib;opencv_img_hash430d.lib;opencv_world430d.lib;onnxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\opencv430\win\x64\vc14\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\opencv430\win\include;..\PhysicalTherapyRobot\opencv430\win\include\opencv2;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\GTEngine-master\Include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opencv_img_hash430.lib;opencv_world430.lib;OrbbecSDK.lib;onnxruntime.lib;Qt5Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\opencv430\win\x64\vc14\lib;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -114,6 +123,7 @@
     <ClCompile Include="EquipBreakdown.cpp" />
     <ClCompile Include="EquipInfo.cpp" />
     <ClCompile Include="FinishOrganize.cpp" />
+    <ClCompile Include="inference.cpp" />
     <ClCompile Include="IntensiveTreat.cpp" />
     <ClCompile Include="IntensiveTreatAcupointRecog.cpp" />
     <ClCompile Include="IntensiveTreatBegin.cpp" />
@@ -184,10 +194,25 @@
     <QtMoc Include="IntensiveTreatFinish.h" />
     <QtMoc Include="EquipBreakdown.h" />
     <QtMoc Include="oder.h" />
+    <ClInclude Include="inference.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PhysicalTherapyRobot.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="acupoint.png" />
+    <Image Include="admin.png" />
+    <Image Include="autotreatbegin.png" />
+    <Image Include="finish.png" />
+    <Image Include="humanbody1.png" />
+    <Image Include="instruct.png" />
+    <Image Include="intensivetreatbegin.png" />
+    <Image Include="magneticpieceoff.png" />
+    <Image Include="robot (2).png" />
+    <Image Include="robot.png" />
+    <Image Include="robot1.png" />
+    <Image Include="shutdown.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

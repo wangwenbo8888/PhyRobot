@@ -192,6 +192,16 @@ border-radius:5px;</string>
    <property name="text">
     <string>手动微调</string>
    </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>手动微调.png</normaloff>手动微调.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
+   </property>
   </widget>
   <widget class="QRadioButton" name="radioButton_WeiYangLeft">
    <property name="geometry">
@@ -609,6 +619,16 @@ border-radius:5px;</string>
    </property>
    <property name="text">
     <string>开始识别</string>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>开始识别.png</normaloff>开始识别.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>40</width>
+     <height>40</height>
+    </size>
    </property>
   </widget>
   <zorder>label_7</zorder>

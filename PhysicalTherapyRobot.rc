@@ -1,12 +1,11 @@
-// Microsoft Visual C++ 生成的资源脚本。
+// Microsoft Visual C++ generated resource script.
 //
-
 #include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
-// 从 TEXTINCLUDE 2 资源生成。
+// Generated from the TEXTINCLUDE 2 resource.
 //
 #include "winres.h"
 
@@ -14,10 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// 中文(简体，中国) 资源
+// 中文(简体，中国) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-LANGUAGE 4, 2
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -25,18 +25,18 @@ LANGUAGE 4, 2
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE  
+2 TEXTINCLUDE 
 BEGIN
     "#include ""winres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE  
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -44,7 +44,157 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // 中文(简体，中国) 资源
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_PNG1                PNG                     "-.png"
+
+IDB_PNG2                PNG                     "--.png"
+
+IDB_PNG3                PNG                     "+.png"
+
+IDB_PNG4                PNG                     "++.png"
+
+IDB_PNG5                PNG                     "00.png"
+
+IDB_PNG6                PNG                     "0.png"
+
+IDB_PNG7                PNG                     "1.png"
+
+IDB_PNG8                PNG                     "2.png"
+
+IDB_PNG9                PNG                     "3.png"
+
+IDB_PNG10               PNG                     "4.png"
+
+IDB_PNG11               PNG                     "5.png"
+
+IDB_PNG12               PNG                     "6.png"
+
+IDB_PNG13               PNG                     "7.png"
+
+IDB_PNG14               PNG                     "8.png"
+
+IDB_PNG15               PNG                     "9.png"
+
+IDB_PNG16               PNG                     "11.png"
+
+IDB_PNG17               PNG                     "22.png"
+
+IDB_PNG18               PNG                     "33.png"
+
+IDB_PNG19               PNG                     "44.png"
+
+IDB_PNG20               PNG                     "55.png"
+
+IDB_PNG21               PNG                     "66.png"
+
+IDB_PNG22               PNG                     "77.png"
+
+IDB_PNG23               PNG                     "88.png"
+
+IDB_PNG24               PNG                     "99.png"
+
+IDB_PNG25               PNG                     "acupoint.png"
+
+IDB_PNG26               PNG                     "admin.png"
+
+IDB_PNG27               PNG                     "autotreatbegin.png"
+
+IDB_PNG28               PNG                     "finish.png"
+
+IDB_PNG29               PNG                     "humanbody1.png"
+
+IDB_PNG30               PNG                     "instruct.png"
+
+IDB_PNG31               PNG                     "intensivetreatbegin.png"
+
+IDB_PNG32               PNG                     "magneticpieceoff.png"
+
+IDB_PNG33               PNG                     "robot (2).png"
+
+IDB_PNG34               PNG                     "robot.png"
+
+IDB_PNG35               PNG                     "robot1.png"
+
+IDB_PNG36               PNG                     "shutdown.png"
+
+IDB_PNG37               PNG                     "wifi1.png"
+
+IDB_PNG38               PNG                     "wifi2.png"
+
+IDB_PNG39               PNG                     "报警.png"
+
+IDB_PNG40               PNG                     "背景.png"
+
+IDB_PNG41               PNG                     "背景2.png"
+
+IDB_PNG42               PNG                     "播放键.png"
+
+IDB_PNG43               PNG                     "查询.png"
+
+IDB_PNG44               PNG                     "更多.png"
+
+IDB_PNG45               PNG                     "灰勾.png"
+
+IDB_PNG46               PNG                     "机械臂标识.png"
+
+IDB_PNG47               PNG                     "结束整理.png"
+
+IDB_PNG48               PNG                     "进度条.png"
+
+IDB_PNG49               PNG                     "开始识别.png"
+
+IDB_PNG50               PNG                     "绿勾.png"
+
+IDB_PNG51               PNG                     "耐力-.png"
+
+IDB_PNG52               PNG                     "耐力--.png"
+
+IDB_PNG53               PNG                     "耐力+.png"
+
+IDB_PNG54               PNG                     "耐力++.png"
+
+IDB_PNG55               PNG                     "耐力测试动态钮.png"
+
+IDB_PNG56               PNG                     "耐力测试框.png"
+
+IDB_PNG57               PNG                     "屏保底.png"
+
+IDB_PNG58               PNG                     "人体.png"
+
+IDB_PNG59               PNG                     "上一首.png"
+
+IDB_PNG60               PNG                     "时间框.png"
+
+IDB_PNG61               PNG                     "手动微调.png"
+
+IDB_PNG62               PNG                     "下一首.png"
+
+IDB_PNG63               PNG                     "穴位.png"
+
+IDB_PNG64               PNG                     "穴位识别.png"
+
+IDB_PNG65               PNG                     "穴位未选.png"
+
+IDB_PNG66               PNG                     "穴位选择.png"
+
+IDB_PNG67               PNG                     "音乐标识.png"
+
+IDB_PNG68               PNG                     "音量键大.png"
+
+IDB_PNG69               PNG                     "音量键小.png"
+
+IDB_PNG70               PNG                     "账号管理.png"
+
+IDB_PNG71               PNG                     "重点穴位.png"
+
+IDB_PNG72               PNG                     "自动治疗标识.png"
+
+#endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -52,9 +202,10 @@ END
 #ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
-// 从 TEXTINCLUDE 3 资源生成。
+// Generated from the TEXTINCLUDE 3 resource.
 //
 
 
 /////////////////////////////////////////////////////////////////////////////
-#endif    // 不是 APSTUDIO_INVOKED
+#endif    // not APSTUDIO_INVOKED
+

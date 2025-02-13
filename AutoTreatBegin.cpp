@@ -18,7 +18,8 @@ AutoTreatBegin::AutoTreatBegin(AutoTreat* treat, QWidget *parent)
 }
 
 AutoTreatBegin::~AutoTreatBegin()
-{}
+{
+}
 
 void AutoTreatBegin::on_Pushbutton_LastStep_Clicked()
 {

@@ -142,12 +142,18 @@
     <ClCompile Include="oder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="inference.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraGrabber.h">
       <Filter>Header Files\3DCamera</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inference.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -306,5 +312,43 @@
     <QtUic Include="EquipBreakdown.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="acupoint.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="admin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="autotreatbegin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="finish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="humanbody1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="instruct.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="intensivetreatbegin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="magneticpieceoff.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="robot (2).png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="robot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="robot1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="shutdown.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
