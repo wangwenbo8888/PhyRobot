@@ -14,10 +14,21 @@ IntensiveTreatPalliativeCare::IntensiveTreatPalliativeCare(IntensiveTreat* treat
 
 	disconnect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
 	connect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
+
+	disconnect(ui.pushButton_Confirm, SIGNAL(clicked()), this, SLOT(on_Pushbutton_Confirm_Clicked()));
+	connect(ui.pushButton_Confirm, SIGNAL(clicked()), this, SLOT(on_Pushbutton_Confirm_Clicked()));
+
+	ui.pushButton_NextStep->setEnabled(false);
 }
 
 IntensiveTreatPalliativeCare::~IntensiveTreatPalliativeCare()
 {
+}
+
+void IntensiveTreatPalliativeCare::InitInterface()
+{
+	ui.pushButton_NextStep->setEnabled(false);
+	ui.label_Hook->setPixmap(QPixmap(":/GrayHook.png"));
 }
 
 void IntensiveTreatPalliativeCare::on_Pushbutton_Back_Clicked()
@@ -28,4 +39,10 @@ void IntensiveTreatPalliativeCare::on_Pushbutton_Back_Clicked()
 void IntensiveTreatPalliativeCare::on_Pushbutton_NextStep_Clicked()
 {
 	m_pIntensiveTreat->SetWidgetSetTime();
+}
+
+void IntensiveTreatPalliativeCare::on_Pushbutton_Confirm_Clicked()
+{
+	ui.label_Hook->setPixmap(QPixmap(":/GreenHook.png"));
+	ui.pushButton_NextStep->setEnabled(true);
 }

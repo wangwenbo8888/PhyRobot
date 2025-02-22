@@ -43,7 +43,7 @@ public:
 private:
 	Ui::IntensiveTreatClass ui;
 
-	QSharedPointer<IntensiveTreatPalliativeCare> m_pIntensiveTreatInstruction;
+	QSharedPointer<IntensiveTreatPalliativeCare> m_pIntensiveTreatPalliativeCare;
 	QSharedPointer<IntensiveTreatSetTime> m_pIntensiveTreatSetTime;
 	QSharedPointer<IntensiveTreatAcupointRecog> m_pIntensiveTreatAcupointRecog;
 	QSharedPointer<IntensiveTreatToleranceTest> m_pIntensiveTreatToleranceTest;

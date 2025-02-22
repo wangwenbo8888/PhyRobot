@@ -17,6 +17,9 @@
 
 // 获取RGBD图和彩色图
 void GetRGBDAndColor();
-int obCapture(cv::Mat &colorRawMat, OBColorPoint* point);
+int obCapture(cv::Mat &colorRawMat,std::vector<OBColorPoint>& pointCloud_frame_data);
 
 std::vector<cv::Point3d> get3Dpoints (std::vector<cv::Point> base);
+
+
+

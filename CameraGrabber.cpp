@@ -85,7 +85,7 @@ void GetRGBDAndColor()
         }
 
         // Get all stream profiles of the depth camera, including stream resolution, frame rate, and frame format
-        auto                                    depthProfiles = pipeline.getStreamProfileList(OB_SENSOR_DEPTH);
+        auto  depthProfiles = pipeline.getStreamProfileList(OB_SENSOR_DEPTH);
         std::shared_ptr<ob::VideoStreamProfile> depthProfile = nullptr;
         if (depthProfiles)
         {
@@ -203,31 +203,33 @@ void GetRGBDAndColor()
 //}
 
 // Save colored point cloud data to ply
-//void saveRGBPointsToPly(std::shared_ptr<ob::Frame> frame, std::string fileName) {
-//    int   pointsSize = frame->dataSize() / sizeof(OBColorPoint);
-//    FILE *fp         = fopen(fileName.c_str(), "wb+");
-//    fprintf(fp, "ply\n");
-//    fprintf(fp, "format ascii 1.0\n");
-//    fprintf(fp, "element vertex %d\n", pointsSize);
-//    fprintf(fp, "property float x\n");
-//    fprintf(fp, "property float y\n");
-//    fprintf(fp, "property float z\n");
-//    fprintf(fp, "property uchar red\n");
-//    fprintf(fp, "property uchar green\n");
-//    fprintf(fp, "property uchar blue\n");
-//    fprintf(fp, "end_header\n");
+void saveRGBPointsToPly(std::shared_ptr<ob::Frame> frame, std::string fileName) {
+    int   pointsSize = frame->dataSize() / sizeof(OBColorPoint);
+    FILE* fp;
+    fopen_s(&fp,fileName.c_str(), "wb+");
+    fprintf(fp, "ply\n");
+    fprintf(fp, "format ascii 1.0\n");
+    fprintf(fp, "element vertex %d\n", pointsSize);
+    fprintf(fp, "property float x\n");
+    fprintf(fp, "property float y\n");
+    fprintf(fp, "property float z\n");
+    fprintf(fp, "property uchar red\n");
+    fprintf(fp, "property uchar green\n");
+    fprintf(fp, "property uchar blue\n");
+    fprintf(fp, "end_header\n");
 
-//    OBColorPoint *point = (OBColorPoint *)frame->data();
-//    for(int i = 0; i < pointsSize; i++) {
-//        fprintf(fp, "%.3f %.3f %.3f %d %d %d\n", point->x, point->y, point->z, (int)point->r, (int)point->g, (int)point->b);
-//        point++;
-//    }
+    OBColorPoint *point = (OBColorPoint *)frame->data();
+    for(int i = 0; i < pointsSize; i++) {
+        fprintf(fp, "%.3f %.3f %.3f %d %d %d\n", point->x, point->y, point->z, (int)point->r, (int)point->g, (int)point->b);
+        point++;
+    }
 
-//    fflush(fp);
-//    fclose(fp);
-//}
+    fflush(fp);
+    fclose(fp);
+}
 
-int obCapture(cv::Mat &colorRawMat, OBColorPoint* point) try {
+int obCapture(cv::Mat &colorRawMat,std::vector<OBColorPoint>& pointCloud_frame_data)
+try {
     ob::Context::setLoggerSeverity(OB_LOG_SEVERITY_WARN);
     // create pipeline
     ob::Pipeline pipeline;
@@ -312,78 +314,91 @@ int obCapture(cv::Mat &colorRawMat, OBColorPoint* point) try {
     auto cameraParam = pipeline.getCameraParam();
     pointCloud.setCameraParam(cameraParam);
 
-    int count = 0;
-    int n = 20;
-    while(n--) {
-        auto frameset = pipeline.waitForFrames(100);
-            int key = 'R';
-            // Press the ESC key to exit
-            if(key == KEY_ESC) {
-                break;
-            }
-            if(key == 'R' || key == 'r') {
-                count = 0;
-                // Limit up to 10 repetitions
-                while(count++ < 10) {
-                    // Wait for a frame of data, the timeout is 100ms
-                    auto frameset = pipeline.waitForFrames(100);
-                    if(frameset != nullptr && frameset->depthFrame() != nullptr && frameset->colorFrame() != nullptr) {
-                        // point position value multiply depth value scale to convert uint to millimeter (for some devices, the default depth value uint is not
-                        // millimeter)
-                        auto depthValueScale = frameset->depthFrame()->getValueScale();
-                        pointCloud.setPositionDataScaled(depthValueScale);
-                        try {
-                            // Generate a colored point cloud and save it
-                            qDebug() << "Save RGBD PointCloud ply file..." ;
-                            pointCloud.setCreatePointFormat(OB_FORMAT_RGB_POINT);
-                            std::shared_ptr<ob::Frame> frame = pointCloud.process(frameset);
-                            std::shared_ptr<ob::ColorFrame> colorFrame = frameset->colorFrame();
+    auto frameset = pipeline.waitForFrames(2000);
+    //OBColorPoint *Colorpoint;
+    if(frameset != nullptr && frameset->depthFrame() != nullptr && frameset->colorFrame() != nullptr) {
+        // point position value multiply depth value scale to convert uint to millimeter (for some devices, the default depth value uint is not
+        // millimeter)
+        auto depthValueScale = frameset->depthFrame()->getValueScale();
+        pointCloud.setPositionDataScaled(depthValueScale);
+        try {
+            // Generate a colored point cloud and save it
+            qDebug() << "Save RGBD PointCloud ply file..." ;
+            pointCloud.setCreatePointFormat(OB_FORMAT_RGB_POINT);
+            static std::shared_ptr<ob::Frame> pointCloud_frame = pointCloud.process(frameset);
 
-                            colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data());
-                            int   pointsSize = frame->dataSize() / sizeof(OBColorPoint);
-                            point = (OBColorPoint*)frame->data();
+            saveRGBPointsToPly(pointCloud_frame, "RGBPoints.ply");
+            std::shared_ptr<ob::ColorFrame> colorFrame = frameset->colorFrame();
 
-                            qDebug() << "RGBPoints.ply Saved" ;
-                        }
-                        catch(std::exception &e) {
-                            qDebug() << "Get point cloud failed" ;
-                        }
-                        break;
+            qDebug() << "colorFrame->height():" << colorFrame->height() << colorFrame->width()
+                     << colorFrame->format() << colorFrame->type() ;
+            colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data()).clone();
+
+            int colorCount = 0;
+            ob::FormatConvertFilter formatConvertFilter;
+            if (colorFrame != nullptr && colorCount < 5)
+            {
+                // save the colormap
+                if (colorFrame->format() != OB_FORMAT_RGB)
+                {
+                    if (colorFrame->format() == OB_FORMAT_MJPG)
+                    {
+                        formatConvertFilter.setFormatConvertType(FORMAT_MJPG_TO_RGB);
                     }
-                    else {
-                        qDebug() << "Get color frame or depth frame failed!" ;
+                    else if (colorFrame->format() == OB_FORMAT_UYVY)
+                    {
+                        formatConvertFilter.setFormatConvertType(FORMAT_UYVY_TO_RGB);
                     }
+                    else if (colorFrame->format() == OB_FORMAT_YUYV)
+                    {
+                        formatConvertFilter.setFormatConvertType(FORMAT_YUYV_TO_RGB);
+                    }
+                    else
+                    {
+                        qDebug() << "Color format is not support!" ;
+                    }
+                    colorFrame = formatConvertFilter.process(colorFrame)->as<ob::ColorFrame>();
                 }
+                formatConvertFilter.setFormatConvertType(FORMAT_RGB_TO_BGR);
+                colorFrame = formatConvertFilter.process(colorFrame)->as<ob::ColorFrame>();
+                //saveColor(colorFrame, colorCount);
+                ///////////////////////////////////////// save  ////
+                std::vector<int> compression_params;
+                compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
+                compression_params.push_back(0);
+                compression_params.push_back(cv::IMWRITE_PNG_STRATEGY);
+                compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_DEFAULT);
+                std::string colorName = "Color_" + std::to_string(colorFrame->width()) + "x" + std::to_string(colorFrame->height()) + "_" + std::to_string(colorCount) + "_"
+                    + std::to_string(colorFrame->timeStamp()) + "ms.png";
+                colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data());
+                cv::imwrite(colorName, colorRawMat, compression_params);
+                std::cout << "Color saved:" << colorName ;
+
+                ////////////////////////////////////////////
+                colorCount++;
             }
-            else if(key == 'D' || key == 'd') {
-                count = 0;
-                // Limit up to 10 repetitions
-                while(count++ < 10) {
-                    // Wait for up to 100ms for a frameset in blocking mode.
-                    auto frameset = pipeline.waitForFrames(100);
-                    if(frameset != nullptr && frameset->depthFrame() != nullptr) {
-                        // point position value multiply depth value scale to convert uint to millimeter (for some devices, the default depth value uint is not
-                        // millimeter)
-                        auto depthValueScale = frameset->depthFrame()->getValueScale();
-                        pointCloud.setPositionDataScaled(depthValueScale);
-                        try {
-                            // generate point cloud and save
-                            qDebug() << "Save Depth PointCloud to ply file..." ;
-                            pointCloud.setCreatePointFormat(OB_FORMAT_POINT);
-                            std::shared_ptr<ob::Frame> frame = pointCloud.process(frameset);
-                            savePointsToPly(frame, "DepthPoints.ply");
-                            qDebug() << "DepthPoints.ply Saved" ;
-                        }
-                        catch(std::exception &e) {
-                            qDebug() << "Get point cloud failed" ;
-                        }
-                        break;
-                    }
-                }
+            int pointsSize = pointCloud_frame->dataSize() / sizeof(OBColorPoint);
+            static OBColorPoint*  Colorpoint = (OBColorPoint*)pointCloud_frame->data();
+
+            //pointCloud_frame_data.clear();
+            for (int i = 0; i < pointsSize;++i)
+            {
+                Colorpoint ++;
+                pointCloud_frame_data.push_back(*Colorpoint);
             }
+
+            qDebug() << "Vector size is "<< pointCloud_frame_data.size();
+            qDebug() << "RGBPoints.ply Saved" ;
         }
+        catch(std::exception &e) {
+            qDebug() << "Get point cloud failed" ;
+        }
+        return 0;
+    }
+    else {
+        qDebug() << "Get color frame or depth frame failed!" ;
+    }
 
-    // stop the pipeline
     pipeline.stop();
 
     return 0;

@@ -12,10 +12,14 @@ public:
 	IntensiveTreatSetTime(IntensiveTreat* treat, QWidget *parent = nullptr);
 	~IntensiveTreatSetTime();
 
+	void InitInterface();
+
 public slots:
 	void on_Pushbutton_NextStep_Clicked();
 
 	void on_Pushbutton_LastStep_Clicked();
+
+	void on_Pushbutton_Confirm_Clicked();
 
 private:
 	Ui::IntensiveTreatSetTimeClass ui;

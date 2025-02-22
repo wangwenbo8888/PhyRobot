@@ -272,8 +272,6 @@ void MyWindow::sktDashboard_disconnected()
     qDebug() << "sktDashboard_disconnected" << endl;
 }
 
-
-
 void MyWindow::sktwork_connected()
 {
     cnt[pwork] = 1;
@@ -297,8 +295,6 @@ void MyWindow::sktwork_disconnected()
     qDebug() << "sktwork_disconnected" << endl;
 }
 
-
-
 void MyWindow::sktmsg8_connected()
 {
     cnt[pmsg8] = 1;
@@ -321,8 +317,6 @@ void MyWindow::sktmsg8_disconnected()
 {
     qDebug() << "sktmsg8_disconnected" << endl;
 }
-
-
 
 void MyWindow::sktmsg200_connected()
 {
@@ -438,29 +432,40 @@ void MyWindow::go()
 //    p3d toArmiarm20p7pd = toArmR(iarm20p7pd);
 //    MovJ(toArmiarm20p7e.x, toArmiarm20p7e.y, toArmiarm20p7e.z,
 //    toArmiarm20p7pd.x, toArmiarm20p7pd.y, toArmiarm20p7pd.z);
+    //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
+    //qsleep_pause(7000);
 
     MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(17000);
+    qsleep_pause(7000);
 
     MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
-    qsleep_pause(17000);
+    qsleep_pause(7000);
     MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
     qsleep_pause(8000);
     MovJ(-160, -675.3, 91.8, -178, 0, 179.5);
     qsleep_pause(8000);
     MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
     qsleep_pause(7000);
+    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(7000);
+    MovJ(-360, -775.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(7000);
+    MovJ(240, -775.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(7000);
+    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+    qsleep_pause(7000);
 
-    for (uint i = 0; i < points.size(); ++i)
-    {
+    //for (uint i = 0; i < points.size(); ++i)
+    //{
         //MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
-        qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
-    }
+        //qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
+    //}
 
     MovJ(-20, -376, 1134, -90, 2, 179.5);
     qsleep_pause(17000);
 
-
+    //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
+    //qsleep_pause(7000);
 
     m_pAutoTreat->SetWidgetTreatFinish();
 
@@ -572,25 +577,43 @@ void MyWindow::poweron()
     pw = 0;
 }
 
-void MyWindow::getImage()
+void MyWindow::getImage(/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
-    obCapture(colorRawMat, point);
-    std::vector<cv::Point> base = detect(colorRawMat, u8"debug/yolov8_640_640_v15.onnx");
-    points = get3Dpoints(base) /* *m */;   //需要一个变换矩阵m
+    std::vector<OBColorPoint> pointCloud_frame_data;
+    obCapture(colorRawMat,pointCloud_frame_data);
+    cv::imwrite("colorRawMat.jpg", colorRawMat);
+    std::string path = "E://workspace//PhysicalTherapyRobot//x64//Release//yolov8_640_640_v15.onnx";
+    std::vector<cv::Point> base = detect(colorRawMat, path/*u8"debug/yolov8_640_640_v15.onnx"*/);
+    points = get3Dpoints(base,pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
     //todo: 点的顺序  //
     qDebug() << "points: " ;
-    for (int i = 0; i < points.size(); ++i) {
-        qDebug() << &points[i];
+    for (uint i = 0; i < points.size(); ++i) {
+        qDebug() << i << points[i].x << points[i].y << points[i].z;
     }
 }
 
-std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base)
+std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base,std::vector<OBColorPoint> pointCloud_frame_data)
 {
-    std::vector<cv::Point3d> points;
+//    std::vector<cv::Point3d> points;
+//    for (int i = 0; i < 720 * 1280; ++i)
+//    {
+//        OBColorPoint* pointA = Colorpoint + i;
+//        qDebug() << i << ": " << pointA->x << ", " << pointA->y << ", " << pointA->z
+//                     << ", " << pointA->r << ", " << pointA->g << ", " << pointA->b;
+//    }
+
+    qDebug()<<"Current vector size is "<< pointCloud_frame_data.size();
+    for (int i = 0; i < 100 ;++i)
+    {
+        OBColorPoint& pointA = pointCloud_frame_data[i];
+        qDebug() << i << ": " << pointA.x << ", " << pointA.y << ", " << pointA.z
+                             << ", " << pointA.r << ", " << pointA.g << ", " << pointA.b;
+    }
+
     for (uint i = 0; i < base.size(); ++i)
     {
-        OBColorPoint* pointA = point + int(base[i].y) * 1280 + int(base[i].x);                                     //宽0->1279，高0-719
-        points.push_back(cv::Point3d(double(pointA->x), double(pointA->y), double(pointA->z)));
+        OBColorPoint& pointA = pointCloud_frame_data[int(base[i].y) * imageWidth + int(base[i].x)] ;                                     //宽0->1279，高0-719
+        points.push_back(cv::Point3d(double(pointA.x), double(pointA.y), double(pointA.z)));
     }
     return points;
 }

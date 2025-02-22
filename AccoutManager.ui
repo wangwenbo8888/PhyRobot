@@ -16,10 +16,10 @@
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>910</x>
+     <x>880</x>
      <y>70</y>
-     <width>801</width>
-     <height>891</height>
+     <width>760</width>
+     <height>890</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -45,11 +45,19 @@ border-radius:5px;</string>
    <widget class="QLineEdit" name="lineEdit_Name">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>350</y>
-      <width>201</width>
-      <height>31</height>
+      <x>229</x>
+      <y>340</y>
+      <width>300</width>
+      <height>60</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(176,207,231);</string>
@@ -61,11 +69,19 @@ border-radius:5px;</string>
    <widget class="QLineEdit" name="lineEdit_Password">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>230</x>
       <y>410</y>
-      <width>201</width>
-      <height>31</height>
+      <width>300</width>
+      <height>60</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(176,207,231);</string>
@@ -77,11 +93,19 @@ border-radius:5px;</string>
    <widget class="QLineEdit" name="lineEdit_ConfirmPassword">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>470</y>
-      <width>201</width>
-      <height>31</height>
+      <x>230</x>
+      <y>490</y>
+      <width>300</width>
+      <height>60</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">border:2px solid rgb(176,207,231);</string>
@@ -93,16 +117,16 @@ border-radius:5px;</string>
    <widget class="QPushButton" name="pushButton_Delete">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>760</y>
-      <width>91</width>
-      <height>23</height>
+      <x>150</x>
+      <y>750</y>
+      <width>220</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>16</pointsize>
+      <pointsize>36</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -117,16 +141,16 @@ border-radius:5px;</string>
    <widget class="QPushButton" name="pushButton_PremisManage">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>760</y>
-      <width>91</width>
-      <height>23</height>
+      <x>400</x>
+      <y>750</y>
+      <width>220</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>16</pointsize>
+      <pointsize>36</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -141,22 +165,36 @@ border-radius:5px;</string>
    <widget class="QPushButton" name="pushButton_Confirm">
     <property name="geometry">
      <rect>
-      <x>320</x>
-      <y>530</y>
+      <x>270</x>
+      <y>570</y>
       <width>200</width>
-      <height>30</height>
+      <height>60</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">QPushButton{
-background-color: rgb(60,179,113);
-border:2px groove gray;
-border-radius:10px;padding:2px 4px;border-style: outset;}
-QPushButton:hover{
-background-color:rgb(60,179,113); color: black;}
- QPushButton:pressed{
-background-color:rgb(60,179,113);
-border-style: inset;}
+	background-color: rgb(60,179,113);
+	border:2px groove gray;
+	border-radius:10px;padding:2px 4px;border-style: outset;
+}
+	QPushButton:hover
+{
+	background-color:rgb(60,179,113); 
+	color: black;
+}
+ QPushButton:pressed
+{
+	background-color:rgb(0,0,128);
+	border-style: inset;
+}
 </string>
     </property>
     <property name="text">
@@ -285,14 +323,14 @@ border-style: inset;}
     <rect>
      <x>90</x>
      <y>890</y>
-     <width>101</width>
-     <height>41</height>
+     <width>220</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>36</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -307,16 +345,16 @@ border-style: inset;}
   <widget class="QPushButton" name="pushButton_ChangeAccount">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>540</x>
      <y>890</y>
-     <width>101</width>
-     <height>41</height>
+     <width>220</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>36</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

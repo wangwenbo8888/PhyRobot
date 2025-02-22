@@ -1,6 +1,8 @@
 #include "AutoTreatAcupointRecog.h"
 
 #include "AutoTreat.h"
+#include "CameraGrabber.h"
+#include "MyWindow.h"
 
 AutoTreatAcupointRecog::AutoTreatAcupointRecog(AutoTreat* treat, QWidget *parent)
 	: m_pAutoTreat(treat)
@@ -30,13 +32,16 @@ AutoTreatAcupointRecog::~AutoTreatAcupointRecog()
 void AutoTreatAcupointRecog::on_Pushbutton_RecogBegin_Clicked()
 {
     //GetRGBDAndColor();
-    //m_pAutoTreat->GetWindow()->obCapture();
+	std::vector<cv::Point3d> points;
+	cv::Mat colorRawMat;
+    m_pAutoTreat->GetWindow()->getImage(/*points,colorRawMat*/);
+
+
 }
 
 // 手动调整
 void AutoTreatAcupointRecog::on_Pushbutton_Manual_Clicked()
 {
-
 }
 
 void AutoTreatAcupointRecog::on_Pushbutton_LastStep_Clicked()

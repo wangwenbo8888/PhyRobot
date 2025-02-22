@@ -6,7 +6,6 @@
 
 DCSP_CORE::DCSP_CORE()
 {
-
 }
 
 
@@ -14,7 +13,6 @@ DCSP_CORE::~DCSP_CORE()
 {
 	delete session;
 }
-
 
 //template<typename T>
 char* BlobFromImage(cv::Mat& iImg, float* &iBlob)

@@ -32,22 +32,33 @@
   <widget class="QPushButton" name="pushButton_ArmManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>160</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>机械臂及初始状态管理</string>
@@ -56,8 +67,8 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>710</x>
-     <y>160</y>
+     <x>860</x>
+     <y>190</y>
      <width>2</width>
      <height>700</height>
     </rect>
@@ -72,22 +83,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_PowerModelManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>240</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>六维力模块管理</string>
@@ -96,22 +118,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_3DCamerManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>320</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>双目3D相机管理</string>
@@ -120,22 +153,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_MedFreqTreatModelManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>400</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>中频治疗模块管理</string>
@@ -144,22 +188,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_HandManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>480</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>操作手柄管理</string>
@@ -168,22 +223,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_GelPumpManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>560</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>凝胶泵管理</string>
@@ -192,22 +258,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_SpeechManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>150</x>
      <y>640</y>
-     <width>360</width>
-     <height>40</height>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>语音模块管理（唤醒词管理）</string>
@@ -216,22 +293,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_MusicManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>720</y>
-     <width>360</width>
-     <height>40</height>
+     <x>150</x>
+     <y>730</y>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>治疗提示音及音乐管理</string>
@@ -240,22 +328,33 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_MetalDetectorManager">
    <property name="geometry">
     <rect>
-     <x>230</x>
-     <y>800</y>
-     <width>360</width>
-     <height>40</height>
+     <x>150</x>
+     <y>810</y>
+     <width>640</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>16</pointsize>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:15px;</string>
+border-radius:15px;
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>金属检测仪管理</string>
@@ -280,7 +379,7 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>1140</x>
+     <x>1010</x>
      <y>830</y>
      <width>221</width>
      <height>41</height>
@@ -304,7 +403,7 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>1400</x>
+     <x>1290</x>
      <y>830</y>
      <width>221</width>
      <height>41</height>

@@ -50,8 +50,9 @@ public:
 
     std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath);
 
-    void getImage();
-    std::vector<cv::Point3d> get3Dpoints(std::vector<cv::Point> base);
+    void getImage(/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
+
+    std::vector<cv::Point3d> get3Dpoints(std::vector<cv::Point> base ,std::vector<OBColorPoint> pointCloud_frame_data);
 public slots:
 	void On_PushButton_Exit_Clicked();
 
@@ -126,6 +127,7 @@ private:
     void setip(QString ip);
     std::vector<cv::Point3d> points;
     cv::Mat colorRawMat;
-    OBColorPoint* point;
+    //OBColorPoint* Colorpoint;
+    int imageWidth = 720;
 
 };

@@ -16,16 +16,16 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>1040</x>
+     <x>1010</x>
      <y>20</y>
-     <width>170</width>
+     <width>191</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>24</pointsize>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -101,15 +101,32 @@ border-radius:40px;</string>
   <widget class="QPushButton" name="pushButton_Back">
    <property name="geometry">
     <rect>
-     <x>1400</x>
-     <y>880</y>
-     <width>90</width>
-     <height>30</height>
+     <x>1090</x>
+     <y>870</y>
+     <width>180</width>
+     <height>60</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
-border-radius:15px;</string>
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(98,157,207);
+	border-radius:15px;  
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>返回</string>
@@ -157,7 +174,7 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>1090</x>
+     <x>1070</x>
      <y>70</y>
      <width>54</width>
      <height>2</height>
@@ -238,15 +255,32 @@ border-radius:15px;</string>
   <widget class="QPushButton" name="pushButton_LastStep">
    <property name="geometry">
     <rect>
-     <x>1520</x>
-     <y>880</y>
-     <width>90</width>
-     <height>30</height>
+     <x>1300</x>
+     <y>870</y>
+     <width>180</width>
+     <height>60</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
-border-radius:15px;</string>
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(98,157,207);
+	border-radius:15px;  
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>上一步</string>
@@ -305,16 +339,16 @@ border-radius:20px;</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>780</x>
+     <x>700</x>
      <y>20</y>
-     <width>170</width>
+     <width>231</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>24</pointsize>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -392,22 +426,33 @@ border-radius:20px;</string>
     <rect>
      <x>770</x>
      <y>460</y>
-     <width>111</width>
+     <width>151</width>
      <height>61</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>24</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">
+QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:5px;
+border-radius:5px;  
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}
+
 </string>
    </property>
    <property name="text">
@@ -417,16 +462,16 @@ border-radius:5px;
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>1300</x>
+     <x>1290</x>
      <y>20</y>
-     <width>201</width>
+     <width>241</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>24</pointsize>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -467,16 +512,16 @@ border-radius:5px;</string>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>510</x>
+     <x>400</x>
      <y>20</y>
-     <width>170</width>
+     <width>231</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>24</pointsize>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -610,22 +655,32 @@ border-radius:5px;</string>
     <rect>
      <x>770</x>
      <y>220</y>
-     <width>111</width>
+     <width>151</width>
      <height>61</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>24</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
+    <string notr="true">
+QPushButton
+{
+    /*背景颜色*/  
+background-color:rgb(98,157,207);
 color:white;
-border-radius:5px;
+border-radius:5px;  
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}
 </string>
    </property>
    <property name="text">
@@ -672,15 +727,32 @@ border-radius:5px;
   <widget class="QPushButton" name="pushButton_NextStep">
    <property name="geometry">
     <rect>
-     <x>1630</x>
-     <y>880</y>
-     <width>90</width>
-     <height>30</height>
+     <x>1500</x>
+     <y>870</y>
+     <width>180</width>
+     <height>60</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(98,157,207);
-border-radius:15px;</string>
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(98,157,207);
+	border-radius:15px;  
+}
+
+QPushButton:pressed
+{
+    background-color:rgb(0,0,128);
+}</string>
    </property>
    <property name="text">
     <string>下一项</string>
@@ -805,16 +877,16 @@ border-radius:15px;</string>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>129</x>
      <y>20</y>
-     <width>170</width>
+     <width>191</width>
      <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Agency FB</family>
-     <pointsize>24</pointsize>
+     <family>Arial</family>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

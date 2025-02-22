@@ -9,8 +9,8 @@ IntensiveTreat::IntensiveTreat(MyWindow* window, QWidget *parent)
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::FramelessWindowHint);
 
-	m_pIntensiveTreatInstruction.reset(new IntensiveTreatPalliativeCare(this));
-	ui.stackedWidget_IntensiveTreat_Pages->addWidget(m_pIntensiveTreatInstruction.get());
+	m_pIntensiveTreatPalliativeCare.reset(new IntensiveTreatPalliativeCare(this));
+	ui.stackedWidget_IntensiveTreat_Pages->addWidget(m_pIntensiveTreatPalliativeCare.get());
 
 	m_pIntensiveTreatSetTime.reset(new IntensiveTreatSetTime(this));
 	ui.stackedWidget_IntensiveTreat_Pages->addWidget(m_pIntensiveTreatSetTime.get());
@@ -43,11 +43,13 @@ IntensiveTreat::~IntensiveTreat()
 
 void IntensiveTreat::SetWidgetPalliativeCare()
 {
-	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatInstruction.get());
+	m_pIntensiveTreatPalliativeCare->InitInterface();
+	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatPalliativeCare.get());
 }
 
 void IntensiveTreat::SetWidgetSetTime()
 {
+	m_pIntensiveTreatSetTime->InitInterface();
 	ui.stackedWidget_IntensiveTreat_Pages->setCurrentWidget(m_pIntensiveTreatSetTime.get());
 }
 

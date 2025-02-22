@@ -12,10 +12,14 @@ public:
 	IntensiveTreatPalliativeCare(IntensiveTreat* treat, QWidget *parent = nullptr);
 	~IntensiveTreatPalliativeCare();
 
+	void InitInterface();
+
 public slots:
 	void on_Pushbutton_NextStep_Clicked();
 
 	void on_Pushbutton_Back_Clicked();
+
+	void on_Pushbutton_Confirm_Clicked();
 
 private:
 	Ui::IntensiveTreatPalliativeCareClass ui;

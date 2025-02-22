@@ -13,18 +13,21 @@
   <property name="windowTitle">
    <string>理疗机器人</string>
   </property>
-  <property name="toolTipDuration" stdset="0">
+  <property name="toolTipDuration">
    <number>0</number>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="Login" native="true">
     <property name="geometry">
      <rect>
-      <x>680</x>
-      <y>380</y>
-      <width>431</width>
-      <height>361</height>
+      <x>690</x>
+      <y>370</y>
+      <width>471</width>
+      <height>411</height>
      </rect>
+    </property>
+    <property name="toolTipDuration">
+     <number>0</number>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255,255,255);
@@ -33,15 +36,12 @@ border-top-right-radius:15px;
 border-bottom-left-radius:15px;
 border-bottom-right-radius:15px;</string>
     </property>
-    <property name="toolTipDuration" stdset="0">
-     <number>0</number>
-    </property>
     <widget class="QLabel" name="GrayLine">
      <property name="geometry">
       <rect>
        <x>30</x>
        <y>100</y>
-       <width>361</width>
+       <width>380</width>
        <height>2</height>
       </rect>
      </property>
@@ -55,8 +55,8 @@ border-bottom-right-radius:15px;</string>
     <widget class="QLabel" name="Logo">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>140</y>
+       <x>20</x>
+       <y>130</y>
        <width>111</width>
        <height>111</height>
       </rect>
@@ -77,6 +77,14 @@ border-bottom-right-radius:15px;</string>
        <height>40</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">border:1px groove gray;</string>
      </property>
@@ -93,6 +101,14 @@ border-bottom-right-radius:15px;</string>
        <height>40</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="styleSheet">
       <string notr="true">border:1px groove gray;</string>
      </property>
@@ -103,11 +119,19 @@ border-bottom-right-radius:15px;</string>
     <widget class="QRadioButton" name="radioButton_RememberPassword">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>270</y>
-       <width>81</width>
-       <height>16</height>
+       <x>90</x>
+       <y>260</y>
+       <width>161</width>
+       <height>30</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>记住密码</string>
@@ -116,11 +140,19 @@ border-bottom-right-radius:15px;</string>
     <widget class="QRadioButton" name="radioButton_NotRememberPassword">
      <property name="geometry">
       <rect>
-       <x>260</x>
-       <y>270</y>
-       <width>81</width>
-       <height>16</height>
+       <x>250</x>
+       <y>260</y>
+       <width>151</width>
+       <height>30</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>24</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>忘记密码</string>
@@ -129,11 +161,17 @@ border-bottom-right-radius:15px;</string>
     <widget class="QPushButton" name="pushButton_Login">
      <property name="geometry">
       <rect>
-       <x>130</x>
-       <y>302</y>
+       <x>110</x>
+       <y>310</y>
        <width>250</width>
-       <height>30</height>
+       <height>60</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>36</pointsize>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton{
@@ -156,14 +194,16 @@ border-style: inset;}
       <rect>
        <x>70</x>
        <y>30</y>
-       <width>50</width>
-       <height>50</height>
+       <width>131</width>
+       <height>61</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>14</pointsize>
+       <pointsize>36</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="text">
@@ -202,16 +242,18 @@ border-style: inset;}
    <widget class="QLabel" name="label_Title">
     <property name="geometry">
      <rect>
-      <x>700</x>
-      <y>290</y>
-      <width>401</width>
-      <height>61</height>
+      <x>660</x>
+      <y>260</y>
+      <width>531</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>36</pointsize>
+      <pointsize>48</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -224,16 +266,18 @@ border-style: inset;}
    <widget class="QLabel" name="label_Time">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>840</y>
-      <width>121</width>
-      <height>31</height>
+      <x>830</x>
+      <y>810</y>
+      <width>241</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>20</pointsize>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -246,16 +290,18 @@ border-style: inset;}
    <widget class="QLabel" name="label_Date">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>910</y>
-      <width>311</width>
-      <height>21</height>
+      <x>660</x>
+      <y>900</y>
+      <width>601</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
-      <pointsize>16</pointsize>
+      <pointsize>36</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
     </property>
     <property name="text">
