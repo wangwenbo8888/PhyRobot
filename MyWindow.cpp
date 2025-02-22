@@ -435,34 +435,34 @@ void MyWindow::go()
     //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
     //qsleep_pause(7000);
 
+
+
+//    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(8000);
+//    MovJ(-160, -675.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(8000);
+//    MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+//    MovJ(-360, -775.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+//    MovJ(240, -775.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
+//    qsleep_pause(7000);
+
+    for (uint i = 0; i < points.size(); ++i)
+    {
+        MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
+        qsleep_pause(7000);
+        qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
+    }
+
     MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(7000);
-
-    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(8000);
-    MovJ(-160, -675.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(8000);
-    MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-    MovJ(-360, -775.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-    MovJ(240, -775.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-    qsleep_pause(7000);
-
-    //for (uint i = 0; i < points.size(); ++i)
-    //{
-        //MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
-        //qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
-    //}
-
-    MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(17000);
+    qsleep_pause(25000);
 
     //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
     //qsleep_pause(7000);
@@ -502,11 +502,13 @@ std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath)
     for (int i = 0; i < res.size(); i++)
     {
         cv::rectangle(img, res.at(i).box, cv::Scalar(125, 123, 0), 3);
+        //cv::putText(img, std::to_string(i), res.at(i).box.tl() + cv::Point(3, 3), 1, 1, cv::Scalar(0), 1);
         re.push_back(cv::Point(res.at(i).box.x, res.at(i).box.y));
     }
 #if 1
     cv::Mat img2;
     cv::resize(img, img2, img.size());
+    cv::namedWindow("TEST_ORIGIN", cv::WINDOW_AUTOSIZE);
     cv::imshow("TEST_ORIGIN", img2);
     //cv::destroyAllWindows();
 #endif //1
@@ -572,24 +574,67 @@ void MyWindow::poweron()
     sendodr("DisableRobot");
     sendodr("EnableRobot(1.5,0,0,0)");
     //sendodr("BrakeControl(1,1)");
-    sendodr("SpeedFactor(10)");
+    sendodr("SpeedFactor(20)");
     sendodr("RobotMode()");
     pw = 0;
+}
+std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<cv::Point3d> pointsC)
+{
+    std::vector<cv::Point3d> tmp_points;
+    for (uint i = 0; i < pointsC.size(); ++i) {
+        tmp_points.push_back(cv::Point3d( start_Camera_Point.x - pointsC[i].x,
+                                          start_Camera_Point.y + pointsC[i].y,
+                                          start_Camera_Point.z - pointsC[i].z));
+    }
+    return tmp_points;
 }
 
 void MyWindow::getImage(/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
+    poweron();
+    qsleep_pause(2000);
+    MovJ(-20, -376, 1134, -90, 2, 179.5);
+    qsleep_pause(25000);
+    MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 179.8, -0.1425, 89.8);
+    qsleep_pause(20000);
+
     std::vector<OBColorPoint> pointCloud_frame_data;
     obCapture(colorRawMat,pointCloud_frame_data);
     cv::imwrite("colorRawMat.jpg", colorRawMat);
     std::string path = "E://workspace//PhysicalTherapyRobot//x64//Release//yolov8_640_640_v15.onnx";
-    std::vector<cv::Point> base = detect(colorRawMat, path/*u8"debug/yolov8_640_640_v15.onnx"*/);
-    points = get3Dpoints(base,pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
+    cv::Mat colorRawMatR = colorRawMat.t();
+    cv::rotate(colorRawMat, colorRawMatR, cv::ROTATE_90_CLOCKWISE);
+    std::vector<cv::Point> base0 = detect(colorRawMatR, path/*u8"debug/yolov8_640_640_v15.onnx"*/);
+    std::vector<cv::Point> base;
+    for (uint i = 0; i < base0.size(); ++i) {
+        base.push_back(cv::Point(base0[i].y, colorRawMat.rows - base0[i].x));
+    }
+    std::vector<cv::Point3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
+    points = convert_camera2arm(pointsC);
     //todo: 点的顺序  //
     qDebug() << "points: " ;
     for (uint i = 0; i < points.size(); ++i) {
         qDebug() << i << points[i].x << points[i].y << points[i].z;
+
+        cv::circle(colorRawMat, base[i], 2, cv::Scalar(125, 123, 0), 3);
+        std::string msg = std::to_string(i) + " ("
+                + std::to_string(int(points[i].x)) + ", "
+                + std::to_string(int(points[i].y)) + ", "
+                + std::to_string(int(points[i].z)) + ")";
+        cv::putText(colorRawMat,
+                    msg,
+                    base[i] + cv::Point(10, 10), 1, 0.6, cv::Scalar(255, 255), 1);
+
+        std::string msg2 = std::to_string(i) + " ("
+                + std::to_string(int(base[i].x)) + ", "
+                + std::to_string(int(base[i].y)) + ")";
+
+        cv::putText(colorRawMat,
+                    msg2,
+                    base[i] + cv::Point(10, 20), 1, 0.6, cv::Scalar(255), 1);
     }
+    cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
+    cv::imshow("colorRawMat", colorRawMat);
 }
 
 std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base,std::vector<OBColorPoint> pointCloud_frame_data)

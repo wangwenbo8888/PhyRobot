@@ -87,7 +87,7 @@ private:
 	QSharedPointer<EquipInfo> m_pEquipInfo;
 	QSharedPointer<SetUp> m_pSetUp;
 
-    QString ip = "192.168.1.6";
+    QString ip = "192.168.5.1";
     oder od;
     int cnt[5] = {1, 1, 0, 0, 0};
 
@@ -128,6 +128,8 @@ private:
     std::vector<cv::Point3d> points;
     cv::Mat colorRawMat;
     //OBColorPoint* Colorpoint;
-    int imageWidth = 720;
-
+    int imageWidth = 1280;
+    int imageHeight = 720;
+    std::vector<cv::Point3d> convert_camera2arm(std::vector<cv::Point3d> pointsC);
+    cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 401.4063);
 };
