@@ -328,7 +328,7 @@ try {
             //static std::shared_ptr<ob::Frame> pointCloud_frame = pointCloud.process(frameset);
             pointCloud_frame = pointCloud.process(frameset);
 
-            saveRGBPointsToPly(pointCloud_frame, "RGBPoints.ply");
+            //saveRGBPointsToPly(pointCloud_frame, "RGBPoints.ply");
             std::shared_ptr<ob::ColorFrame> colorFrame = frameset->colorFrame();
 
             qDebug() << "colorFrame->height():" << colorFrame->height() << colorFrame->width()
@@ -375,8 +375,8 @@ try {
                 std::string colorName = "Color_" + std::to_string(colorFrame->width()) + "x" + std::to_string(colorFrame->height()) + "_" + std::to_string(colorCount) + "_"
                     + std::to_string(colorFrame->timeStamp()) + "ms.png";
                 colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data());
-                cv::imwrite(colorName, colorRawMat, compression_params);
-                std::cout << "Color saved:" << colorName ;
+                //cv::imwrite(colorName, colorRawMat, compression_params);
+                //std::cout << "Color saved:" << colorName ;
 
                 ////////////////////////////////////////////
                 colorCount++;

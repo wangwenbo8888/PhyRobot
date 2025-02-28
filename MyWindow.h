@@ -87,7 +87,8 @@ private:
 	QSharedPointer<EquipInfo> m_pEquipInfo;
 	QSharedPointer<SetUp> m_pSetUp;
 
-    QString ip = "192.168.5.1";
+    //QString ip = "192.168.5.1";
+    QString ip = "192.168.100.6";
     oder od;
     int cnt[5] = {1, 1, 0, 0, 0};
 
@@ -115,7 +116,7 @@ private:
 
     void Sync();
 
-    void JointMovJ(double x,double y,double z,double Rx,double Ry,double Rz);
+    void JointMovJ(double Jx, double J2, double J3, double J4, double J5, double J6);
 
     void MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz);
     int pw = 0;
@@ -138,4 +139,22 @@ private:
     cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 401.4063);
     //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, 466.7497, 401.4063);
     //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 601.4063);
+    enum ROBOT_MODE {
+        ROBOT_MODE_UNKNOW,           //未知
+        ROBOT_MODE_INIT,             //初始化
+        ROBOT_MODE_BRAKE_OPEN,       //有任意关节的抱闸松开
+        ROBOT_MODE_POWER_STATUS,     //本体未上电
+        ROBOT_MODE_DISABLED,         //未使能(无抱闸松开)
+        ROBOT_MODE_ENABLE,           //使能且空闲(无报警,未运行工程)
+        ROBOT_MODE_BACKDRIVE,        //拖拽模式
+        ROBOT_MODE_RUNNING,          //运行状态，包括轨迹复现/拟合中，机器人执行命令中，工程运行中
+        ROBOT_MODE_RECORDING,        //轨迹录制模式
+        ROBOT_MODE_ERROR,            //有未清除的报警。此状态优先级最高，无论机械臂处于什么状态，有报警时都返回9
+        ROBOT_MODE_PAUSE,            //暂停状态
+        ROBOT_MODE_JOG               //电动中
+    };
+
+    int RobotMode = 0;
+
+    void Wait_Done(int timeout = INT_MAX);
 };

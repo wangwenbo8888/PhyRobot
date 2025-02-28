@@ -98,15 +98,8 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot,QWidget *parent)
     MyWindow_connect();
 
     poweron();
-    //qsleep_pause(10000);
-    //MovJ(0, 0, 0, 0, 0, 0);
-    //ServoJ(0,0,0,0,0,0);
     JointMovJ(0.0,0.0,0.0,0.0,0.0,0.0);
-    //MovJ(-40, -376, 1134, -90, 2, 179.5);
-    // MovJ(0, -374, 1136, -90, 0, 180);
-    //MovJ(17.2043, -374.3133, 1135.9778, -90.1997, -0, -179.9919);
-    //Sync();
-    qsleep_pause(5000);
+    Wait_Done();
 }
 
 MyWindow::~MyWindow()
@@ -359,7 +352,7 @@ void MyWindow::sktwork_readyRead()
 {
     qDebug() << "sktwork_readyRead" << endl;
     QByteArray msg = od.sktwork->readAll();
-     qDebug() << msg << endl;
+    qDebug() << msg << endl;
 }
 
 void MyWindow::sktwork_disconnected()
@@ -405,7 +398,8 @@ void MyWindow::sktmsg200_readyRead()
 {
     //qDebug() << "sktmsg200_readyRead" << endl;
     QByteArray msg = od.sktmsg200->readAll();
-    qDebug() << msg << endl;
+    //qDebug() << int(msg[24]) << endl;
+    RobotMode = msg[24];
 }
 
 void MyWindow::sktmsg200_disconnected()
@@ -490,10 +484,10 @@ void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, dou
                QByteArray::number(double(t)) + "," + QByteArray::number(double(lookahead_time)) + "," + QByteArray::number(double(gain)) + ")");
 }
 
-void MyWindow::JointMovJ(double x, double y, double z, double Rx, double Ry, double Rz)
+void MyWindow::JointMovJ(double J1, double J2, double J3, double J4, double J5, double J6)
 {
-    sendrunodr("JointMovJ(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + "," +
-        QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+    sendrunodr("JointMovJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+        QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + ")");
 }
 
 void MyWindow::Sync()
@@ -509,58 +503,19 @@ void MyWindow::MovJ(double X, double Y, double Z, double Rx, double Ry, double R
 
 void MyWindow::go()
 {
-//    p3d toArmiarm20p7e = toArm(iarm[2][0].p[7].e/* + iarm[0][0].p[7].e*/) / mm;        //去除中心点偏移
-//    p3d iarm20p7pd = p3d(iarm[2][0].p[7].d[0].s, iarm[2][0].p[7].d[1].s, iarm[2][0].p[7].d[2].s);
-//    p3d toArmiarm20p7pd = toArmR(iarm20p7pd);
-//    MovJ(toArmiarm20p7e.x, toArmiarm20p7e.y, toArmiarm20p7e.z,
-//    toArmiarm20p7pd.x, toArmiarm20p7pd.y, toArmiarm20p7pd.z);
-    //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
-    //qsleep_pause(7000);
-
-//    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(8000);
-//    MovJ(-160, -675.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(8000);
-//    MovJ(-160, -875.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-//    MovJ(-360, -775.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-//    MovJ(240, -775.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-//    MovJ(-160, -775.3, 91.8, -178, 0, 179.5);
-//    qsleep_pause(7000);
-
     for (uint i = 0; i < points.size(); ++i)
     {
         MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
         //MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
-        qsleep_pause(7000);
+        Wait_Done();
         GetSixForceData();
         qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
     }
 
-    //MovJ(-40, -374, 1136, -90, 0, 180);
     JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    //ServoJ(0,0,0,0,0,0);
-    //qsleep_pause(25000);
-    Sync();
-
-    //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
-    //qsleep_pause(7000);
-
+    Wait_Done();
     m_pAutoTreat->SetWidgetTreatFinish();
 
-////    ServoJ(0, 0, 0, 0, 0, 0);
-////    qsleep(30000);
-//    for (int i = 0; i < workmap_arm.size(); ++i) {
-//        p3d p = workmap_arm[i];
-//        //@@@ MovJ(p.x, p.y, p.z, 0, 0, 0);                                   //穴位3D坐标，需要谨慎验证。
-//        qsleep(3000);
-//    }
 }
 
 std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath, cv::Mat& outImg)
@@ -600,36 +555,14 @@ std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath, cv::
 #endif //1
     return re;
     //cv::imwrite("E:\\output\\" + std::to_string(k) + ".png", img);
-
-//    PositiveSolution(iarm[2][0].p[0].d[1].s, iarm[2][0].p[1].d[0].s, iarm[2][0].p[2].d[0].s,
-//            iarm[2][0].p[3].d[0].s, iarm[2][0].p[4].d[1].s, iarm[2][0].p[5].d[0].s, 0, 0);
-//    InverseSolution(iarm[2][0].p[0].d[1].s, iarm[2][0].p[1].d[0].s, iarm[2][0].p[2].d[0].s,
-//            iarm[2][0].p[3].d[0].s, iarm[2][0].p[4].d[1].s, iarm[2][0].p[5].d[0].s, 0, 0);
-
-////    orb.start();
-//    qsleep(10000);                                                            //扫描10秒钟。
-////    orb.stop();
-
-////    workmap = orb.getPosition(dtt.forward(orb.colorRawMat));
-//    workmap_arm.clear();
-//    gm44d m_orb2arm = getm(p3d(0,0,0), iarm[0][0].p[7].e);                    //相机坐标系转机械臂坐标系的矩阵   //
-//    for (int i = 0; i < workmap.size(); ++i)
-//    {
-//        workmap_arm << m_orb2arm * workmap[i];
-//    }
 }
 
 void MyWindow::stop()
 {
     sendodr("ResetRobot()");
-    //JointMovJ(-160, -775.3, 291.8, -178, 0, 179.5);
-    //MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
-    //qsleep_pause(17000);
-    //MovJ(-20, -376, 1134, -90, 2, 179.5);
+    Wait_Done();
     JointMovJ(0.0,0.0,0.0,0.0,0.0,0.0);
-    //Sync();
-    qsleep_pause(17000);
-    //Sync();
+    Wait_Done();
     sendodr("DisableRobot()");
 }
 
@@ -657,17 +590,28 @@ void MyWindow::qsleep_pause(int msec)
     }
 }
 
+void MyWindow::Wait_Done(int timeout)
+{
+    qsleep(300);
+    int time_c = 0;
+    while(RobotMode != ROBOT_MODE_ENABLE || time_c > timeout)
+    {
+        qsleep(100);
+        time_c += 100;
+    }
+}
+
 void MyWindow::poweron()
 {
+    if(pw == 1) return;
     pw = 1;
     //sendodr("PowerOn()");
     //qsleep(10000);
     sendodr("DisableRobot()");
     sendodr("EnableRobot(1.5,0,0,0)");
     //sendodr("BrakeControl(1,1)");
-    sendodr("SpeedFactor(30)");
-    sendodr("RobotMode()");
-    pw = 0;
+    sendodr("SpeedFactor(50)");
+    //sendodr("RobotMode()");
 }
 std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<cv::Point3d> pointsC)
 {
@@ -675,8 +619,8 @@ std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<cv::Point3d> p
     for (uint i = 0; i < pointsC.size(); ++i) 
     {
         tmp_points.push_back(cv::Point3d( start_Camera_Point.x - pointsC[i].x,
-                                          start_Camera_Point.y - pointsC[i].y,
-                                          200.0+start_Camera_Point.z - pointsC[i].z)); // 加上理疗头高度
+                                          start_Camera_Point.y + pointsC[i].y - 105,     // 减去摄像头和按摩头的距离
+                                          200.0 + start_Camera_Point.z - pointsC[i].z)); // 加上理疗头高度
     }
     return tmp_points;
 }
@@ -687,8 +631,8 @@ void MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
     //Sync();
     sendodr("EnableRobot(1.5,0,0,0)");
 
-    MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 179.8, -0.1425, 89.8);
-    qsleep_pause(17000);
+    MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, 45);
+    Wait_Done();
 
     std::vector<OBColorPoint> pointCloud_frame_data;
     obCapture(colorRawMat, pointCloud_frame_data);
@@ -696,7 +640,7 @@ void MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
     std::string path = /*E://workspace//PhysicalTherapyRobot//x64//Release//*/ "yolov8_640_640_v15.onnx";
     cv::Mat colorRawMatR = colorRawMat.t();
     cv::rotate(colorRawMat, colorRawMatR, cv::ROTATE_90_CLOCKWISE);
-    std::vector<cv::Point> base0 = detect(colorRawMatR, path /*u8"debug/yolov8_640_640_v15.onnx"*/ ,img);
+    std::vector<cv::Point> base0 = detect(colorRawMatR, path /*u8"debug/yolov8_640_640_v15.onnx"*/, img);
     std::vector<cv::Point> base;
     for (uint i = 0; i < base0.size(); ++i)
     {
@@ -726,8 +670,8 @@ void MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
                     msg2,
                     base[i] + cv::Point(10, 20), 1, 0.6, cv::Scalar(255), 1);
     }
-    //cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
-    //cv::imshow("colorRawMat", colorRawMat);
+    cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
+    cv::imshow("colorRawMat", colorRawMat);
 }
 
 std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base,std::vector<OBColorPoint> pointCloud_frame_data)
