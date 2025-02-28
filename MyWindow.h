@@ -48,9 +48,9 @@ public:
 
     void go();
 
-    std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath);
+    std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath,cv::Mat& outImg);
 
-    void getImage(/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
+    void getImage(cv::Mat& img/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
 
     std::vector<cv::Point3d> get3Dpoints(std::vector<cv::Point> base ,std::vector<OBColorPoint> pointCloud_frame_data);
 public slots:
@@ -113,16 +113,20 @@ private:
     void sendodr(QByteArray odr);
     void sendrunodr(QByteArray odr);
 
+    void Sync();
+
+    void JointMovJ(double x,double y,double z,double Rx,double Ry,double Rz);
+
     void MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz);
     int pw = 0;
     int pausebit = 0;
     void GetSixForceData();
     void PositiveSolution(double J1, double J2, double J3, double J4, double J5, double J6, int User, int Tool);
 
-    void qsleep(int msec);
+    void qsleep(int msec); 
     void qsleep_pause(int msec);
     void InverseSolution(double X, double Y, double Z, double Rx, double Ry, double Rz, int User, int Tool, int isJointNear = 0, QString JointNear = "");
-    void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 0.1f, float lookahead_time = 50.0f, float gain = 500.0f);
+    void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 3600.0f, float lookahead_time = 100.0f, float gain = 200.0f);
     ////detecter dtt;
     void setip(QString ip);
     std::vector<cv::Point3d> points;
@@ -132,4 +136,6 @@ private:
     int imageHeight = 720;
     std::vector<cv::Point3d> convert_camera2arm(std::vector<cv::Point3d> pointsC);
     cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 401.4063);
+    //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, 466.7497, 401.4063);
+    //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 601.4063);
 };

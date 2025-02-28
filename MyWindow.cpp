@@ -4,6 +4,11 @@
 #include <QTime>
 #include <QStringLiteral>
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <regex>
+
 MyWindow::MyWindow(PhysicalTherapyRobot* robot,QWidget *parent)
 	: QWidget(parent)
 {
@@ -91,6 +96,17 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot,QWidget *parent)
     connect(od.sktmsgreturn, &QTcpSocket::disconnected, this, &MyWindow::sktmsgreturn_disconnected);
 
     MyWindow_connect();
+
+    poweron();
+    //qsleep_pause(10000);
+    //MovJ(0, 0, 0, 0, 0, 0);
+    //ServoJ(0,0,0,0,0,0);
+    JointMovJ(0.0,0.0,0.0,0.0,0.0,0.0);
+    //MovJ(-40, -376, 1134, -90, 2, 179.5);
+    // MovJ(0, -374, 1136, -90, 0, 180);
+    //MovJ(17.2043, -374.3133, 1135.9778, -90.1997, -0, -179.9919);
+    //Sync();
+    qsleep_pause(5000);
 }
 
 MyWindow::~MyWindow()
@@ -240,12 +256,14 @@ void MyWindow::MyWindow_connect()
 
 void MyWindow::pause()
 {
-    pausebit = 1;
+    sendrunodr("Pause()");
+    //pausebit = 1;
 }
 
 void MyWindow::WorkContinue()
 {
-    pausebit = 0;
+    sendrunodr("Continue()");
+    //pausebit = 0;
 }
 
 void MyWindow::sktDashboard_connected()
@@ -254,10 +272,64 @@ void MyWindow::sktDashboard_connected()
     qDebug() << "sktDashboard_connected" << endl;
 }
 
+std::vector<std::string> extractContent(const std::string& input)
+{
+    std::vector<std::string> contents;
+    try {
+        // 定义正则表达式
+        std::regex pattern(R"(\{([^}]*)\})");
+        std::smatch match;
+
+        // 查找匹配项
+        std::string temp = input;
+        while (std::regex_search(temp, match, pattern)) {
+            // 获取括号内的内容（第一组捕获）
+            contents.push_back(match[1].str());
+            // 更新字符串以继续查找下一个匹配项
+            temp = match.suffix().str();
+        }
+    }
+    catch (const std::regex_error& e) {
+        std::cerr << "Regex error: " << e.what() << std::endl;
+    }
+    return contents;
+}
+
+std::vector<std::string> split(const std::string& str, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+std::vector<std::vector<std::string>> extractAndSplit(const std::string& input, char delimiter)
+{
+    std::vector<std::vector<std::string>> results;
+    std::vector<std::string> rawContents = extractContent(input);
+
+    for (const auto& content : rawContents)
+    {
+        results.push_back(split(content, delimiter));
+    }
+
+    return results;
+}
+
 void MyWindow::sktDashboard_readyRead()
 {
     qDebug() << "sktDashboard_readyRead" << endl;
     QByteArray msg = od.sktDashboard->readAll();
+    QString str(msg);
+
+    std::vector<std::vector<std::string>> numbers;
+    if (str.contains("GetSixForceData()"))
+    {
+        numbers = extractAndSplit(str.toStdString(),',');
+    }
     qDebug() << msg << endl;
 }
 
@@ -333,7 +405,7 @@ void MyWindow::sktmsg200_readyRead()
 {
     //qDebug() << "sktmsg200_readyRead" << endl;
     QByteArray msg = od.sktmsg200->readAll();
-    //qDebug() << msg << endl;
+    qDebug() << msg << endl;
 }
 
 void MyWindow::sktmsg200_disconnected()
@@ -418,6 +490,16 @@ void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, dou
                QByteArray::number(double(t)) + "," + QByteArray::number(double(lookahead_time)) + "," + QByteArray::number(double(gain)) + ")");
 }
 
+void MyWindow::JointMovJ(double x, double y, double z, double Rx, double Ry, double Rz)
+{
+    sendrunodr("JointMovJ(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + "," +
+        QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+}
+
+void MyWindow::Sync()
+{
+    sendrunodr("Sync()");
+}
 
 void MyWindow::MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
@@ -434,8 +516,6 @@ void MyWindow::go()
 //    toArmiarm20p7pd.x, toArmiarm20p7pd.y, toArmiarm20p7pd.z);
     //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
     //qsleep_pause(7000);
-
-
 
 //    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
 //    qsleep_pause(7000);
@@ -457,12 +537,17 @@ void MyWindow::go()
     for (uint i = 0; i < points.size(); ++i)
     {
         MovJ(points[i].x, points[i].y, points[i].z, -178, 0, 179.5);   //联调     //
+        //MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
         qsleep_pause(7000);
+        GetSixForceData();
         qDebug() << "Move to:" << points[i].x << ", " << points[i].y << ", " << points[i].z;
     }
 
-    MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(25000);
+    //MovJ(-40, -374, 1136, -90, 0, 180);
+    JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    //ServoJ(0,0,0,0,0,0);
+    //qsleep_pause(25000);
+    Sync();
 
     //MovJ(47.68, -371.8399, 1135.8821, -90, -0.281, -175.8179);
     //qsleep_pause(7000);
@@ -478,7 +563,7 @@ void MyWindow::go()
 //    }
 }
 
-std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath)
+std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath, cv::Mat& outImg)
 {
     DCSP_INIT_PARAM params;
     params.ModelPath = ModelPath;
@@ -499,17 +584,18 @@ std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath)
     std::vector<cv::Point> re;
     std::vector<DCSP_RESULT> res;
     p1->RunSession(img, res);
-    for (int i = 0; i < res.size(); i++)
+    for (uint i = 0; i < res.size(); i++)
     {
         cv::rectangle(img, res.at(i).box, cv::Scalar(125, 123, 0), 3);
         //cv::putText(img, std::to_string(i), res.at(i).box.tl() + cv::Point(3, 3), 1, 1, cv::Scalar(0), 1);
         re.push_back(cv::Point(res.at(i).box.x, res.at(i).box.y));
     }
 #if 1
-    cv::Mat img2;
-    cv::resize(img, img2, img.size());
-    cv::namedWindow("TEST_ORIGIN", cv::WINDOW_AUTOSIZE);
-    cv::imshow("TEST_ORIGIN", img2);
+    //cv::Mat img2;
+    //cv::resize(img, outImg, img.size());
+    outImg = img.clone();
+    //cv::namedWindow("TEST_ORIGIN", cv::WINDOW_AUTOSIZE);
+    //cv::imshow("TEST_ORIGIN", outImg);
     //cv::destroyAllWindows();
 #endif //1
     return re;
@@ -535,10 +621,15 @@ std::vector<cv::Point> MyWindow::detect(cv::Mat img, std::string ModelPath)
 
 void MyWindow::stop()
 {
-    MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+    sendodr("ResetRobot()");
+    //JointMovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+    //MovJ(-160, -775.3, 291.8, -178, 0, 179.5);
+    //qsleep_pause(17000);
+    //MovJ(-20, -376, 1134, -90, 2, 179.5);
+    JointMovJ(0.0,0.0,0.0,0.0,0.0,0.0);
+    //Sync();
     qsleep_pause(17000);
-    MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(17000);
+    //Sync();
     sendodr("DisableRobot()");
 }
 
@@ -571,48 +662,50 @@ void MyWindow::poweron()
     pw = 1;
     //sendodr("PowerOn()");
     //qsleep(10000);
-    sendodr("DisableRobot");
+    sendodr("DisableRobot()");
     sendodr("EnableRobot(1.5,0,0,0)");
     //sendodr("BrakeControl(1,1)");
-    sendodr("SpeedFactor(20)");
+    sendodr("SpeedFactor(30)");
     sendodr("RobotMode()");
     pw = 0;
 }
 std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<cv::Point3d> pointsC)
 {
     std::vector<cv::Point3d> tmp_points;
-    for (uint i = 0; i < pointsC.size(); ++i) {
+    for (uint i = 0; i < pointsC.size(); ++i) 
+    {
         tmp_points.push_back(cv::Point3d( start_Camera_Point.x - pointsC[i].x,
-                                          start_Camera_Point.y + pointsC[i].y,
-                                          start_Camera_Point.z - pointsC[i].z));
+                                          start_Camera_Point.y - pointsC[i].y,
+                                          200.0+start_Camera_Point.z - pointsC[i].z)); // 加上理疗头高度
     }
     return tmp_points;
 }
 
-void MyWindow::getImage(/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
+void MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
-    poweron();
-    qsleep_pause(2000);
-    MovJ(-20, -376, 1134, -90, 2, 179.5);
-    qsleep_pause(25000);
+    //JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    //Sync();
+    sendodr("EnableRobot(1.5,0,0,0)");
+
     MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 179.8, -0.1425, 89.8);
-    qsleep_pause(20000);
+    qsleep_pause(17000);
 
     std::vector<OBColorPoint> pointCloud_frame_data;
-    obCapture(colorRawMat,pointCloud_frame_data);
+    obCapture(colorRawMat, pointCloud_frame_data);
     cv::imwrite("colorRawMat.jpg", colorRawMat);
-    std::string path = "E://workspace//PhysicalTherapyRobot//x64//Release//yolov8_640_640_v15.onnx";
+    std::string path = /*E://workspace//PhysicalTherapyRobot//x64//Release//*/ "yolov8_640_640_v15.onnx";
     cv::Mat colorRawMatR = colorRawMat.t();
     cv::rotate(colorRawMat, colorRawMatR, cv::ROTATE_90_CLOCKWISE);
-    std::vector<cv::Point> base0 = detect(colorRawMatR, path/*u8"debug/yolov8_640_640_v15.onnx"*/);
+    std::vector<cv::Point> base0 = detect(colorRawMatR, path /*u8"debug/yolov8_640_640_v15.onnx"*/ ,img);
     std::vector<cv::Point> base;
-    for (uint i = 0; i < base0.size(); ++i) {
+    for (uint i = 0; i < base0.size(); ++i)
+    {
         base.push_back(cv::Point(base0[i].y, colorRawMat.rows - base0[i].x));
     }
     std::vector<cv::Point3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
     points = convert_camera2arm(pointsC);
     //todo: 点的顺序  //
-    qDebug() << "points: " ;
+    qDebug() << QString("points size is %1 ").arg(points.size()) ;
     for (uint i = 0; i < points.size(); ++i) {
         qDebug() << i << points[i].x << points[i].y << points[i].z;
 
@@ -633,8 +726,8 @@ void MyWindow::getImage(/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*
                     msg2,
                     base[i] + cv::Point(10, 20), 1, 0.6, cv::Scalar(255), 1);
     }
-    cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
-    cv::imshow("colorRawMat", colorRawMat);
+    //cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
+    //cv::imshow("colorRawMat", colorRawMat);
 }
 
 std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base,std::vector<OBColorPoint> pointCloud_frame_data)
@@ -655,6 +748,7 @@ std::vector<cv::Point3d> MyWindow::get3Dpoints (std::vector<cv::Point> base,std:
                              << ", " << pointA.r << ", " << pointA.g << ", " << pointA.b;
     }
 
+    points.clear();
     for (uint i = 0; i < base.size(); ++i)
     {
         OBColorPoint& pointA = pointCloud_frame_data[int(base[i].y) * imageWidth + int(base[i].x)] ;                                     //宽0->1279，高0-719

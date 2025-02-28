@@ -314,7 +314,7 @@ try {
     auto cameraParam = pipeline.getCameraParam();
     pointCloud.setCameraParam(cameraParam);
 
-    auto frameset = pipeline.waitForFrames(2000);
+    auto frameset = pipeline.waitForFrames(5000);
     //OBColorPoint *Colorpoint;
     if(frameset != nullptr && frameset->depthFrame() != nullptr && frameset->colorFrame() != nullptr) {
         // point position value multiply depth value scale to convert uint to millimeter (for some devices, the default depth value uint is not
@@ -325,14 +325,18 @@ try {
             // Generate a colored point cloud and save it
             qDebug() << "Save RGBD PointCloud ply file..." ;
             pointCloud.setCreatePointFormat(OB_FORMAT_RGB_POINT);
-            static std::shared_ptr<ob::Frame> pointCloud_frame = pointCloud.process(frameset);
+            //static std::shared_ptr<ob::Frame> pointCloud_frame = pointCloud.process(frameset);
+            pointCloud_frame = pointCloud.process(frameset);
 
             saveRGBPointsToPly(pointCloud_frame, "RGBPoints.ply");
             std::shared_ptr<ob::ColorFrame> colorFrame = frameset->colorFrame();
 
             qDebug() << "colorFrame->height():" << colorFrame->height() << colorFrame->width()
                      << colorFrame->format() << colorFrame->type() ;
-            colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data()).clone();
+            cv::Mat temp(colorFrame->height(), colorFrame->width(), CV_8UC3);
+            _memccpy(temp.data, colorFrame->data(), 1, colorFrame->height() * colorFrame->width() * sizeof(CV_8UC3)); \
+            temp.copyTo(colorRawMat);
+            // colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data()).clone();
 
             int colorCount = 0;
             ob::FormatConvertFilter formatConvertFilter;
@@ -378,9 +382,10 @@ try {
                 colorCount++;
             }
             int pointsSize = pointCloud_frame->dataSize() / sizeof(OBColorPoint);
-            static OBColorPoint*  Colorpoint = (OBColorPoint*)pointCloud_frame->data();
+            // static OBColorPoint*  Colorpoint = (OBColorPoint*)pointCloud_frame->data();
+            Colorpoint = (OBColorPoint*)pointCloud_frame->data();
 
-            //pointCloud_frame_data.clear();
+            pointCloud_frame_data.clear();
             for (int i = 0; i < pointsSize;++i)
             {
                 Colorpoint ++;

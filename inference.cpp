@@ -143,7 +143,7 @@ char* DCSP_CORE::RunSession(cv::Mat &iImg, std::vector<DCSP_RESULT>& oResult)
 	{
 		float* blob = new float[processedImg.total() * 3];
 		BlobFromImage(processedImg, blob);
-		std::vector<int64_t> inputNodeDims = { 1,3,imgSize.at(0),imgSize.at(1) };
+        std::vector<int64_t> inputNodeDims = { 1, 3, imgSize.at(0), imgSize.at(1)};
 		TensorProcess(starttime_1, iImg, blob, inputNodeDims, oResult);
 	}
 
@@ -204,7 +204,7 @@ char* DCSP_CORE::TensorProcess(clock_t& starttime_1, cv::Mat& iImg, float* &blob
         cv::Mat rowData(signalResultNum, strideNum, CV_32F, output);
         rowData = rowData.t();
 
-        cv::imshow("rowData", rowData);
+        //cv::imshow("rowData", rowData);
         float* data = (float*)rowData.data;
 
         float x_factor = iImg.cols / 640.;
@@ -277,7 +277,7 @@ char* DCSP_CORE::TensorProcess(clock_t& starttime_1, cv::Mat& iImg, float* &blob
         cv::Mat rowData(signalResultNum, strideNum, CV_32F, output);
         rowData = rowData.t();
 
-        cv::imshow("rowData", rowData);
+        //cv::imshow("rowData", rowData);
         float* data = (float*)rowData.data;
 
         std::cout << std::endl;

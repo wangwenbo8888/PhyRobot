@@ -104,7 +104,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>acupoint.png</pixmap>
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/acupoint.png</pixmap>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -262,10 +262,10 @@ QPushButton:pressed
   <widget class="QLabel" name="label_Image">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>140</x>
      <y>190</y>
-     <width>740</width>
-     <height>464</height>
+     <width>741</width>
+     <height>471</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -275,7 +275,7 @@ QPushButton:pressed
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>humanbody1.png</pixmap>
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/humanbody1.png</pixmap>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -740,6 +740,8 @@ QPushButton:pressed
   <zorder>pushButton_ReconBegin</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
  <connections/>
 </ui>
