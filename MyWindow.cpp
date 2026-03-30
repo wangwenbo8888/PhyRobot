@@ -164,7 +164,8 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	MyWindow_connect();
 
 	poweron();
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 }
 
@@ -188,7 +189,8 @@ Communicate* MyWindow::GetCommunicate()
 
 void MyWindow::RobotGoHome()
 {
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 }
 
@@ -734,7 +736,8 @@ void MyWindow::ClearError()
 	sendodr("ClearError()");
 	// 按摩头重量 20250721 0.5是公斤
 	sendodr("EnableRobot(0.5,0,0,0)");
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 }
 
@@ -1993,7 +1996,8 @@ void MyWindow::Run(PROTOCOL pro)
 		ContinueModel(pro);
 	}
 
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 	m_pAutoTreat->SetWidgetTreatFinish();
 }
@@ -2026,7 +2030,8 @@ void MyWindow::go()
 		m_pAutoTreat->GetWidgetTreatOnGoing()->SetLabelTreated(i);
 	}
 
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 	m_pAutoTreat->SetWidgetTreatFinish();
 }
@@ -2117,7 +2122,8 @@ void MyWindow::stop()
 	points.clear();
 	sendodr("ResetRobot()");
 	Wait_Done();
-	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	RobotStorage();
 	Wait_Done();
 	sendodr("DisableRobot()");
 }
