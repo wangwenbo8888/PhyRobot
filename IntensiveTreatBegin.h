@@ -13,7 +13,7 @@ public:
 	~IntensiveTreatBegin();
 
 public slots:
-	void on_Pushbutton_WorkBegin_Clicked();
+	void on_Pushbutton_StartOrStop_Clicked();
 
 	void on_Pushbutton_LastStep_Clicked();
 

@@ -13,12 +13,12 @@ public:
 	~IntensiveTreatAcupointRecog();
 
 public slots:
-	void on_Pushbutton_NextStep_Clicked();
 
-	void on_Pushbutton_LastStep_Clicked();
+	void On_pushButton_BackToHome_Clicked();
 
-private slots:
-    void on_pushButton_ReconBegin_clicked();
+	void On_pushButton_DragModel_Clicked();
+
+	void On_pushButton_HandleModel_Clicked();
 
 private:
 	Ui::IntensiveTreatAcupointRecogClass ui;

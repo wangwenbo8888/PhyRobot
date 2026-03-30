@@ -6,176 +6,46 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1743</width>
-    <height>930</height>
+    <width>1820</width>
+    <height>780</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>AutoTreatFinish</string>
   </property>
-  <widget class="QLabel" name="label_2">
+  <widget class="QPushButton" name="pushButton_BackToHome">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>10</y>
-     <width>231</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>28</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(135,206,250);</string>
-   </property>
-   <property name="text">
-    <string>治疗时间设定</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_16">
-   <property name="geometry">
-    <rect>
-     <x>1570</x>
-     <y>0</y>
-     <width>80</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>18</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(100,159,219);
-border:2px solid rgb(100,159,219);
-border-radius:40px;</string>
-   </property>
-   <property name="text">
-    <string>模式二</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>100</x>
-     <y>10</y>
-     <width>191</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>28</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(135,206,250);</string>
-   </property>
-   <property name="text">
-    <string>治疗前准备</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>670</x>
-     <y>10</y>
-     <width>231</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>28</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(135,206,250);</string>
-   </property>
-   <property name="text">
-    <string>人体穴位识别</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>1280</x>
-     <y>10</y>
-     <width>241</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>28</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(135,206,250);</string>
-   </property>
-   <property name="text">
-    <string>自动治疗开始</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_FinishReturn">
-   <property name="geometry">
-    <rect>
-     <x>1360</x>
-     <y>850</y>
-     <width>220</width>
+     <x>1180</x>
+     <y>690</y>
+     <width>180</width>
      <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Arial</family>
-     <pointsize>36</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton
-{
-    /*背景颜色*/  
-	background-color:rgb(98,157,207);
-	border-radius:15px;  
-}
-
-QPushButton:pressed
-{
-    background-color:rgb(0,0,128);
-}</string>
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:2px solid #059FC9;</string>
    </property>
    <property name="text">
-    <string>结束返回</string>
+    <string>返回主页</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>80</y>
-     <width>1600</width>
-     <height>760</height>
+     <x>0</x>
+     <y>0</y>
+     <width>1820</width>
+     <height>641</height>
     </rect>
    </property>
    <property name="font">
@@ -187,92 +57,191 @@ QPushButton:pressed
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(228,244,251);</string>
+    <string notr="true">background-color:white;</string>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_8">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>230</y>
-     <width>391</width>
-     <height>70</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>48</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(18,205,224);</string>
-   </property>
-   <property name="text">
-    <string>治疗完毕！</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_5">
-   <property name="geometry">
-    <rect>
-     <x>990</x>
-     <y>10</y>
-     <width>201</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>28</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:rgb(135,206,250);</string>
-   </property>
-   <property name="text">
-    <string>耐受力测试</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>1360</x>
-     <y>60</y>
-     <width>54</width>
-     <height>2</height>
+     <x>0</x>
+     <y>641</y>
+     <width>1820</width>
+     <height>139</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color:rgb(135,206,250);</string>
+    <string notr="true">background-color:#DAF1F7;</string>
    </property>
    <property name="text">
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
+  <widget class="QPushButton" name="pushButton_ContinueTreat">
    <property name="geometry">
     <rect>
-     <x>650</x>
-     <y>360</y>
-     <width>221</width>
-     <height>151</height>
+     <x>1390</x>
+     <y>690</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:2px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>继续治疗</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_CourseSelect">
+   <property name="geometry">
+    <rect>
+     <x>1600</x>
+     <y>690</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:2px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>疗程选择</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>80</y>
+     <width>1407</width>
+     <height>401</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>finish.png</pixmap>
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/FinishNotice.png</pixmap>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_CreateRecord">
+   <property name="geometry">
+    <rect>
+     <x>520</x>
+     <y>520</y>
+     <width>286</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:30px;
+border:1px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/CreateRecord.png</normaloff>:/CreateRecord.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>286</width>
+     <height>60</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_SaveToRecord">
+   <property name="geometry">
+    <rect>
+     <x>860</x>
+     <y>520</y>
+     <width>359</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:30px;
+border:1px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/SaveToRecord.png</normaloff>:/SaveToRecord.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>359</width>
+     <height>60</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Proj">
+   <property name="geometry">
+    <rect>
+     <x>528</x>
+     <y>80</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+color:#059FC9;
+</string>
+   </property>
+   <property name="text">
+    <string>开背</string>
+   </property>
+  </widget>
+  <zorder>label</zorder>
+  <zorder>label_7</zorder>
+  <zorder>pushButton_BackToHome</zorder>
+  <zorder>pushButton_ContinueTreat</zorder>
+  <zorder>pushButton_CourseSelect</zorder>
+  <zorder>label_2</zorder>
+  <zorder>pushButton_CreateRecord</zorder>
+  <zorder>pushButton_SaveToRecord</zorder>
+  <zorder>label_Proj</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
  <connections/>
 </ui>

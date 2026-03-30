@@ -10,6 +10,11 @@
 #include "IntensiveTreatBegin.h"
 #include "IntensiveTreatOnGoing.h"
 #include "IntensiveTreatFinish.h"
+
+#include "ManualTreatDragBegin.h"
+#include "ManualTreatHandleBegin.h"
+#include "ManualTreatFinish.h"
+
 #include "MyWindow.h"
 
 class MyWindow;
@@ -37,6 +42,10 @@ public:
 
 	void FinishReturn();
 
+	void SetWidgetDragBegin();
+
+	void SetWidgetHandleBegin();
+
     MyWindow* GetWindow();
 
 
@@ -50,6 +59,11 @@ private:
 	QSharedPointer<IntensiveTreatBegin> m_pIntensiveTreatBegin;
 	QSharedPointer<IntensiveTreatOnGoing> m_pIntensiveTreatOnGoing;
 	QSharedPointer<IntensiveTreatFinish> m_pIntensiveTreatFinish;
+	
+	
+	QSharedPointer<ManualTreatDragBegin> m_pManualTreatDragBegin;
+	QSharedPointer<ManualTreatHandleBegin> m_pManualTreatHandleBegin;
+	QSharedPointer<ManualTreatFinish> m_pManualTreatFinish;
 
     MyWindow* m_pWindow;
 };

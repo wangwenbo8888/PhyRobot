@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1760</width>
-    <height>990</height>
+    <width>1920</width>
+    <height>874</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,15 +16,268 @@
   <widget class="QStackedWidget" name="stackedWidget_AutoTreat_Pages">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1721</width>
-     <height>941</height>
+     <x>100</x>
+     <y>90</y>
+     <width>1820</width>
+     <height>780</height>
     </rect>
    </property>
    <widget class="QWidget" name="page"/>
    <widget class="QWidget" name="page_2"/>
   </widget>
+  <widget class="QLabel" name="label_Background">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1920</width>
+     <height>874</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+   <property name="margin">
+    <number>-4</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Left">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>270</y>
+     <width>50</width>
+     <height>500</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>16</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-right-radius:25px;
+border-bottom-right-radius:25px;
+color:white;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;自&lt;/p&gt;&lt;p&gt;动&lt;/p&gt;&lt;p&gt;治&lt;/p&gt;&lt;p&gt;疗&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Prepare">
+   <property name="geometry">
+    <rect>
+     <x>240</x>
+     <y>10</y>
+     <width>254</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-left-radius:35px;
+border-top-right-radius:35px;
+border-bottom-left-radius:35px;
+border-bottom-right-radius:35px;</string>
+   </property>
+   <property name="text">
+    <string>治疗前准备</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_SelectSet">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>10</y>
+     <width>254</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-left-radius:35px;
+border-top-right-radius:35px;
+border-bottom-left-radius:35px;
+border-bottom-right-radius:35px;</string>
+   </property>
+   <property name="text">
+    <string>治疗选择/设置</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Start">
+   <property name="geometry">
+    <rect>
+     <x>980</x>
+     <y>10</y>
+     <width>254</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-left-radius:35px;
+border-top-right-radius:35px;
+border-bottom-left-radius:35px;
+border-bottom-right-radius:35px;</string>
+   </property>
+   <property name="text">
+    <string>治疗开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Organize">
+   <property name="geometry">
+    <rect>
+     <x>1320</x>
+     <y>10</y>
+     <width>254</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-left-radius:35px;
+border-top-right-radius:35px;
+border-bottom-left-radius:35px;
+border-bottom-right-radius:35px;</string>
+   </property>
+   <property name="text">
+    <string>治疗结束整理</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_PrepareFlag">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>10</y>
+     <width>100</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#41FFC5;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_SelectFlag">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>10</y>
+     <width>100</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#41FFC5;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_BeginFlag">
+   <property name="geometry">
+    <rect>
+     <x>1060</x>
+     <y>10</y>
+     <width>100</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#41FFC5;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_OrganizeFlag">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>10</y>
+     <width>100</width>
+     <height>10</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#41FFC5;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_Background</zorder>
+  <zorder>stackedWidget_AutoTreat_Pages</zorder>
+  <zorder>label_Left</zorder>
+  <zorder>pushButton_Prepare</zorder>
+  <zorder>pushButton_SelectSet</zorder>
+  <zorder>pushButton_Start</zorder>
+  <zorder>pushButton_Organize</zorder>
+  <zorder>label_PrepareFlag</zorder>
+  <zorder>label_SelectFlag</zorder>
+  <zorder>label_BeginFlag</zorder>
+  <zorder>label_OrganizeFlag</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

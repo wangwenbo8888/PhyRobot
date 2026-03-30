@@ -15,6 +15,7 @@
 #include "opencv.hpp"
 #include "onnxruntime_cxx_api.h"
 
+#include "RobotComm.h"
 
 enum MODEL_TYPE
 {
@@ -48,6 +49,13 @@ typedef struct _DCSP_RESULT
 	cv::Rect box;
 }DCSP_RESULT;
 
+float clamp(float val, float min, float max);
+
+void processFrame(cv::Mat& frame, cv::dnn::Net& net,
+	float confThreshold, float nmsThreshold,
+	int inputWidth, int inputHeight, int numKeypoints, bool& hasKeypoints, cv::Rect_<float>& out_bbox, std::vector<Keypoint>& out_keyps);
+
+#if 0
 
 class DCSP_CORE
 {
@@ -84,3 +92,5 @@ private:
 	float					rectConfidenceThreshold;
 	float					iouThreshold;
 };
+
+#endif

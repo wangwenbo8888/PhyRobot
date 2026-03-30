@@ -5,10 +5,22 @@
 
 enum STEP
 {
-	BLAM_TO_APPLY = 0,
-	METAL_DETECT,
-	OPER_DEBUG,
-	WORK_TEST
+	PREPARE_ONE = 0,
+	PREPARE_TWO = 1,
+	PREPARE_THREE= 2,
+	PREPARE_FOUR = 3,
+	PREPARE_FIVE = 4,
+	PREPARE_SIX = 5,
+	PREPARE_SEVEN = 6,
+	PREPARE_EIGHT = 7,
+	PREPARE_NINE = 8,
+	PREPARE_TEN = 9,
+	PREPARE_ELEVEN = 10,
+	PREPARE_TWELVE = 11,
+	PREPARE_THIRTEEN = 12,
+	PREPARE_FOURTEEN = 13,
+	PREPARE_FIFTEEN = 14,
+	PREPARE_UNKNOWN
 };
 
 class AutoTreat;
@@ -22,9 +34,9 @@ public:
 
 	void SetFirstStep()
 	{
-		m_eOperation = BLAM_TO_APPLY;
+		m_eOperation = PREPARE_ONE;
 		//ui.label_Hook->setPixmap(QPixmap(":/»Ò¹´.png"));
-		ui.pushButton_NextStep->setEnabled(false);
+		// ui.pushButton_NextStep->setEnabled(false);
 	}
 
 public slots:

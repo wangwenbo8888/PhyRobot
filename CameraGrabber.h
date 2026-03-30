@@ -19,7 +19,7 @@
 void GetRGBDAndColor();
 int obCapture(cv::Mat &colorRawMat,std::vector<OBColorPoint>& pointCloud_frame_data);
 
-std::vector<cv::Point3d> get3Dpoints (std::vector<cv::Point> base);
+std::vector<Robot3d> get3Dpoints (std::vector<cv::Point> base);
 
 static std::shared_ptr<ob::Frame> pointCloud_frame;
 static OBColorPoint* Colorpoint;

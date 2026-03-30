@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AutoTreatSelectAndSettingClass</class>
+ <widget class="QWidget" name="AutoTreatSelectAndSettingClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1820</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AutoTreatSelectAndSetting</string>
+  </property>
+  <widget class="QLabel" name="label_Background">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1820</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_XueweiImage">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>0</y>
+     <width>506</width>
+     <height>630</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/Select1.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_OpenBack">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>20</y>
+     <width>471</width>
+     <height>262</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	border-radius:16px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+	border:6px solid #059FC9;
+}</string>
+   </property>
+   <property name="text">
+    <string>开背</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_OpenBackSetPara">
+   <property name="geometry">
+    <rect>
+     <x>810</x>
+     <y>190</y>
+     <width>211</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:16px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/OpenBackSetPara.png</normaloff>:/OpenBackSetPara.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>211</width>
+     <height>72</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegOpen">
+   <property name="geometry">
+    <rect>
+     <x>1170</x>
+     <y>20</y>
+     <width>471</width>
+     <height>262</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	border-radius:16px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+	border:6px solid #059FC9;
+}</string>
+   </property>
+   <property name="text">
+    <string>腿部经络初开</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegOpenSetPara">
+   <property name="geometry">
+    <rect>
+     <x>1290</x>
+     <y>190</y>
+     <width>211</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:16px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/OpenBackSetPara.png</normaloff>:/OpenBackSetPara.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>211</width>
+     <height>72</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnlock">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>300</y>
+     <width>471</width>
+     <height>262</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	border-radius:16px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+	border:6px solid #059FC9;
+}</string>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnlockSetPara">
+   <property name="geometry">
+    <rect>
+     <x>790</x>
+     <y>470</y>
+     <width>211</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:16px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/OpenBackSetPara.png</normaloff>:/OpenBackSetPara.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>211</width>
+     <height>72</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ShoulderUnlock">
+   <property name="geometry">
+    <rect>
+     <x>1170</x>
+     <y>300</y>
+     <width>471</width>
+     <height>262</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	border-radius:16px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+	border:6px solid #059FC9;
+}</string>
+   </property>
+   <property name="text">
+    <string>肩部经络疏通</string>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ShoulderUnlockSetPara">
+   <property name="geometry">
+    <rect>
+     <x>1310</x>
+     <y>470</y>
+     <width>211</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:16px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/OpenBackSetPara.png</normaloff>:/OpenBackSetPara.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>211</width>
+     <height>72</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Bottom">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>640</y>
+     <width>1820</width>
+     <height>139</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#DAF1F7;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_BackToHome">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:3px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>返回主页</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LastStep">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:3px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>上一步</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Confirm">
+   <property name="geometry">
+    <rect>
+     <x>1250</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:3px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_NextStep">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:#059FC9;
+border-radius:8px;
+border:3px solid #059FC9;</string>
+   </property>
+   <property name="text">
+    <string>下一步</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
+ <connections/>
+</ui>

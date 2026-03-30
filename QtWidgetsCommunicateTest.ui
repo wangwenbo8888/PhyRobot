@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtWidgetsCommunicateTestClass</class>
+ <widget class="QWidget" name="QtWidgetsCommunicateTestClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1110</width>
+    <height>867</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtWidgetsCommunicateTest</string>
+  </property>
+  <widget class="QTextEdit" name="textEdit_Info">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>291</width>
+     <height>571</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_OpenBack_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>110</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>开背开始</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_StartIntensity">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>210</y>
+     <width>71</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>100</number>
+   </property>
+   <property name="value">
+    <number>5</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>210</y>
+     <width>80</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>起始强度</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>280</y>
+     <width>80</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>运行强度</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_RunIntensity">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>280</y>
+     <width>71</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1</number>
+   </property>
+   <property name="maximum">
+    <number>100</number>
+   </property>
+   <property name="value">
+    <number>40</number>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_OpenBack_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>110</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>开背结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegOpen_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>170</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络初开开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegOpen_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>170</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络初开结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Right1_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>230</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(右腿1)结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Right1_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>230</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(右腿1)开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Left1_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>290</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(左腿1)结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Left1_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>290</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(左腿1)开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Right2_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>350</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(右腿2)结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Left2_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>410</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(左腿2)结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Left2_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>410</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(左腿2)开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LegUnblock_Right2_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>350</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>腿部经络疏通(右腿2)开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ShoulderUnblock_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>470</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>肩部经络疏通开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ShoulderUnblock_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>470</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>肩部经络疏通结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Handle_Stop">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>530</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>手柄治疗结束</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Handle_Start">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>530</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>手柄治疗开始</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_DecrIntensity">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>590</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>强度减少</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_IncrIntensity">
+   <property name="geometry">
+    <rect>
+     <x>560</x>
+     <y>590</y>
+     <width>200</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Alibaba Sans</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>强度增加</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

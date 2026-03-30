@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.12.8_msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets;network;</QtModules>
+    <QtModules>core;sql;network;gui;widgets;serialport</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>5.12.8_msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;xml;sql;gui;widgets;serialport</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -65,7 +65,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\opencv430\win\include;..\PhysicalTherapyRobot\opencv430\win\include\opencv2;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\opencv430\win\include;..\PhysicalTherapyRobot\opencv430\win\include\opencv2;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\eigen-3.3.8;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>OrbbecSDK.lib;opencv_img_hash430d.lib;opencv_world430d.lib;onnxruntime.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -74,11 +74,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\opencv430\win\include;..\PhysicalTherapyRobot\opencv430\win\include\opencv2;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\GTEngine-master\Include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\opencv411\opencv\build\include;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\GTEngine-master\Include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\include\QtNetwork;..\PhysicalTherapyRobot\eigen-3.3.8;..\PhysicalTherapyRobot\WifiList;C:\Program Files\PCL 1.12.1\include\pcl-1.12;C:\Program Files\PCL 1.12.1\3rdParty\Boost\include\boost-1_78;C:\Program Files\PCL 1.12.1\3rdParty\VTK\include\vtk-9.1;C:\Program Files\PCL 1.12.1\3rdParty\FLANN\include;..\PhysicalTherapyRobot\opencv411\opencv\build\include\opencv2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opencv_img_hash430.lib;opencv_world430.lib;OrbbecSDK.lib;onnxruntime.lib;Qt5Network.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\opencv430\win\x64\vc14\lib;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world4110.lib;OrbbecSDK.lib;onnxruntime.lib;Qt5Network.lib;pcl_search.lib;pcl_kdtree.lib;pcl_common.lib;pcl_features.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\opencv411\opencv\build\x64\vc16\lib;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\lib;C:\Program Files\PCL 1.12.1\3rdParty\Boost\lib;C:\Program Files\PCL 1.12.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -103,19 +105,56 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AccountInfo.cpp" />
     <ClCompile Include="AccoutManager.cpp" />
+    <ClCompile Include="Algo\Axis3.cpp" />
+    <ClCompile Include="Algo\Matrix.cpp" />
+    <ClCompile Include="Algo\Matrix3.cpp" />
+    <ClCompile Include="Algo\Matrixd.cpp" />
+    <ClCompile Include="Algo\Point2D.cpp" />
+    <ClCompile Include="Algo\Point3D.cpp" />
+    <ClCompile Include="Algo\Rotation.cpp" />
+    <ClCompile Include="Algo\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Algo\Vector.cpp" />
     <ClCompile Include="AutoTreat.cpp" />
     <ClCompile Include="AutoTreatAcupointRecog.cpp" />
     <ClCompile Include="AutoTreatBegin.cpp" />
     <ClCompile Include="AutoTreatFinish.cpp" />
-    <ClCompile Include="AutoTreatInstruction.cpp" />
+    <ClCompile Include="AutoTreatLegOpen.cpp" />
+    <ClCompile Include="AutoTreatLegOpenBegin.cpp" />
+    <ClCompile Include="AutoTreatLegUnblock.cpp" />
+    <ClCompile Include="AutoTreatLegUnblockBegin.cpp" />
+    <ClCompile Include="AutoTreatOpenBack.cpp" />
+    <ClCompile Include="AutoTreatSelectAndSetting.cpp" />
+    <ClCompile Include="AutoTreatShoulderUnblock.cpp" />
+    <ClCompile Include="AutoTreatShoulderUnblockBegin.cpp" />
+    <ClCompile Include="AutoTreatStop.cpp" />
+    <ClCompile Include="Communicate.cpp" />
+    <ClCompile Include="ManualTreatDragBegin.cpp" />
+    <ClCompile Include="ManualTreatFinish.cpp" />
+    <ClCompile Include="ManualTreatHandleBegin.cpp" />
+    <ClCompile Include="ManualTreatOutputAdj.cpp" />
+    <ClCompile Include="MoveSpeedAdjust.cpp" />
+    <ClCompile Include="MoveToNextAcupoint_Improved.cpp" />
+    <ClCompile Include="MyWifi.cpp" />
+    <ClCompile Include="PathwayAdjust.cpp" />
+    <ClCompile Include="PauseWidget.cpp" />
+    <ClCompile Include="PCLAlgo.cpp" />
+    <ClCompile Include="QtRoundProgressBar.cpp" />
+    <ClCompile Include="QtWidgetsCommunicateTest.cpp" />
+    <ClCompile Include="StartOrEndAdjust.cpp" />
+    <ClCompile Include="StepModelAdjust.cpp" />
+    <ClCompile Include="TreatInstruction.cpp" />
     <ClCompile Include="AutoTreatOnGoing.cpp" />
     <ClCompile Include="AutoTreatPrePrepare.cpp" />
     <ClCompile Include="AutoTreatSetTime.cpp" />
@@ -123,6 +162,7 @@
     <ClCompile Include="EquipBreakdown.cpp" />
     <ClCompile Include="EquipInfo.cpp" />
     <ClCompile Include="FinishOrganize.cpp" />
+    <ClCompile Include="ForgetPassword.cpp" />
     <ClCompile Include="inference.cpp" />
     <ClCompile Include="IntensiveTreat.cpp" />
     <ClCompile Include="IntensiveTreatAcupointRecog.cpp" />
@@ -132,22 +172,52 @@
     <ClCompile Include="IntensiveTreatPalliativeCare.cpp" />
     <ClCompile Include="IntensiveTreatSetTime.cpp" />
     <ClCompile Include="IntensiveTreatToleranceTest.cpp" />
+    <ClCompile Include="MyDatabase.cpp" />
     <ClCompile Include="oder.cpp" />
+    <ClCompile Include="QtHomePagesAutoInstruction.cpp" />
+    <ClCompile Include="QtHomePagesManual.cpp" />
+    <ClCompile Include="QtHomePagesManualInstruction.cpp" />
+    <ClCompile Include="QtHomePagesOrganize.cpp" />
+    <ClCompile Include="QtHomePagesOrganizeInstruct.cpp" />
+    <ClCompile Include="QtHomePagsAuto.cpp" />
     <ClCompile Include="SetUp.cpp" />
+    <ClCompile Include="WifiList\src\Control\CustomEditPasswd.cpp" />
+    <ClCompile Include="WifiList\src\Control\FlatUI.cpp" />
+    <ClCompile Include="WifiList\src\Util\AppCommon.cpp" />
+    <ClCompile Include="WifiList\src\Util\AppConfig.cpp" />
+    <ClCompile Include="WifiList\src\Util\AppData.cpp" />
+    <ClCompile Include="WifiList\src\Util\AppEvent.cpp" />
+    <ClCompile Include="WifiList\src\Util\AppInit.cpp" />
+    <ClCompile Include="WifiList\src\Widget\LoadingWidget.cpp" />
+    <ClCompile Include="WifiList\src\Wifi\WifiList.cpp" />
+    <ClCompile Include="WifiList\src\Wifi\WifiListItem.cpp" />
+    <ClCompile Include="WifiList\src\Wifi\XmlHelper.cpp" />
+    <ClCompile Include="ZhengjixueweiAdj.cpp" />
     <QtRcc Include="PhysicalTherapyRobot.qrc" />
+    <QtUic Include="AccountInfo.ui" />
     <QtUic Include="AccoutManager.ui" />
     <QtUic Include="AutoTreat.ui" />
     <QtUic Include="AutoTreatAcupointRecog.ui" />
     <QtUic Include="AutoTreatBegin.ui" />
     <QtUic Include="AutoTreatFinish.ui" />
     <QtUic Include="AutoTreatInstruction.ui" />
+    <QtUic Include="AutoTreatLegOpen.ui" />
+    <QtUic Include="AutoTreatLegOpenBegin.ui" />
+    <QtUic Include="AutoTreatLegUnblock.ui" />
+    <QtUic Include="AutoTreatLegUnblockBegin.ui" />
     <QtUic Include="AutoTreatOnGoing.ui" />
+    <QtUic Include="AutoTreatOpenBack.ui" />
     <QtUic Include="AutoTreatPrePrepare.ui" />
+    <QtUic Include="AutoTreatSelectAndSetting.ui" />
     <QtUic Include="AutoTreatSetTime.ui" />
+    <QtUic Include="AutoTreatShoulderUnblock.ui" />
+    <QtUic Include="AutoTreatShoulderUnblockBegin.ui" />
+    <QtUic Include="AutoTreatStop.ui" />
     <QtUic Include="AutoTreatToleranceTest.ui" />
     <QtUic Include="EquipBreakdown.ui" />
     <QtUic Include="EquipInfo.ui" />
     <QtUic Include="FinishOrganize.ui" />
+    <QtUic Include="ForgetPassword.ui" />
     <QtUic Include="HomePage.ui" />
     <QtUic Include="IntensiveTreat.ui" />
     <QtUic Include="IntensiveTreatAcupointRecog.ui" />
@@ -157,7 +227,15 @@
     <QtUic Include="IntensiveTreatPalliativeCare.ui" />
     <QtUic Include="IntensiveTreatSetTime.ui" />
     <QtUic Include="IntensiveTreatToleranceTest.ui" />
+    <QtUic Include="ManualTreatDragBegin.ui" />
+    <QtUic Include="ManualTreatFinish.ui" />
+    <QtUic Include="ManualTreatHandleBegin.ui" />
+    <QtUic Include="ManualTreatOutputAdj.ui" />
+    <QtUic Include="MoveSpeedAdjust.ui" />
+    <QtUic Include="MyWifi.ui" />
     <QtUic Include="MyWindow.ui" />
+    <QtUic Include="PathwayAdjust.ui" />
+    <QtUic Include="PauseWidget.ui" />
     <QtUic Include="PhysicalTherapyRobot.ui" />
     <QtMoc Include="PhysicalTherapyRobot.h" />
     <ClCompile Include="CameraGrabber.cpp" />
@@ -165,13 +243,81 @@
     <ClCompile Include="MyWindow.cpp" />
     <ClCompile Include="PhysicalTherapyRobot.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="QtHomePagesAutoInstruction.ui" />
+    <QtUic Include="QtHomePagesManual.ui" />
+    <QtUic Include="QtHomePagesManualInstruction.ui" />
+    <QtUic Include="QtHomePagesOrganize.ui" />
+    <QtUic Include="QtHomePagesOrganizeInstruct.ui" />
+    <QtUic Include="QtHomePagsAuto.ui" />
+    <QtUic Include="QtWidgetsCommunicateTest.ui" />
     <QtUic Include="SetUp.ui" />
+    <QtUic Include="StartOrEndAdjust.ui" />
+    <QtUic Include="StepModelAdjust.ui" />
+    <QtUic Include="ZhengjixueweiAdj.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algo\Axis3.h" />
+    <ClInclude Include="Algo\Common.h" />
+    <ClInclude Include="Algo\Matrix.h" />
+    <ClInclude Include="Algo\Matrix3.h" />
+    <ClInclude Include="Algo\Matrixd.h" />
+    <ClInclude Include="Algo\Point2D.h" />
+    <ClInclude Include="Algo\Point3D.h" />
+    <ClInclude Include="Algo\Rotation.h" />
+    <ClInclude Include="Algo\stdafx.h" />
+    <ClInclude Include="Algo\targetver.h" />
+    <ClInclude Include="Algo\Vector.h" />
+    <QtMoc Include="Communicate.h" />
+    <ClInclude Include="PCLAlgo.h" />
+    <QtMoc Include="QtWidgetsCommunicateTest.h" />
+    <ClInclude Include="WifiList\src\Control\FlatUI.h" />
+    <ClInclude Include="WifiList\src\Util\AppCommon.h" />
+    <ClInclude Include="WifiList\src\Util\def.h" />
+    <ClInclude Include="WifiList\src\Wifi\XmlHelper.h" />
+    <QtMoc Include="WifiList\src\Wifi\WifiListItem.h" />
+    <QtMoc Include="WifiList\src\Wifi\WifiList.h" />
+    <QtMoc Include="WifiList\src\Widget\LoadingWidget.h" />
+    <QtMoc Include="WifiList\src\Util\AppInit.h" />
+    <QtMoc Include="WifiList\src\Util\AppEvent.h" />
+    <QtMoc Include="WifiList\src\Util\AppData.h" />
+    <QtMoc Include="WifiList\src\Util\AppConfig.h" />
+    <QtMoc Include="WifiList\src\Control\CustomEditPasswd.h" />
+    <QtMoc Include="ZhengjixueweiAdj.h" />
+    <QtMoc Include="StepModelAdjust.h" />
+    <QtMoc Include="StartOrEndAdjust.h" />
+    <QtMoc Include="AccountInfo.h" />
+    <ClInclude Include="AdmittanceControl.h" />
+    <QtMoc Include="MyDatabase.h" />
+    <QtMoc Include="QtHomePagesManual.h" />
+    <QtMoc Include="QtHomePagesManualInstruction.h" />
+    <QtMoc Include="QtHomePagsAuto.h" />
+    <QtMoc Include="QtHomePagesOrganize.h" />
+    <QtMoc Include="QtHomePagesOrganizeInstruct.h" />
+    <QtMoc Include="QtHomePagesAutoInstruction.h" />
+    <QtMoc Include="ForgetPassword.h" />
+    <QtMoc Include="AutoTreatSelectAndSetting.h" />
+    <QtMoc Include="AutoTreatOpenBack.h" />
+    <QtMoc Include="AutoTreatLegOpen.h" />
+    <QtMoc Include="AutoTreatLegUnblock.h" />
+    <QtMoc Include="AutoTreatShoulderUnblock.h" />
+    <QtMoc Include="PathwayAdjust.h" />
+    <QtMoc Include="QtRoundProgressBar.h" />
+    <QtMoc Include="AutoTreatStop.h" />
+    <QtMoc Include="MoveSpeedAdjust.h" />
+    <QtMoc Include="PauseWidget.h" />
+    <QtMoc Include="AutoTreatLegOpenBegin.h" />
+    <QtMoc Include="AutoTreatLegUnblockBegin.h" />
+    <QtMoc Include="AutoTreatShoulderUnblockBegin.h" />
+    <QtMoc Include="ManualTreatDragBegin.h" />
+    <QtMoc Include="ManualTreatHandleBegin.h" />
+    <QtMoc Include="ManualTreatOutputAdj.h" />
+    <QtMoc Include="ManualTreatFinish.h" />
+    <QtMoc Include="MyWifi.h" />
+    <ClInclude Include="RobotComm.h" />
     <QtMoc Include="SetUp.h" />
     <QtMoc Include="AccoutManager.h" />
     <QtMoc Include="AutoTreat.h" />
-    <QtMoc Include="AutoTreatInstruction.h" />
+    <QtMoc Include="TreatInstruction.h" />
     <QtMoc Include="AutoTreatPrePrepare.h" />
     <QtMoc Include="AutoTreatSetTime.h" />
     <QtMoc Include="AutoTreatAcupointRecog.h" />

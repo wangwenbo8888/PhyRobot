@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1760</width>
-    <height>990</height>
+    <width>1720</width>
+    <height>940</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -101,8 +101,8 @@ border-radius:40px;</string>
   <widget class="QPushButton" name="pushButton_Back">
    <property name="geometry">
     <rect>
-     <x>1000</x>
-     <y>870</y>
+     <x>1080</x>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -255,8 +255,8 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_LastStep">
    <property name="geometry">
     <rect>
-     <x>1210</x>
-     <y>870</y>
+     <x>1270</x>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -727,8 +727,8 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_NextStep">
    <property name="geometry">
     <rect>
-     <x>1410</x>
-     <y>870</y>
+     <x>1460</x>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ManualTreatFinishClass</class>
+ <widget class="QWidget" name="ManualTreatFinishClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1820</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ManualTreatFinish</string>
+  </property>
+  <widget class="QPushButton" name="pushButton_Back">
+   <property name="geometry">
+    <rect>
+     <x>1020</x>
+     <y>680</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>返回主页</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_ModelSelect">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>680</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>模式选择</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Bottom">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>641</y>
+     <width>1820</width>
+     <height>139</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#DAF1F7;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_TreatContinue">
+   <property name="geometry">
+    <rect>
+     <x>1210</x>
+     <y>680</y>
+     <width>180</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>继续治疗</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_flag2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1820</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:white;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>120</y>
+     <width>1366</width>
+     <height>210</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/ManualTreatFinishNote.png</pixmap>
+   </property>
+  </widget>
+  <zorder>label_Bottom</zorder>
+  <zorder>pushButton_TreatContinue</zorder>
+  <zorder>label_flag2</zorder>
+  <zorder>pushButton_Back</zorder>
+  <zorder>pushButton_ModelSelect</zorder>
+  <zorder>label</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
+ <connections/>
+</ui>

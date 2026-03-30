@@ -7,7 +7,9 @@
 #include <QSharedPointer>
 
 #include "HomePage.h"
+#include "TreatInstruction.h"
 #include "AutoTreat.h"
+#include "AccountInfo.h"
 #include "IntensiveTreat.h"
 #include "FinishOrganize.h"
 #include "AccoutManager.h"
@@ -18,6 +20,28 @@
 
 #include "CameraGrabber.h"
 
+#include "RobotComm.h"
+
+#include <vector>
+
+#include "src/Wifi/WifiList.h"
+
+#include <Eigen/Dense>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/highgui.hpp>
+
+#include "Algo/Rotation.h"
+
+enum TreatType
+{
+    Treat_Auto = 0,
+    Treat_Manual,
+    TreatPlan_Set,
+    Settings,
+    Treat_Unknown
+};
+
 enum RobotPort
 {
     pDashboard,
@@ -27,7 +51,16 @@ enum RobotPort
     pmsgreturn
 };
 
+void CreateFolder(const QString& folderPath);
+
+QString GetCurrentTimeSecond();
+
+void SaveImage(const cv::Mat& img);
+
 class PhysicalTherapyRobot;
+class AdmittanceController;
+class Communicate;
+
 class MyWindow : public QWidget
 {
 	Q_OBJECT
@@ -36,23 +69,98 @@ public:
 	MyWindow(PhysicalTherapyRobot* robot,QWidget *parent = nullptr);
 	~MyWindow();
 
+    // 开始机械臂拖拽模式
+    void StartDrag();
+
+    // 停止机械臂拖拽模式
+    void StopDrag();
+
+    void ClearError();
+
+    void RobotStorage();
+
+    // 机械臂移动到默认的初始位置
+    void MoveToNormalPos();
+
     void sktDashboard_error();
     void MyWindow_connect();
 
     void SetWidgetHomePage();
+
+    void SetWidgetSetUp();
+
+    void SetWidgetInstruction(TreatType type);
+
+    void SetWidgetAfterInstruction();
 
     void pause();
     void WorkContinue();
     void poweron();
     void stop();
 
+    int GetIntensity();
+
+    void IncrIntensity();
+
+    void DecrIntensity();
+
+    void SetStoped(bool flag);
+
+    void RobotGoHome();
+
+    Communicate* GetCommunicate();
+
     void go();
+
+    void Run(PROTOCOL pro);
+
+    void SetModel(OPENBACK_MODEL model);
+
+    void SetCurrentProj(QString str);
+
+    void ResetRobot();
+
+    bool SetXuewei(const std::vector<std::vector<XUEWEI_INFO>>& xueweis);
+
+    bool AdmittanceControl();
+
+    bool AdmittanceControlNew(int group, int row);
+
+    Eigen::VectorXd getForceFeedback();
+
+    void MovJInterface(double x, double y, double z, double Rx, double Ry, double Rz);
 
     std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath,cv::Mat& outImg);
 
-    void getImage(cv::Mat& img/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
+    bool getImage(cv::Mat& img/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
 
-    std::vector<cv::Point3d> get3Dpoints(std::vector<cv::Point> base ,std::vector<OBColorPoint> pointCloud_frame_data);
+    std::vector<Robot3d> get3Dpoints(std::vector<cv::Point> base ,std::vector<OBColorPoint> pointCloud_frame_data);
+
+    cv::Mat& getPlanImage();
+
+    QPixmap cvMatToQPixmap(const cv::Mat& inMat);
+
+    std::vector<RobotPoint>& GetPlanPoints();
+
+    void setPlanPoints(std::vector<RobotPoint> points);
+    bool MoveToNextAcupointNew_Improved(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
+    bool MoveToNextAcupointNew_ImprovedV2(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
+    bool MoveToNextAcupointNew_ImprovedV3(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
+    bool MoveToNextAcupointNew_ImprovedV4(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
+    bool MoveToNextAcupointNew_ImprovedV5(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
+    bool MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+
 public slots:
 	void On_PushButton_Exit_Clicked();
 
@@ -70,16 +178,82 @@ public slots:
 
 	void On_pushButton_SetUp_Clicked();
 
+    void On_pushButton_Account_Clicked();
+
+    void On_pushButton_Wifi_Clicked();
+
+    void On_pushButton_ClearError_Clicked();
+
 	void On_timeout();
 
+    void On_ContactTimeOut();
+
+    void On_received_contact_state(CONTACT_STATE);
+
+signals:
+    void FinishOneXuewei(int);
+
+    void FinishOneSecond();
+
+    void FinishOneGroup();
+
+private:
+    QImage cvMatToQImage(const cv::Mat& inMat);
+
+    // 步进模式
+    bool StepModel(PROTOCOL pro);
+
+    // 连续模式
+    bool ContinueModel(PROTOCOL pro);
+
+    // 以贴近皮肤的方式移动到下一个穴位
+    bool MoveToNextAcupoint(int group,int row,std::vector<double>& next);
+
+    bool MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI currentxuewei,DETECTED_XUEWEI xuewei, std::vector<double>& next);
+
+    bool GetNextAcupoint(int i, int j,  DETECTED_XUEWEI& xuewei,std::vector<double>& point);
+
+    std::vector<double> m_vForces;
+
+    std::vector<double> m_vRawForces;
+
+    std::vector<double> m_vCurrentPos;
+    
+    // 对应的穴位法矢
+    std::vector<double> m_vPosNormal;
+
+    PROTOCOL m_eCurrProto;
+    int m_iCurrIntensity;
+
+    Point3D m_PreForce;
+    Point3D m_CurrForce;
+
+    Point3D m_PreForceDir;
+    Point3D m_CurrForceDir;
+    OPENBACK_MODEL m_eModel;
 private:
 	Ui::MyWindowClass ui;
 
 	PhysicalTherapyRobot* m_pRobot;
 
+    AdmittanceController* m_pAddmittance;
+
+    Communicate* m_pCommunicate;
+
+    AccountInfo* m_pAccountInfo;
+
 	QTimer* m_pTimer;
 
+    QTimer* m_pContactTimer;
+
+    QSharedPointer<WifiList> m_pWifiWindow;
+
+    cv::Mat m_mPlanImage;
+
+    TreatType m_eTreatType;
+
 	QSharedPointer<HomePage> m_pHomePage;
+    QSharedPointer<TreatInstruction> m_pTreatInstruction;
 	QSharedPointer<AutoTreat> m_pAutoTreat;
 	QSharedPointer<IntensiveTreat> m_pIntensiveTreat;
 	QSharedPointer<FinishOrganize> m_pFinishOrganize;
@@ -119,9 +293,19 @@ private:
     void JointMovJ(double Jx, double J2, double J3, double J4, double J5, double J6);
 
     void MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz);
+
+    void MovL(double X, double Y, double Z, double Rx, double Ry, double Rz);
+
+    void ServoP(double X, double Y, double Z, double Rx, double Ry, double Rz);
+
+    void Tool(int tool);
+
     int pw = 0;
     int pausebit = 0;
     void GetSixForceData();
+
+    void GetPose();
+
     void PositiveSolution(double J1, double J2, double J3, double J4, double J5, double J6, int User, int Tool);
 
     void qsleep(int msec); 
@@ -130,13 +314,16 @@ private:
     void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 3600.0f, float lookahead_time = 100.0f, float gain = 200.0f);
     ////detecter dtt;
     void setip(QString ip);
-    std::vector<cv::Point3d> points;
+    std::vector<RobotPoint> points;
+    std::vector<std::vector<RobotPoint>> m_vXueweis;
+
     cv::Mat colorRawMat;
     //OBColorPoint* Colorpoint;
     int imageWidth = 1280;
     int imageHeight = 720;
-    std::vector<cv::Point3d> convert_camera2arm(std::vector<cv::Point3d> pointsC);
-    cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 401.4063);
+    std::vector<cv::Point3d> convert_camera2arm(std::vector<Robot3d> pointsC);
+    //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 401.4063);//机械臂末端关节在拍照时的位置
+    cv::Point3d start_Camera_Point = cv::Point3d(-136.4293, -486.0599, 347.5884);//机械臂末端关节在拍照时的位置 工具坐标系2
     //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, 466.7497, 401.4063);
     //cv::Point3d start_Camera_Point = cv::Point3d(-180.3657, -466.7497, 601.4063);
     enum ROBOT_MODE {
@@ -156,5 +343,20 @@ private:
 
     int RobotMode = 0;
 
+    // 治疗被停止了
+    bool m_bStoped;
+
+    void Wait_ForTreat(int timeout = INT_MAX);
+
     void Wait_Done(int timeout = INT_MAX);
+
+    void Wait_ForForces(int timeout = INT_MAX);
+
+    void Wait_ForMove(int timeout = INT_MAX);
+
+    void Wait_ForShort(int timeout = INT_MAX);
+
+    double strToDouble(std::string str);
+
+    cv::dnn::Net m_net;
 };

@@ -45,6 +45,30 @@
     <Filter Include="Source Files\IntensiveTreat">
       <UniqueIdentifier>{0334386e-d75a-4bea-83c2-4af0efd4c040}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\HomePags">
+      <UniqueIdentifier>{0e395f28-d9ad-40ce-8bd9-e7312ead6b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\HomePages">
+      <UniqueIdentifier>{67efa0a6-8eeb-4455-996a-6002bcd15347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\HomePages">
+      <UniqueIdentifier>{d6e0dda4-613b-42a8-87de-a42ebe4cc3db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Wifi">
+      <UniqueIdentifier>{06ae5117-58bf-43c5-814c-d5fd90fbcfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algo">
+      <UniqueIdentifier>{7b99196c-1eb9-4b49-9066-a1bb06542ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algo">
+      <UniqueIdentifier>{9959eb37-1cde-47eb-a9f6-9dda63f97d83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IntensiveTreat\Wifi">
+      <UniqueIdentifier>{7949de1a-ff08-44b2-99a1-fbf35b7ebbd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Wifi">
+      <UniqueIdentifier>{58567a1c-b85a-443a-b0c1-2af0a27c7428}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="PhysicalTherapyRobot.qrc">
@@ -79,9 +103,6 @@
     <ClCompile Include="EquipInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetUp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FinishOrganize.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,9 +116,6 @@
       <Filter>Source Files\AutoTreat</Filter>
     </ClCompile>
     <ClCompile Include="AutoTreatFinish.cpp">
-      <Filter>Source Files\AutoTreat</Filter>
-    </ClCompile>
-    <ClCompile Include="AutoTreatInstruction.cpp">
       <Filter>Source Files\AutoTreat</Filter>
     </ClCompile>
     <ClCompile Include="AutoTreatOnGoing.cpp">
@@ -145,6 +163,228 @@
     <ClCompile Include="inference.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MyDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagsAuto.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagesManual.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagesManualInstruction.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagesOrganize.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagesOrganizeInstruct.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHomePagesAutoInstruction.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgetPassword.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetUp.cpp">
+      <Filter>Source Files\HomePags</Filter>
+    </ClCompile>
+    <ClCompile Include="TreatInstruction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegOpen.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegUnblock.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatOpenBack.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatSelectAndSetting.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatShoulderUnblock.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegOpen.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegUnblock.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatSelectAndSetting.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatShoulderUnblock.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatOpenBack.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="StartOrEndAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="PathwayAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="PathwayAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="StartOrEndAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="QtRoundProgressBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSpeedAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="StepModelAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatStop.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatStop.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveSpeedAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="StepModelAdjust.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseWidget.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegOpenBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseWidget.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatShoulderUnblockBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegUnblockBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegOpenBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatLegUnblockBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoTreatShoulderUnblockBegin.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ZhengjixueweiAdj.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ZhengjixueweiAdj.cpp">
+      <Filter>Source Files\AutoTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatDragBegin.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatHandleBegin.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatOutputAdj.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatFinish.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatDragBegin.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatHandleBegin.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualTreatFinish.cpp">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </ClCompile>
+    <ClCompile Include="MyWifi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Control\CustomEditPasswd.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Control\FlatUI.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Util\AppCommon.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Util\AppConfig.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Util\AppData.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Util\AppEvent.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Util\AppInit.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Widget\LoadingWidget.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Wifi\WifiList.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Wifi\WifiListItem.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="WifiList\src\Wifi\XmlHelper.cpp">
+      <Filter>Source Files\IntensiveTreat\Wifi</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Axis3.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Matrix.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Matrix3.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Matrixd.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Point2D.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Point3D.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Rotation.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\stdafx.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Algo\Vector.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="PCLAlgo.cpp">
+      <Filter>Source Files\Algo</Filter>
+    </ClCompile>
+    <ClCompile Include="Communicate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtWidgetsCommunicateTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveToNextAcupoint_Improved.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraGrabber.h">
@@ -155,6 +395,60 @@
     </ClInclude>
     <ClInclude Include="inference.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RobotComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdmittanceControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WifiList\src\Util\AppCommon.h">
+      <Filter>Header Files\Wifi</Filter>
+    </ClInclude>
+    <ClInclude Include="WifiList\src\Util\def.h">
+      <Filter>Header Files\Wifi</Filter>
+    </ClInclude>
+    <ClInclude Include="WifiList\src\Control\FlatUI.h">
+      <Filter>Header Files\Wifi</Filter>
+    </ClInclude>
+    <ClInclude Include="WifiList\src\Wifi\XmlHelper.h">
+      <Filter>Header Files\Wifi</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Axis3.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Common.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Matrix.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Matrix3.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Matrixd.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Point2D.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Point3D.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Rotation.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\stdafx.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\targetver.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="Algo\Vector.h">
+      <Filter>Header Files\Algo</Filter>
+    </ClInclude>
+    <ClInclude Include="PCLAlgo.h">
+      <Filter>Header Files\Algo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,9 +469,6 @@
     <QtMoc Include="EquipInfo.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="SetUp.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="FinishOrganize.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -187,13 +478,7 @@
     <QtMoc Include="AutoTreatAcupointRecog.h">
       <Filter>Header Files\AutoTreat</Filter>
     </QtMoc>
-    <QtMoc Include="AutoTreatBegin.h">
-      <Filter>Header Files\AutoTreat</Filter>
-    </QtMoc>
     <QtMoc Include="AutoTreatFinish.h">
-      <Filter>Header Files\AutoTreat</Filter>
-    </QtMoc>
-    <QtMoc Include="AutoTreatInstruction.h">
       <Filter>Header Files\AutoTreat</Filter>
     </QtMoc>
     <QtMoc Include="AutoTreatOnGoing.h">
@@ -238,6 +523,183 @@
     <QtMoc Include="oder.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="MyDatabase.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagesManual.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagesManualInstruction.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagsAuto.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagesOrganize.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagesOrganizeInstruct.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="QtHomePagesAutoInstruction.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgetPassword.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AccountInfo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SetUp.h">
+      <Filter>Header Files\HomePages</Filter>
+    </QtMoc>
+    <QtMoc Include="TreatInstruction.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegOpen.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegUnblock.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatOpenBack.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatSelectAndSetting.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatShoulderUnblock.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegOpen.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegUnblock.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatOpenBack.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatSelectAndSetting.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatShoulderUnblock.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="PathwayAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="StartOrEndAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="PathwayAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="StartOrEndAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="QtRoundProgressBar.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatStop.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="StepModelAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="MoveSpeedAdjust.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="PauseWidget.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegOpenBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="PauseWidget.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatShoulderUnblockBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegUnblockBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegOpenBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatLegUnblockBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatShoulderUnblockBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ZhengjixueweiAdj.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ZhengjixueweiAdj.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatDragBegin.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatHandleBegin.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatOutputAdj.h">
+      <Filter>Source Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatOutputAdj.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatFinish.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatDragBegin.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatFinish.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="ManualTreatHandleBegin.h">
+      <Filter>Header Files\IntensiveTreat</Filter>
+    </QtMoc>
+    <QtMoc Include="MyWifi.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Util\AppConfig.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Util\AppData.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Util\AppEvent.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Util\AppInit.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Control\CustomEditPasswd.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Widget\LoadingWidget.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Wifi\WifiList.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="WifiList\src\Wifi\WifiListItem.h">
+      <Filter>Header Files\Wifi</Filter>
+    </QtMoc>
+    <QtMoc Include="Communicate.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtWidgetsCommunicateTest.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="AutoTreatBegin.h">
+      <Filter>Header Files\AutoTreat</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MyWindow.ui">
@@ -268,9 +730,6 @@
       <Filter>Form Files\AutoTreat</Filter>
     </QtUic>
     <QtUic Include="AutoTreatFinish.ui">
-      <Filter>Form Files\AutoTreat</Filter>
-    </QtUic>
-    <QtUic Include="AutoTreatInstruction.ui">
       <Filter>Form Files\AutoTreat</Filter>
     </QtUic>
     <QtUic Include="AutoTreatOnGoing.ui">
@@ -310,6 +769,117 @@
       <Filter>Form Files\IntensiveTreat</Filter>
     </QtUic>
     <QtUic Include="EquipBreakdown.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagsAuto.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesManual.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesManualInstruction.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesOrganize.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesOrganizeInstruct.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesAutoInstruction.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesAutoInstruction.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesManual.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesManualInstruction.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesOrganize.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagesOrganizeInstruct.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="QtHomePagsAuto.ui">
+      <Filter>Form Files\HomePages</Filter>
+    </QtUic>
+    <QtUic Include="ForgetPassword.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AccountInfo.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatSelectAndSetting.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatOpenBack.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatLegOpen.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatLegUnblock.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatShoulderUnblock.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="StartOrEndAdjust.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="PathwayAdjust.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatStop.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="MoveSpeedAdjust.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="StepModelAdjust.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="PauseWidget.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatLegOpenBegin.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatLegUnblockBegin.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatShoulderUnblockBegin.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="ZhengjixueweiAdj.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="ManualTreatDragBegin.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="ManualTreatHandleBegin.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="ManualTreatOutputAdj.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="ManualTreatFinish.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="MyWifi.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ManualTreatOutputAdj.ui">
+      <Filter>Form Files\IntensiveTreat</Filter>
+    </QtUic>
+    <QtUic Include="AutoTreatInstruction.ui">
+      <Filter>Form Files\AutoTreat</Filter>
+    </QtUic>
+    <QtUic Include="QtWidgetsCommunicateTest.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

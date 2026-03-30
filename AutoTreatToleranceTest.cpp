@@ -27,5 +27,5 @@ void AutoTreatToleranceTest::on_Pushbutton_LastStep_Clicked()
 
 void AutoTreatToleranceTest::on_Pushbutton_NextStep_Clicked()
 {
-	m_pAutoTreat->SetWidgetTreatBegin();
+	//m_pAutoTreat->SetWidgetTreatBegin();
 }

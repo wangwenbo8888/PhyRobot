@@ -12,8 +12,8 @@ IntensiveTreatBegin::IntensiveTreatBegin(IntensiveTreat* treat, QWidget *parent)
 	disconnect(ui.pushButton_LastStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_LastStep_Clicked()));
 	connect(ui.pushButton_LastStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_LastStep_Clicked()));
 
-	disconnect(ui.pushButton_WorkBegin, SIGNAL(clicked()), this, SLOT(on_Pushbutton_WorkBegin_Clicked()));
-	connect(ui.pushButton_WorkBegin, SIGNAL(clicked()), this, SLOT(on_Pushbutton_WorkBegin_Clicked()));
+	//disconnect(ui.pushButton_StartOrStop, SIGNAL(clicked()), this, SLOT(on_Pushbutton_StartOrStop_Clicked()));
+	//connect(ui.pushButton_StartOrStop, SIGNAL(clicked()), this, SLOT(on_Pushbutton_StartOrStop_Clicked()));
 }
 
 IntensiveTreatBegin::~IntensiveTreatBegin()
@@ -25,7 +25,7 @@ void IntensiveTreatBegin::on_Pushbutton_LastStep_Clicked()
 	m_pIntensiveTreat->SetWidgetToleranceTest();
 }
 
-void IntensiveTreatBegin::on_Pushbutton_WorkBegin_Clicked()
+void IntensiveTreatBegin::on_Pushbutton_StartOrStop_Clicked()
 {
 	m_pIntensiveTreat->SetWidgetOnGoing();
 }

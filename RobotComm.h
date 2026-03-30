@@ -1,0 +1,169 @@
+#pragma once
+
+#include <opencv2/opencv.hpp>
+
+struct Keypoint
+{
+	Keypoint(float x, float y, float score)
+	{
+		position.x = x;
+		position.y = y;
+		conf = score;
+	}
+
+	cv::Point2d position{};
+	float conf{ 0.0 };
+};
+
+const cv::Size modelShape = cv::Size(640, 640);
+const float modelScoreThreshold{ 0.50 };
+const float modelNMSThreshold{ 0.50 };
+const int DEBUG_TREAT_TIME = 10;
+
+typedef struct
+{
+    int iYear;
+    int iMonth;
+    int iDay;
+
+}TIMEINFO;
+
+enum DETECTED_XUEWEI
+{
+	//DAZHUI_DETECTED = 0,
+	//ZUOJIANJING_DETECTED,
+	//YOUJIANJING_DETECTED,
+	//ZUOFENGMEN_DETECTED,
+	//YOUFENGMEN_DETECTED,
+	//ZUOFEIYU_DETECTED,
+	//YOUFEIYU_DETECTED,
+	//ZUOPIYU_DETECTED,
+	//YOUPIYU_DETECTED,
+	//ZUOSHENYU_DETECTED,
+	//YOUSHENYU_DETECTED,
+	//ZUOYAOYU_DETECTED,
+	//YOUYAOYU_DETECTED,
+	//GUIWEI_DETECTED
+
+	FENGFU_DETECTED = 0,
+    FENGCHI_DETECTED,
+	DAZHUI_DETECTED,
+	YOUJIANJING_DETECTED,
+	ZUOJIANJING_DETECTED,
+	SHENDAO_DETECTED,
+	ZHIYANG_DETECTED,
+	SHANGLIAO_DETECTED,
+	YAOYANGGUAN_DETECTED,
+	MINGMEN_DETECTED,
+	SHENYU_DETECTED,
+	YOUQIHAIYU_DETECTED,
+	ZUOQIHAIYU_DETECTED,
+	YOUYAOYAN_DETECTED,
+	ZUOYAOYAN_DETECTED
+
+};
+
+typedef struct
+{
+	int time;
+	int intensity;
+	DETECTED_XUEWEI xuewei;
+
+} XUEWEI_INFO;
+
+enum XUEWEI_TYPE
+{
+	FENGFU = 0,
+	DAZHUI1,
+	DAZHUI2,
+	SHENDAO,
+	ZHIYANG,
+	YAOYANGGUAN,
+	ZUOJIANJING,
+	ZUOQIHAIYU,
+	YOUJIANJING,
+	YOUQIHAIYU,
+
+	SHANGLIAO1 = 10,
+	YOUYAOYAN1,
+	SHENYU1,
+	//MINGMEN1,
+	YAOYANGGUAN1,
+	SHANGLIAO2,
+	ZUOYAOYAN1,
+	SHENYU2,
+	//MINGMEN2,
+	YAOYANGGUAN2,
+	SHANGLIAO3,
+	YOUYAOYAN2,
+	SHENYU3,
+	//MINGMEN3,
+	YAOYANGGUAN3,
+	SHANGLIAO4,
+	ZUOYAOYAN2,
+	SHENYU4,
+	//MINGMEN4,
+	YAOYANGGUAN4,
+
+	FENGFU1 = 50,
+	FENGCHI1,
+	FENGFU2,
+	FENGCHI2
+};
+
+enum PROTOCOL
+{
+	OPENBACK = 0,
+	OPENLEG,
+	LEGUNBLOCK_RIGHTLEG1,
+	LEGUNBLOCK_LEFTLEG1,
+	LEGUNBLOCK_RIGHTLEG2,
+	LEGUNBLOCK_LEFTLEG2,
+	SHOULDERUNBLOCK,
+	HANDLE_MODEL
+	
+};
+
+enum CONTACT_STATE
+{
+	CONTACT_OK,
+	CONTACT_ERROR,
+	CONTACT_UNKNOWN
+};
+
+struct Robot3d
+{
+	cv::Point3d p3d; // 点位置
+	cv::Point3d n3d; // 点法矢
+};
+
+struct RobotPoint
+{
+	cv::Point p2d;
+	cv::Point3d p3d;
+	cv::Point3d n3d;
+	int time;
+	int intensity;
+
+	DETECTED_XUEWEI xuewei;
+};
+
+enum WIDGET_TYPE
+{
+	LEG_UNBLOCK = 0,
+	SHOULDER_UNBLOCK
+};
+
+enum OPENBACK_MODEL
+{
+	MODEL_CONTINUE = 0,
+	MODEL_STEP
+};
+
+// 保证机械臂坐标系和相机坐标系x,y,z轴一致的角度
+// x,z轴方向相反
+const double NORMAL_ANGLE = 45.0;
+
+// 机械臂负载
+//const double ROBOT_LOAD = 0.5;
+#define ROBOT_LOAD 0.5;

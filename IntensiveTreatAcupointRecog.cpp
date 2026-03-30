@@ -9,11 +9,15 @@ IntensiveTreatAcupointRecog::IntensiveTreatAcupointRecog(IntensiveTreat* treat, 
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::FramelessWindowHint);
 
-	disconnect(ui.pushButton_LastStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_LastStep_Clicked()));
-	connect(ui.pushButton_LastStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_LastStep_Clicked()));
+	disconnect(ui.pushButton_BackToHome, SIGNAL(clicked()), this, SLOT(On_pushButton_BackToHome_Clicked()));
+	connect(ui.pushButton_BackToHome, SIGNAL(clicked()), this, SLOT(On_pushButton_BackToHome_Clicked()));
 
-	disconnect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
-	connect(ui.pushButton_NextStep, SIGNAL(clicked()), this, SLOT(on_Pushbutton_NextStep_Clicked()));
+	disconnect(ui.pushButton_DragModel, SIGNAL(clicked()), this, SLOT(On_pushButton_DragModel_Clicked()));
+	connect(ui.pushButton_DragModel, SIGNAL(clicked()), this, SLOT(On_pushButton_DragModel_Clicked()));
+
+	disconnect(ui.pushButton_HandleModel, SIGNAL(clicked()), this, SLOT(On_pushButton_HandleModel_Clicked()));
+	connect(ui.pushButton_HandleModel, SIGNAL(clicked()), this, SLOT(On_pushButton_HandleModel_Clicked()));
+
 }
 
 IntensiveTreatAcupointRecog::~IntensiveTreatAcupointRecog()
@@ -21,19 +25,20 @@ IntensiveTreatAcupointRecog::~IntensiveTreatAcupointRecog()
 
 }
 
-void IntensiveTreatAcupointRecog::on_Pushbutton_LastStep_Clicked()
+void IntensiveTreatAcupointRecog::On_pushButton_BackToHome_Clicked()
 {
-	m_pIntensiveTreat->SetWidgetSetTime();
 }
 
-void IntensiveTreatAcupointRecog::on_Pushbutton_NextStep_Clicked()
+void IntensiveTreatAcupointRecog::On_pushButton_DragModel_Clicked()
 {
-	m_pIntensiveTreat->SetWidgetToleranceTest();
+	ui.pushButton_DragModel->setIcon(QIcon(":/DragModelPushed.png"));
+	m_pIntensiveTreat->SetWidgetDragBegin();
 }
 
-void IntensiveTreatAcupointRecog::on_pushButton_ReconBegin_clicked()
+void IntensiveTreatAcupointRecog::On_pushButton_HandleModel_Clicked()
 {
-//    std::vector<cv::Point> points =
-//            m_pIntensiveTreat->GetWindow()->detect(u8"debug/ikju_png.rf.548cc0a09e4d068d884d35d8ed43f10c.jpg",
-//                                           u8"debug/yolov8_640_640_v15.onnx");
+	ui.pushButton_HandleModel->setIcon(QIcon(":/HandleModelPushed.png"));
+	m_pIntensiveTreat->SetWidgetHandleBegin();
 }
+
+

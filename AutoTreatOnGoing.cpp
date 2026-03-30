@@ -27,6 +27,7 @@ AutoTreatOnGoing::AutoTreatOnGoing(AutoTreat* treat, QWidget *parent)
 	m_pTimer->setInterval(1000);
 	connect(m_pTimer, SIGNAL(timeout()), this, SLOT(On_TimeOut()));
 	//m_pTimer->start();
+
 }
 
 AutoTreatOnGoing::~AutoTreatOnGoing()
@@ -38,9 +39,64 @@ AutoTreatOnGoing::~AutoTreatOnGoing()
 	}
 }
 
+void AutoTreatOnGoing::SetPlanImage()
+{
+	cv::Mat img = m_pAutoTreat->GetWindow()->getPlanImage();
+	m_iWide = img.rows;
+	m_iHight = img.cols;
+
+	if (img.empty())
+	{
+		return;
+	}
+	cv::Mat imgR = img.t();
+	cv::rotate(img, imgR, cv::ROTATE_90_COUNTERCLOCKWISE);
+	cv::Mat image_part = imgR(cv::Rect(200, 140, 920, 460));
+	ui.label_Image->setPixmap(QPixmap(m_pAutoTreat->GetWindow()->cvMatToQPixmap(image_part)));
+}
+
+void AutoTreatOnGoing::SetLabelTreated(int i)
+{
+	if (i>= m_vAcupoints.size())
+	{
+		return;
+	}
+
+	QLabel* label = m_vAcupoints[i].get();
+	label->setPixmap(QPixmap(":/treated.png"));
+	label->show();
+}
+
+void AutoTreatOnGoing::SetLabelTreating(int i)
+{
+	if (i >= m_vAcupoints.size())
+	{
+		return;
+	}
+
+	QLabel* label = m_vAcupoints[i].get();
+	label->setPixmap(QPixmap(":/treating.png"));
+	label->show();
+}
+
+void AutoTreatOnGoing::SetAcupointLabels(const std::vector<RobotPoint>& points)
+{
+	m_vAcupoints.clear();
+	for (int i = 0; i < points.size();++i)
+	{
+		const cv::Point& p = points[i].p2d;
+		QSharedPointer<QLabel> label;
+		label.reset(new QLabel(ui.label_Image));
+		label->move(p.y-200-30, 460+140 - p.x-28);
+		label->setPixmap(QPixmap(":/untreat.png"));
+		label->show();
+		m_vAcupoints.push_back(label);
+	}
+}
+
 void AutoTreatOnGoing::On_pushButton_Back_Clicked()
 {
-	m_pAutoTreat->SetWidgetTreatBegin();
+	//m_pAutoTreat->SetWidgetTreatBegin();
 }
 
 void AutoTreatOnGoing::On_pushButton_WorkContinue_Clicked()

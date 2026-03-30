@@ -9,15 +9,20 @@ AutoTreatFinish::AutoTreatFinish(AutoTreat* treat, QWidget *parent)
 	ui.setupUi(this);
 	this->setWindowFlags(Qt::FramelessWindowHint);
 
-	disconnect(ui.pushButton_FinishReturn, SIGNAL(clicked()), this, SLOT(On_PushButton_FinishReturn()));
-	connect(ui.pushButton_FinishReturn, SIGNAL(clicked()), this, SLOT(On_PushButton_FinishReturn()));
+	disconnect(ui.pushButton_BackToHome, SIGNAL(clicked()), this, SLOT(On_PushButton_BackToHome()));
+	connect(ui.pushButton_BackToHome, SIGNAL(clicked()), this, SLOT(On_PushButton_BackToHome()));
+}
+
+void AutoTreatFinish::SetCurrentProj(QString str)
+{
+	ui.label_Proj->setText(str);
 }
 
 AutoTreatFinish::~AutoTreatFinish()
 {
 }
 
-void AutoTreatFinish::On_PushButton_FinishReturn()
+void AutoTreatFinish::On_PushButton_BackToHome()
 {
 	m_pAutoTreat->FinishReturn();
 }

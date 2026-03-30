@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QtHomePagesManualInstructionClass</class>
+ <widget class="QWidget" name="QtHomePagesManualInstructionClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>730</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QtHomePagesManualInstruction</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0,157,200);</string>
+  </property>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>4</width>
+     <height>12</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QWidget" name="centralWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>730</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>140</y>
+      <width>230</width>
+      <height>220</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="PhysicalTherapyRobot.qrc">:/manual.png</pixmap>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>3</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>50</y>
+     <width>260</width>
+     <height>90</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>48</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;</string>
+   </property>
+   <property name="text">
+    <string>手动治疗</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Instruction">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>360</y>
+     <width>350</width>
+     <height>210</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>在机械臂运行不到的部位，操作师利用手柄进行人工干预治疗</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_AutoTreat">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>590</y>
+     <width>240</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+    background-color:rgb(38,84,115);
+    color: white;
+	border-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:rgb(255,255,255);
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:rgb(0 ,0,128);
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+   </property>
+   <property name="text">
+    <string>点击开始</string>
+   </property>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
+ <connections/>
+</ui>

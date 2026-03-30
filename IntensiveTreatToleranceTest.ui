@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1760</width>
-    <height>990</height>
+    <width>1720</width>
+    <height>940</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -95,8 +95,8 @@
   <widget class="QPushButton" name="pushButton_LastStep">
    <property name="geometry">
     <rect>
-     <x>1280</x>
-     <y>880</y>
+     <x>1270</x>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -181,8 +181,8 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_NextStep">
    <property name="geometry">
     <rect>
-     <x>1490</x>
-     <y>880</y>
+     <x>1460</x>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -434,7 +434,7 @@ QPushButton:pressed
    <property name="geometry">
     <rect>
      <x>1080</x>
-     <y>880</y>
+     <y>860</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -443,6 +443,8 @@ QPushButton:pressed
     <font>
      <family>Arial</family>
      <pointsize>36</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">

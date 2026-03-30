@@ -6,917 +6,160 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1687</width>
-    <height>969</height>
+    <width>1920</width>
+    <height>874</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>AutoTreatInstruction</string>
   </property>
-  <widget class="QFrame" name="frame">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>110</y>
-     <width>1471</width>
-     <height>821</height>
+     <x>80</x>
+     <y>80</y>
+     <width>1751</width>
+     <height>691</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>16</pointsize>
+     <pointsize>28</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:30px;
+background-color:rgb(0, 157, 200);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Confirm">
+   <property name="geometry">
+    <rect>
+     <x>1340</x>
+     <y>650</y>
+     <width>271</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>28</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">
-QFrame
-{
-	border-radius:10px;
-	border:1px solid rgb(135,206,250)
-} </string>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>20</y>
-      <width>1301</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>28</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(135,206,250)</string>
-    </property>
-    <property name="text">
-     <string>                                           机械臂自动治疗-治疗前须知</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>100</x>
-      <y>190</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(0,255,255);
-color:white;</string>
-    </property>
-    <property name="text">
-     <string>治疗前准备</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>190</y>
-      <width>201</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(0,255,255);
-color:white;</string>
-    </property>
-    <property name="text">
-     <string>治疗时间设定</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>190</y>
-      <width>211</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(0,255,255);
-color:white;</string>
-    </property>
-    <property name="text">
-     <string>人体穴位识别</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>190</y>
-      <width>251</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(0,255,255);
-color:white;</string>
-    </property>
-    <property name="text">
-     <string>人体耐受力测试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>1150</x>
-      <y>190</y>
-      <width>211</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-background-color:rgb(0,255,255);
-color:white;</string>
-    </property>
-    <property name="text">
-     <string>自动治疗开始</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_7">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>190</y>
-      <width>54</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>   &gt;&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_8">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>190</y>
-      <width>54</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>   &gt;&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_9">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>190</y>
-      <width>54</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>   &gt;&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_10">
-    <property name="geometry">
-     <rect>
-      <x>1090</x>
-      <y>190</y>
-      <width>54</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>   &gt;&gt;</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_11">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>250</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_12">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>250</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_13">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>250</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>250</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_15">
-    <property name="geometry">
-     <rect>
-      <x>1220</x>
-      <y>250</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_16">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>280</y>
-      <width>161</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>  按摩膏涂抹</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_17">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>320</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_18">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>350</y>
-      <width>171</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>人体金属探测</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_19">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>390</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_20">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>420</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>  操作调试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_21">
-    <property name="geometry">
-     <rect>
-      <x>190</x>
-      <y>460</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_22">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>490</y>
-      <width>181</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>整机作业测试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_23">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>280</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>选择默认或自设</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_24">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>280</y>
-      <width>171</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>自动识别校准</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_25">
-    <property name="geometry">
-     <rect>
-      <x>620</x>
-      <y>350</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>  辅助调整</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_26">
-    <property name="geometry">
-     <rect>
-      <x>660</x>
-      <y>320</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_27">
-    <property name="geometry">
-     <rect>
-      <x>880</x>
-      <y>280</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>大椎穴测试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_28">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>350</y>
-      <width>151</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>尾椎穴测试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_29">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>320</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_30">
-    <property name="geometry">
-     <rect>
-      <x>870</x>
-      <y>420</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>整体耐受力测试</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_31">
-    <property name="geometry">
-     <rect>
-      <x>940</x>
-      <y>390</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_32">
-    <property name="geometry">
-     <rect>
-      <x>1170</x>
-      <y>280</y>
-      <width>191</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>人工辅助微调</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_33">
-    <property name="geometry">
-     <rect>
-      <x>1170</x>
-      <y>350</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius:0px;
-border-color: rgb(0,255,255);</string>
-    </property>
-    <property name="text">
-     <string>声控与按键暂停</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_34">
-    <property name="geometry">
-     <rect>
-      <x>1220</x>
-      <y>320</y>
-      <width>54</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: none;</string>
-    </property>
-    <property name="text">
-     <string>    :</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_Back">
-    <property name="geometry">
-     <rect>
-      <x>930</x>
-      <y>710</y>
-      <width>240</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>36</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton
+    <string notr="true">QPushButton
 {
     /*背景颜色*/  
-	background-color:rgb(98,157,207);
-	border-radius:15px;  
-}
-
-QPushButton:pressed
-{
-    background-color:rgb(0,0,128);
-}</string>
-    </property>
-    <property name="text">
-     <string>返回</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_NextStep">
-    <property name="geometry">
-     <rect>
-      <x>1180</x>
-      <y>710</y>
-      <width>240</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>36</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton
-{
-    /*背景颜色*/  
-	background-color:rgb(98,157,207);
+	background-color:white;
 	border-radius:15px;  
 }
 QPushButton:pressed
 {
-    background-color:rgb(0,0,128);
+    background-color:#0AB2AE;
+    color:white;
 }</string>
-    </property>
-    <property name="text">
-     <string>下一步</string>
-    </property>
-   </widget>
+   </property>
+   <property name="text">
+    <string>已知晓，确定</string>
+   </property>
   </widget>
+  <widget class="QLabel" name="label_Title">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>120</y>
+     <width>491</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;</string>
+   </property>
+   <property name="text">
+    <string>治疗禁忌症告知书</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Instruct">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>190</y>
+     <width>1081</width>
+     <height>531</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;</string>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;为确保您在理疗过程中的安全,现将场控生物电禁忌症及相关注意事项告知如下。请您仔细阅读，如有任何疑问请及时与工作人员沟通。禁忌症:&lt;/p&gt;&lt;p&gt;1、心、肺、肾、肝、胆等全身脏腑有病发症者不允许;&lt;/p&gt;&lt;p&gt;2、冇悬性肿瘤、血管瘤病史患者不允许;&lt;/p&gt;&lt;p&gt;3、急性传染病患者不允许;&lt;/p&gt;&lt;p&gt;4、妇女生理期妊娠等不允许:&lt;/p&gt;&lt;p&gt;5、各种出血性疾病不允许:&lt;/p&gt;&lt;p&gt;6、体内埋有异物如金属、支架、硅胶(如鼻子，太阳穴，下巴)等不允许,&lt;/p&gt;&lt;p&gt;7、严重心脏病患者及各种手术恢复期患者不允许:&lt;/p&gt;&lt;p&gt;8、心脏血管疾病、心脏血管瘪病史者等康复期或有后遗症者不允许:&lt;/p&gt;&lt;p&gt;9、脑梗，脑血栓者不允许;&lt;/p&gt;&lt;p&gt;10、其他危重病惠者不允许;&lt;/p&gt;&lt;p&gt;11、骨质疏松，易骨折者，身体状况不佳者不允许;&lt;/p&gt;&lt;p&gt;12、有严重外伤者(如骨折、骨裂)等不允许:&lt;/p&gt;&lt;p&gt;13、高血压惠者(低压超过 110mmHg高压超过 160mHg)不允许;&lt;/p&gt;&lt;p&gt;14、哮喘意病史者，肺结核活动期及癌症病史者不允许:&lt;/p&gt;&lt;p&gt;15、眼睛带隐形眼镜的不可以。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Top">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>80</y>
+     <width>1000</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#41FFC5;
+border-bottom-left-radius:15px;
+border-bottom-right-radius:15px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Top_2">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>860</y>
+     <width>1445</width>
+     <height>15</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;
+border-top-left-radius:15px;
+border-top-right-radius:15px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label</zorder>
+  <zorder>pushButton_Confirm</zorder>
+  <zorder>label_Title</zorder>
+  <zorder>label_Top</zorder>
+  <zorder>label_Top_2</zorder>
+  <zorder>label_Instruct</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

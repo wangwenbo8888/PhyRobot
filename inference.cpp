@@ -4,6 +4,384 @@
 #define benchmark
 #define ELOG
 
+float clamp(float val, float min, float max)
+{
+    return val > min ? (val < max ? val : max) : min;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+#if 1
+struct PreprocessResult 
+{
+    cv::Mat image;
+    float ratio;
+    float dw, dh;
+};
+
+PreprocessResult preprocess_keep_aspect(const cv::Mat& image, int inputWidth = 640, int inputHeight = 640) {
+    PreprocessResult result;
+
+    int original_height = image.rows;
+    int original_width = image.cols;
+
+    // 计算缩放比例（与Python版本一致）
+    float r = std::min(static_cast<float>(inputWidth) / original_width,
+        static_cast<float>(inputHeight) / original_height);
+    int new_w = static_cast<int>(original_width * r);
+    int new_h = static_cast<int>(original_height * r);
+
+    // 调整大小
+    cv::Mat resized;
+    cv::resize(image, resized, cv::Size(new_w, new_h));
+
+    // 创建画布并填充
+    cv::Mat canvas = cv::Mat::zeros(inputHeight, inputWidth, CV_8UC3);
+    canvas.setTo(cv::Scalar(114, 114, 114));
+
+    // 计算填充偏移量
+    result.dw = (inputWidth - new_w) / 2.0f;
+    result.dh = (inputHeight - new_h) / 2.0f;
+    result.ratio = r;
+
+    int top = static_cast<int>(std::round(result.dh - 0.1f));
+    int left = static_cast<int>(std::round(result.dw - 0.1f));
+
+    // 将调整大小后的图像放在画布中央
+    cv::Mat roi = canvas(cv::Rect(left, top, new_w, new_h));
+    resized.copyTo(roi);
+
+    // 转换颜色通道 BGR -> RGB
+    //cv::cvtColor(canvas, canvas, cv::COLOR_BGR2RGB);
+
+    // 归一化
+    canvas.convertTo(result.image, CV_32F, 1.0/255.0);
+
+    return result;
+}
+
+struct DetectionResult {
+    bool hasKeypoints;
+    cv::Rect_<float> bbox;
+    std::vector<Keypoint> keypoints;
+};
+
+DetectionResult optimizeDetectionResult(const DetectionResult& input,
+    const cv::Size& original_size,
+    const cv::Size& model_input_size,
+    float ratio, float pad_x, float pad_y,
+    float margin = 0.0f,
+    bool verbose = false) {
+    DetectionResult result = input;
+
+    if (!result.hasKeypoints || result.keypoints.empty()) {
+        if (verbose) {
+            std::cout << "No keypoints to optimize" << std::endl;
+        }
+        return result;
+    }
+
+    // 将边界框坐标从模型输入尺寸映射回原图尺寸
+    // 注意：这里需要减去填充并除以缩放比例
+    result.bbox.x = (result.bbox.x - pad_x) * ratio;
+    result.bbox.y = (result.bbox.y - pad_y) * ratio;
+    result.bbox.width = result.bbox.width * ratio;
+    result.bbox.height = result.bbox.height * ratio;
+
+    // 确保边界框在原图范围内
+    result.bbox.x = std::max(0.0f, std::min(result.bbox.x, static_cast<float>(original_size.width - 1)));
+    result.bbox.y = std::max(0.0f, std::min(result.bbox.y, static_cast<float>(original_size.height - 1)));
+    result.bbox.width = std::max(0.0f, std::min(result.bbox.width, static_cast<float>(original_size.width - result.bbox.x)));
+    result.bbox.height = std::max(0.0f, std::min(result.bbox.height, static_cast<float>(original_size.height - result.bbox.y)));
+
+    int original_count = result.keypoints.size();
+    std::vector<Keypoint> filtered_keypoints;
+
+    for (const auto& kp : result.keypoints) {
+        // 将关键点坐标从模型输入尺寸映射回原图尺寸
+        // 同样需要减去填充并除以缩放比例
+        float mapped_x = (kp.position.x - pad_x) * ratio;
+        float mapped_y = (kp.position.y - pad_y) * ratio;
+
+        // 确保关键点坐标在原图范围内
+        mapped_x = std::max(0.0f, std::min(mapped_x, static_cast<float>(original_size.width - 1)));
+        mapped_y = std::max(0.0f, std::min(mapped_y, static_cast<float>(original_size.height - 1)));
+
+        // 检查映射后的关键点是否在映射后的检测框内
+        if (mapped_x >= result.bbox.x - margin &&
+            mapped_x <= result.bbox.x + result.bbox.width + margin &&
+            mapped_y >= result.bbox.y - margin &&
+            mapped_y <= result.bbox.y + result.bbox.height + margin) {
+            // 保存映射后的坐标
+            filtered_keypoints.emplace_back(mapped_x, mapped_y, kp.conf);
+        }
+    }
+
+    result.keypoints = filtered_keypoints;
+
+    if (result.keypoints.empty()) {
+        result.hasKeypoints = false;
+    }
+
+    if (verbose) {
+        std::cout << "Keypoint optimization: " << original_count << " -> "
+            << result.keypoints.size() << " keypoints" << std::endl;
+        std::cout << "Bounding box after mapping: " << result.bbox << std::endl;
+        std::cout << "Mapping parameters - ratio: " << ratio
+            << ", pad_x: " << pad_x << ", pad_y: " << pad_y << std::endl;
+    }
+
+    return result;
+}
+
+void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float nmsThreshold,
+    int inputWidth, int inputHeight, int numKeypoints, bool& hasKeypoints, cv::Rect_<float>& out_bbox,
+    std::vector<Keypoint>& out_keyps) {
+
+    cv::Size original_size = cv::Size(frame.cols, frame.rows);
+    cv::Size model_size = cv::Size(640, 640);
+    float ratio = std::max(frame.rows / float(inputHeight), frame.cols / float(inputWidth));
+    float pad_x = std::abs(inputWidth - frame.cols / ratio) / 2.0;
+    float pad_y = std::abs(inputHeight - frame.rows / ratio) / 2.0;
+    //cv::Mat frame_1 = frame.clone();
+    // 记录开始时间
+    auto start = std::chrono::high_resolution_clock::now();
+    PreprocessResult pr = preprocess_keep_aspect(frame);
+    frame = pr.image;
+    // 创建输入blob
+    cv::Mat blob;
+    cv::dnn::blobFromImage(frame, blob, 1.0, cv::Size(inputWidth, inputHeight), cv::Scalar(0, 0, 0), true, false);
+    net.setInput(blob);
+
+    // 前向推理
+    std::vector<cv::Mat> outputs;
+    net.forward(outputs, net.getUnconnectedOutLayersNames());
+
+    // 处理输出
+    if (outputs.empty()) {
+        std::cout << "No outputs from network!" << std::endl;
+        return;
+    }
+
+    const int channels = outputs[0].size[2];
+    const int anchors = outputs[0].size[1];
+
+    // 重塑输出格式
+    outputs[0] = outputs[0].reshape(1, anchors);
+    cv::Mat output1 = outputs[0].t();
+
+    std::vector<cv::Rect> bboxList;
+    std::vector<float> scoreList;
+    std::vector<int> indicesList;
+    std::vector<std::vector<Keypoint>> kpList;
+
+    // 解析每个检测结果
+    for (int i = 0; i < channels; i++) {
+        auto row_ptr = output1.row(i).ptr<float>();
+        auto bbox_ptr = row_ptr;
+        auto score_ptr = row_ptr + 4;
+        auto kp_ptr = row_ptr + 5;
+
+        float score = *score_ptr;
+        if (score > modelScoreThreshold) {
+            float x = *bbox_ptr++;
+            float y = *bbox_ptr++;
+            float w = *bbox_ptr++;
+            float h = *bbox_ptr;
+
+            // 转换边界框坐标
+            float x0 = clamp((x - 0.5f * w) * 1.0F, 0.f, float(modelShape.width));
+            float y0 = clamp((y - 0.5f * h) * 1.0F, 0.f, float(modelShape.height));
+            float x1 = clamp((x + 0.5f * w) * 1.0F, 0.f, float(modelShape.width));
+            float y1 = clamp((y + 0.5f * h) * 1.0F, 0.f, float(modelShape.height));
+
+            cv::Rect_<float> bbox;
+            bbox.x = x0;
+            bbox.y = y0;
+            bbox.width = x1 - x0;
+            bbox.height = y1 - y0;
+
+            // 解析关键点
+            std::vector<Keypoint> kps;
+            for (int k = 0; k < numKeypoints; k++) {
+                float kps_x = (*(kp_ptr + 3 * k));
+                float kps_y = (*(kp_ptr + 3 * k + 1));
+                float kps_s = *(kp_ptr + 3 * k + 2);
+
+                kps_x = clamp(kps_x * 1.0F, 0.f, float(modelShape.width));
+                kps_y = clamp(kps_y * 1.0F, 0.f, float(modelShape.height));
+                kps.emplace_back(kps_x, kps_y, kps_s);
+
+            }
+
+            bboxList.push_back(bbox);
+            scoreList.push_back(score);
+            kpList.push_back(kps);
+        }
+    }
+
+    std::cout << "Found " << bboxList.size() << " potential detections" << std::endl;
+
+    // 应用NMS
+    if (!bboxList.empty() && !scoreList.empty()) {
+        cv::dnn::NMSBoxes(bboxList, scoreList, confThreshold, nmsThreshold, indicesList);
+
+        std::cout << "After NMS: " << indicesList.size() << " detections" << std::endl;
+
+        cv::Rect_<float> bbox;
+        std::vector<Keypoint> keyps;
+        bool hasKeys = false;
+        if (!indicesList.empty()) {
+            int best_idx = indicesList[0];
+            bbox = bboxList[best_idx];
+            keyps = kpList[best_idx];
+            hasKeys = true;
+        }
+        DetectionResult tmp;
+        tmp.hasKeypoints = hasKeys;
+        tmp.bbox = bbox;
+        tmp.keypoints = keyps;
+        //for (int kk = 0; kk = keyps.size(); kk++) {
+        //    std::cout << "------------------" << keyps[kk].position << "-----------------------------" << std::endl;
+       // }
+        DetectionResult optimizedResults = optimizeDetectionResult(tmp, original_size, model_size, ratio, pad_x, pad_y);
+        hasKeypoints = optimizedResults.hasKeypoints;
+        out_bbox = optimizedResults.bbox;
+        out_keyps = optimizedResults.keypoints;
+        //for (int kk = 0; kk = out_keyps.size(); kk++) {
+        //    std::cout << "------------------" << out_keyps[kk].position << "-----------------------------" << std::endl;
+        //}
+    /////////////////////// just for visulization /////v////////////////////////////////////////////////
+     //cv::Rect_<float> vbbox = bbox;
+     //std::vector<Keypoint> vkeyps = keyps;
+     //cv::rectangle(frame_1, vbbox, cv::Scalar(0, 255, 255));
+     //for (int k = 0; k < vkeyps.size(); k++) {
+         //std::cout << "keyps[" << k << "]: " << vkeyps[k].position.x << ", " << vkeyps[k].position.y << ", " << vkeyps[k].conf << std::endl;
+         //if (vkeyps[k].conf > 0.25) {
+             //cv::Point2f kp_point(vkeyps[k].position.x, vkeyps[k].position.y);
+             //cv::circle(frame_1, kp_point, 5, cv::Scalar(0, 255, 0), -1);
+         //}
+     //}
+     //cv::imshow("keyps", frame_1);
+     //cv::waitKey(0);
+    }
+}
+
+#endif
+
+void processFrameOld(cv::Mat& frame, cv::dnn::Net& net,
+    float confThreshold, float nmsThreshold,
+    int inputWidth, int inputHeight, int numKeypoints, bool& hasKeypoints, cv::Rect_<float>& out_bbox, std::vector<Keypoint>& out_keyps) {
+    // 记录开始时间
+    auto start = std::chrono::high_resolution_clock::now();
+
+    // 创建输入blob
+    cv::Mat blob;
+    cv::dnn::blobFromImage(frame, blob, 1.0 / 255.0,
+        cv::Size(inputWidth, inputHeight),
+        cv::Scalar(0, 0, 0), true, false);
+    net.setInput(blob);
+
+    // 前向推理
+    std::vector<cv::Mat> outputs;
+    net.forward(outputs, net.getUnconnectedOutLayersNames());
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    const int channels = outputs[0].size[2];
+    const int anchors = outputs[0].size[1];
+    outputs[0] = outputs[0].reshape(1, anchors);
+    cv::Mat output1 = outputs[0].t();
+
+    std::vector<cv::Rect> bboxList;
+    std::vector<float> scoreList;
+    std::vector<int> indicesList;
+    std::vector<std::vector<Keypoint>> kpList;
+
+    for (int i = 0; i < channels; i++)
+    {
+        auto row_ptr = output1.row(i).ptr<float>();
+        auto bbox_ptr = row_ptr;
+        auto score_ptr = row_ptr + 4;
+        auto kp_ptr = row_ptr + 5;
+
+        float score = *score_ptr;
+        if (score > modelScoreThreshold) {
+            float x = *bbox_ptr++;
+            float y = *bbox_ptr++;
+            float w = *bbox_ptr++;
+            float h = *bbox_ptr;
+
+            float x0 = clamp((x - 0.5f * w) * 1.0F, 0.f, float(modelShape.width));
+            float y0 = clamp((y - 0.5f * h) * 1.0F, 0.f, float(modelShape.height));
+            float x1 = clamp((x + 0.5f * w) * 1.0F, 0.f, float(modelShape.width));
+            float y1 = clamp((y + 0.5f * h) * 1.0F, 0.f, float(modelShape.height));
+
+            cv::Rect_<float> bbox;
+            bbox.x = x0;
+            bbox.y = y0;
+            bbox.width = x1 - x0;
+            bbox.height = y1 - y0;
+
+            std::vector<Keypoint> kps;
+            for (int k = 0; k < 15; k++) {
+                float kps_x = (*(kp_ptr + 3 * k));
+                float kps_y = (*(kp_ptr + 3 * k + 1));
+                float kps_s = *(kp_ptr + 3 * k + 2);
+                if (kps_s > 0.05) {
+                    kps_x = clamp(kps_x * 1.0F, 0.f, float(modelShape.width));
+                    kps_y = clamp(kps_y * 1.0F, 0.f, float(modelShape.height));
+                    kps.emplace_back(kps_x, kps_y, kps_s);
+                }
+            }
+
+            bboxList.push_back(bbox);
+            scoreList.push_back(score);
+            kpList.push_back(kps);
+        }
+
+    }
+    std::cout << "bboxList size: " << bboxList.size() << std::endl;
+    std::cout << "scoreList size: " << scoreList.size() << std::endl;
+    std::cout << "kpList size: " << kpList.size() << std::endl;
+    if (bboxList.size() == 0 || scoreList.size() == 0 || kpList.size() == 0) {
+        std::cout << "No valid detections found." << std::endl;
+        hasKeypoints = false; // 没有有效的检测结
+    }
+    else {
+        hasKeypoints = true; // 有有效的检测结
+        cv::dnn::NMSBoxes(bboxList, scoreList, modelScoreThreshold, modelNMSThreshold, indicesList);
+        cv::Rect_<float> bbox;
+        std::cout << "indicesList size: " << indicesList.size() << std::endl;
+        std::cout << "indicesList value: " << indicesList[0] << std::endl;
+        std::vector<Keypoint> keyps;
+        if (indicesList.size() > 0) {
+            bbox = bboxList[indicesList[0]];
+            keyps = kpList[indicesList[0]];
+            out_bbox = bbox;
+            out_keyps = keyps;
+            std::cout << "bbox: " << bbox << std::endl;
+            std::cout << "keyps size: " << keyps.size() << std::endl;
+            std::cout << "keyps[0]: " << keyps[0].position.x << ", " << keyps[0].position.y << ", " << keyps[0].conf << std::endl;
+            std::cout << "keyps[1]: " << keyps[1].position.x << ", " << keyps[1].position.y << ", " << keyps[1].conf << std::endl;
+        }
+        else {
+            std::cout << "No valid indices found." << std::endl;
+            // continue; // 如果没有有效的索引，跳过当前循环
+        }
+        cv::Mat frame_1 = frame.clone();
+        cv::rectangle(frame_1, bbox, cv::Scalar(0, 255, 255));
+        for (int k = 0; k < keyps.size(); k++) {
+            std::cout << "keyps[" << k << "]: " << keyps[k].position.x << ", " << keyps[k].position.y << ", " << keyps[k].conf << std::endl;
+            if (keyps[k].conf > 0.05) {
+                cv::Point2f kp_point(keyps[k].position.x, keyps[k].position.y);
+                cv::circle(frame_1, kp_point, 5, cv::Scalar(0, 255, 0), -1);
+            }
+        }
+        //cv::imshow("bbox", frame_1);
+        //cv::waitKey(0);
+    }
+}
+
+#if 0
 DCSP_CORE::DCSP_CORE()
 {
 }
@@ -404,3 +782,6 @@ char* DCSP_CORE::WarmUpSession()
 
 	return Ret;
 }
+
+#endif
+

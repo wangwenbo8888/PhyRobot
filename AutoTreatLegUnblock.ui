@@ -1,0 +1,1043 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AutoTreatLegUnblockClass</class>
+ <widget class="QWidget" name="AutoTreatLegUnblockClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1820</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AutoTreatLegUnblock</string>
+  </property>
+  <widget class="QLabel" name="label_Bottom">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>640</y>
+     <width>1820</width>
+     <height>139</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#DAF1F7;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_XueweiImage">
+   <property name="geometry">
+    <rect>
+     <x>1270</x>
+     <y>100</y>
+     <width>449</width>
+     <height>535</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LegUnblock.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LastStep">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>上一步</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_NextStep">
+   <property name="geometry">
+    <rect>
+     <x>1530</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>下一步</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_BackGround">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1820</width>
+     <height>641</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Confirm">
+   <property name="geometry">
+    <rect>
+     <x>1250</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>确定</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_BackToHome">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>670</y>
+     <width>250</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>26</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    /*背景颜色*/  
+	background-color:rgb(255,255,255);
+	border-radius:8px;
+	border:3px solid #059FC9;
+	color:#059FC9;
+}
+
+QPushButton:pressed
+{
+    background-color:#059FC9;
+	color:white;
+}</string>
+   </property>
+   <property name="text">
+    <string>返回主页</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_LeftTop">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>1009</width>
+     <height>137</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LegUnblockLeftTop.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_LeftSecond">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>180</y>
+     <width>1009</width>
+     <height>137</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/legUnblockLeftSecond.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_LeftSecond_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>330</y>
+     <width>1009</width>
+     <height>137</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LegUnblockLeftThird.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_LeftSecond_3">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>480</y>
+     <width>1009</width>
+     <height>137</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LegUnblockLeftFourth.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_TreatTime">
+   <property name="geometry">
+    <rect>
+     <x>1180</x>
+     <y>18</y>
+     <width>535</width>
+     <height>67</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LegUnblockTreatTime.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Decr">
+   <property name="geometry">
+    <rect>
+     <x>1340</x>
+     <y>26</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:37px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/--.png</normaloff>:/--.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Incr">
+   <property name="geometry">
+    <rect>
+     <x>1610</x>
+     <y>26</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:37px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/++.png</normaloff>:/++.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Time">
+   <property name="geometry">
+    <rect>
+     <x>1390</x>
+     <y>20</y>
+     <width>221</width>
+     <height>58</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>阿里巴巴普惠体</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#EBEBEB;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/time.png</pixmap>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shangliao1">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>90</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShangliaoUnush.png</normaloff>:/ShangliaoUnush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shangliao2">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>250</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShangliaoUnush.png</normaloff>:/ShangliaoUnush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shangliao3">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>400</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShangliaoUnush.png</normaloff>:/ShangliaoUnush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shangliao4">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>550</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShangliaoUnush.png</normaloff>:/ShangliaoUnush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youyaoyan1">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>90</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YouyaoyanUnpush.png</normaloff>:/YouyaoyanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youyaoyan2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>400</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YouyaoyanUnpush.png</normaloff>:/YouyaoyanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuoyaoyan1">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>250</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuoyaoyanUnpush.png</normaloff>:/ZuoyaoyanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuoyaoyan2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>550</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuoyaoyanUnpush.png</normaloff>:/ZuoyaoyanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shenyu1">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>90</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShenyuUnpush.png</normaloff>:/ShenyuUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shenyu2">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>250</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShenyuUnpush.png</normaloff>:/ShenyuUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shenyu3">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>400</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShenyuUnpush.png</normaloff>:/ShenyuUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Shenyu4">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>550</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ShenyuUnpush.png</normaloff>:/ShenyuUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Yaoyangguan1">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>90</y>
+     <width>150</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LegUnblockYaoyangguanUnpush.png</normaloff>:/LegUnblockYaoyangguanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>150</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Yaoyangguan2">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>250</y>
+     <width>150</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LegUnblockYaoyangguanUnpush.png</normaloff>:/LegUnblockYaoyangguanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>150</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Yaoyangguan3">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>400</y>
+     <width>150</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LegUnblockYaoyangguanUnpush.png</normaloff>:/LegUnblockYaoyangguanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>150</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Yaoyangguan4">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>550</y>
+     <width>150</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LegUnblockYaoyangguanUnpush.png</normaloff>:/LegUnblockYaoyangguanUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>150</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youweizhong1">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>90</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YouweizhongUnpush.png</normaloff>:/YouweizhongUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>80</y>
+     <width>1</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>240</y>
+     <width>1</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>390</y>
+     <width>1</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>720</x>
+     <y>530</y>
+     <width>1</width>
+     <height>47</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color:#059FC9;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youweiyang1">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>90</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YouweiyangUnpush.png</normaloff>:/YouweiyangUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuoweizhong1">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>250</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuoweizhongUnpush.png</normaloff>:/ZuoweizhongUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuoweiyang1">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>250</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuoweiyangUnpush.png</normaloff>:/ZuoweiyangUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youkunlun1">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>390</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YoukunlunUnpush.png</normaloff>:/YoukunlunUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Youjiexi1">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>390</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/YoujiexiUnpush.png</normaloff>:/YoujiexiUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuokunlun1">
+   <property name="geometry">
+    <rect>
+     <x>780</x>
+     <y>540</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuokunlunUnpush.png</normaloff>:/ZuokunlunUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Zuojiexi1">
+   <property name="geometry">
+    <rect>
+     <x>920</x>
+     <y>540</y>
+     <width>126</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/ZuojiexiUnpush.png</normaloff>:/ZuojiexiUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>126</width>
+     <height>42</height>
+    </size>
+   </property>
+  </widget>
+  <zorder>label_BackGround</zorder>
+  <zorder>label_Bottom</zorder>
+  <zorder>label_XueweiImage</zorder>
+  <zorder>pushButton_LastStep</zorder>
+  <zorder>pushButton_NextStep</zorder>
+  <zorder>pushButton_Confirm</zorder>
+  <zorder>pushButton_BackToHome</zorder>
+  <zorder>label_LeftTop</zorder>
+  <zorder>label_LeftSecond</zorder>
+  <zorder>label_LeftSecond_2</zorder>
+  <zorder>label_LeftSecond_3</zorder>
+  <zorder>label_TreatTime</zorder>
+  <zorder>pushButton_Decr</zorder>
+  <zorder>pushButton_Incr</zorder>
+  <zorder>label_Time</zorder>
+  <zorder>pushButton_Shangliao1</zorder>
+  <zorder>pushButton_Shangliao2</zorder>
+  <zorder>pushButton_Shangliao3</zorder>
+  <zorder>pushButton_Shangliao4</zorder>
+  <zorder>pushButton_Youyaoyan1</zorder>
+  <zorder>pushButton_Youyaoyan2</zorder>
+  <zorder>pushButton_Zuoyaoyan1</zorder>
+  <zorder>pushButton_Zuoyaoyan2</zorder>
+  <zorder>pushButton_Shenyu1</zorder>
+  <zorder>pushButton_Shenyu2</zorder>
+  <zorder>pushButton_Shenyu3</zorder>
+  <zorder>pushButton_Shenyu4</zorder>
+  <zorder>pushButton_Yaoyangguan1</zorder>
+  <zorder>pushButton_Yaoyangguan2</zorder>
+  <zorder>pushButton_Yaoyangguan3</zorder>
+  <zorder>pushButton_Yaoyangguan4</zorder>
+  <zorder>pushButton_Youweizhong1</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_4</zorder>
+  <zorder>pushButton_Youweiyang1</zorder>
+  <zorder>pushButton_Zuoweizhong1</zorder>
+  <zorder>pushButton_Zuoweiyang1</zorder>
+  <zorder>pushButton_Youkunlun1</zorder>
+  <zorder>pushButton_Youjiexi1</zorder>
+  <zorder>pushButton_Zuokunlun1</zorder>
+  <zorder>pushButton_Zuojiexi1</zorder>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="PhysicalTherapyRobot.qrc"/>
+ </resources>
+ <connections/>
+</ui>
