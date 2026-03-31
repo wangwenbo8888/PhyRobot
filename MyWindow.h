@@ -112,7 +112,7 @@ public:
 
     void go();
 
-    void Run(PROTOCOL pro);
+    void Run(PROTOCOL pro,int level = 2);
 
     void SetModel(OPENBACK_MODEL model);
 
@@ -159,7 +159,7 @@ public:
         DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
 
     bool MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
-        DETECTED_XUEWEI nextxuewei, std::vector<double>& next);
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next,int level);
 
 public slots:
 	void On_PushButton_Exit_Clicked();
@@ -201,10 +201,10 @@ private:
     QImage cvMatToQImage(const cv::Mat& inMat);
 
     // 步进模式
-    bool StepModel(PROTOCOL pro);
+    bool StepModel(PROTOCOL pro,int level);
 
     // 连续模式
-    bool ContinueModel(PROTOCOL pro);
+    bool ContinueModel(PROTOCOL pro,int level);
 
     // 以贴近皮肤的方式移动到下一个穴位
     bool MoveToNextAcupoint(int group,int row,std::vector<double>& next);

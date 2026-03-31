@@ -288,7 +288,7 @@ void AutoTreatBegin::on_Pushbutton_StartOrStop_Clicked()
 		{
 			ui.label_flag1->show();
 			m_pWindow->SetModel(m_pOpenBack->GetModel());
-			m_pWindow->Run(OPENBACK);
+			m_pWindow->Run(OPENBACK,m_iSpeed);
 		}
 
 		// 开始治疗

@@ -1411,7 +1411,7 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV5(int group, int row, DETECTED_XUE
 }
 
 bool MyWindow::MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
-    DETECTED_XUEWEI nextxuewei, std::vector<double>& next)
+    DETECTED_XUEWEI nextxuewei, std::vector<double>& next,int level)
 {
     bool bFirst = true;
     double maxForce = 20.0;
