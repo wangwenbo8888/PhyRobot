@@ -176,6 +176,8 @@ void AutoTreat::SetWidgetTreatBegin(OPENBACK_MODEL model,XUEWEI_TYPE type,int ti
 	m_pAutoTreatBegin->SetXuewei(type);
 	m_pAutoTreatBegin->SetTime(time);
 	m_pAutoTreatBegin->SetStarted(false);
+	int speed = m_pAutoTreatOpenBack->GetSpeed();
+	m_pAutoTreatBegin->SetSpeed(speed);
 	m_pAutoTreatBegin->SetOpenBack(m_pAutoTreatOpenBack.get());
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatBegin.get());
 }

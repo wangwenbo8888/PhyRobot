@@ -151,6 +151,12 @@ void AutoTreatBegin::SetOpenBack(AutoTreatOpenBack* openback)
 	m_pOpenBack = openback;
 }
 
+void AutoTreatBegin::SetSpeed(int speed)
+{
+	ui.label_SpeedValue->setText(QString::number(speed));
+	m_iSpeed = speed;
+}
+
 void AutoTreatBegin::SetTime(int time)
 {
 	m_iTotalTime = time;

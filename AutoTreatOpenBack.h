@@ -27,6 +27,11 @@ public:
 
 	void SetSpeed(int speed);
 
+	int GetSpeed()
+	{
+		return m_iContinueModelSpeed;
+	}
+
 	OPENBACK_MODEL GetModel();
 
 	void SetContinueModelFlag();

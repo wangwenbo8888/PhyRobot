@@ -32,6 +32,8 @@ public:
 
 	void SetTime(int time);
 
+	void SetSpeed(int speed);
+
 	void SetOpenBack(AutoTreatOpenBack* back);
 
 	void SetStarted(bool);
@@ -80,6 +82,8 @@ private:
 	int m_iDumaiTime;
 	int m_iZuopangguangjingTime;
 	int m_iYoupangguangjingTime;
+
+	int m_iSpeed;
 
 	std::vector<QSharedPointer<QLabel>> m_vAcupoints;
 
