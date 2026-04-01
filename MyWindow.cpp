@@ -1895,7 +1895,8 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				qDebug() << "From pos : " << j << " group " << i << " pos " << m_vCurrentPos[0] << " " << m_vCurrentPos[1] << " " << m_vCurrentPos[2] << " " << m_vCurrentPos[3] << " " << m_vCurrentPos[4] << " " << m_vCurrentPos[5];
 				qDebug() << "Move to: " << j << " group " << i << " pos " << next[0] << " " << next[1] << " " << next[2] << " " << next[3] << " " << next[4] << " " << next[5];
 				//MoveToNextAcupointNew(j, i, currentxuewei, nextxuewei, next);
-				MoveToNextAcupointNew_ImprovedV6(j, i, currentxuewei, nextxuewei, next,level);
+				//MoveToNextAcupointNew_ImprovedV6(j, i, currentxuewei, nextxuewei, next,level);
+				MoveToNextAcupointNew_ImprovedV7(j, i, currentxuewei, nextxuewei, next, level);
 				m_vCurrentPos[0] = next[0];
 				m_vCurrentPos[1] = next[1];
 				m_vCurrentPos[2] = next[2];

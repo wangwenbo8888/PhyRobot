@@ -161,6 +161,9 @@ public:
     bool MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
         DETECTED_XUEWEI nextxuewei, std::vector<double>& next,int level);
 
+    bool MoveToNextAcupointNew_ImprovedV7(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int level);
+
 public slots:
 	void On_PushButton_Exit_Clicked();
 

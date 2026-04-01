@@ -1411,7 +1411,326 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV5(int group, int row, DETECTED_XUE
 }
 
 bool MyWindow::MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
-    DETECTED_XUEWEI nextxuewei, std::vector<double>& next,int level)
+    DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int level)
+{
+    bool bFirst = true;
+    double maxForce = 20.0;
+    double midForce = 10.0;
+    double touchForce = 5.0;
+
+    double deadZoneLow = 3.0;
+    double deadZoneHigh = 3.0;
+
+    double step = 3.0;
+    qDebug() << "speed is " << step;
+
+    bool isLeftSideRoute = (currentxuewei == ZUOJIANJING_DETECTED && nextxuewei == ZUOQIHAIYU_DETECTED);
+    bool isRightSideRoute = (currentxuewei == YOUJIANJING_DETECTED && nextxuewei == YOUQIHAIYU_DETECTED);
+    bool isShoulderToQiHaiRoute = isLeftSideRoute || isRightSideRoute;
+
+    double forceUprightDistance = 100.0;
+    double totalTraveledDistance = 0.0;
+    bool isUpright = false;
+
+    g_forceFilterX.reset();
+    g_forceFilterY.reset();
+    g_forceFilterZ.reset();
+    g_forceMagFilter.reset();
+    g_lowForceCounter = 0;
+    g_highForceCounter = 0;
+    g_stableCounter = 0;
+
+    double startX = m_vCurrentPos[0];
+    double startY = m_vCurrentPos[1];
+
+    double dis2D = sqrt((next[0] - m_vCurrentPos[0]) * (next[0] - m_vCurrentPos[0]) +
+        (next[1] - m_vCurrentPos[1]) * (next[1] - m_vCurrentPos[1]));
+    int divid = dis2D / step;
+    if (divid < 1) divid = 1;
+
+    double deltaZ = 0.0;
+    double currentZ = m_vCurrentPos[2];
+    double xRaw = m_vCurrentPos[0];
+    double yRaw = m_vCurrentPos[1];
+
+    double adaptiveMidForce = midForce;
+    int consecutiveAdjustments = 0;
+
+    for (int i = 1; i < divid; ++i)
+    {
+        double xPos = xRaw + (next[0] - xRaw) * i / divid;
+        double yPos = yRaw + (next[1] - yRaw) * i / divid;
+        currentZ += deltaZ;
+
+        if (isShoulderToQiHaiRoute && !isUpright) {
+            double stepDistance = sqrt((xPos - m_vCurrentPos[0]) * (xPos - m_vCurrentPos[0]) +
+                (yPos - m_vCurrentPos[1]) * (yPos - m_vCurrentPos[1]));
+            totalTraveledDistance += stepDistance;
+
+            if (totalTraveledDistance >= forceUprightDistance) {
+                isUpright = true;
+                qDebug() << "Distance threshold reached: " << totalTraveledDistance
+                    << "mm, switching to upright posture";
+            }
+        }
+
+        GetPose();
+        
+        double rawFx = m_vForces[0] - m_vRawForces[0];
+        double rawFy = m_vForces[1] - m_vRawForces[1];
+        double rawFz = m_vForces[2] - m_vRawForces[2];
+        
+        double filteredFx = forceFilterX.filter(rawFx);
+        double filteredFy = forceFilterY.filter(rawFy);
+        double filteredFz = forceFilterZ.filter(rawFz);
+        
+        Point3D filteredForce(filteredFx, filteredFy, filteredFz);
+        double filteredMag = forceMagFilter.filter(filteredForce.Magnitude());
+        
+        if (!forceStabilized && level >= 2) {
+            forceCheckCount++;
+            if (forceCheckCount >= 3 && std::fabs(filteredMag - midForce) < 5.0) {
+                forceStabilized = true;
+                qDebug() << "Force stabilized, starting movement";
+            }
+            if (forceCheckCount >= 10) {
+                forceStabilized = true;
+                qDebug() << "Force check timeout, starting movement anyway";
+            }
+            continue;
+        }
+
+        double y = 0.0;
+        double p = 0.0;
+        double r = 0.0;
+
+        if (!isUpright) {
+            if (filteredForce.x() > 10.0) {
+                y = std::fabs(filteredForce.x()) * 0.2;
+            }
+            else if (filteredForce.x() > 1.0) {
+                y = std::fabs(filteredForce.x()) * 0.05;
+            }
+            else if (filteredForce.x() < -10.0) {
+                y = std::fabs(filteredForce.x()) * -0.2;
+            }
+            else if (filteredForce.x() < -1.0) {
+                y = std::fabs(filteredForce.x()) * -0.05;
+            }
+
+            if (filteredForce.y() > 10.0) {
+                p = std::fabs(filteredForce.y()) * -0.2;
+            }
+            else if (filteredForce.y() > 1.0) {
+                p = std::fabs(filteredForce.y()) * -0.05;
+            }
+            else if (filteredForce.y() < -10.0) {
+                p = std::fabs(filteredForce.y()) * 0.2;
+            }
+            else if (filteredForce.y() < -1.0) {
+                p = std::fabs(filteredForce.y()) * 0.05;
+            }
+
+            double a = 0.0;
+            double b = 0.0;
+
+            if (m_vForces[3] < -0.1) {
+                a = -1.0 * std::fabs(m_vForces[3]);
+            }
+            else if (m_vForces[3] > 0.1) {
+                a = 6.0 * std::fabs(m_vForces[3]);
+            }
+
+            if (m_vForces[4] < -0.1) {
+                b = 6.0 * std::fabs(m_vForces[4]);
+            }
+            else if (m_vForces[4] > 0.1) {
+                b = -1.0 * std::fabs(m_vForces[4]);
+            }
+
+            double xAngle = m_vCurrentPos[3] - y - a;
+            double yAngle = m_vCurrentPos[4] - p - b;
+            double zAngle = m_vCurrentPos[5] - r;
+
+            if (xAngle < -200.0) xAngle = -200.0;
+            if (xAngle > -160.0) xAngle = -160.0;
+
+            if (yAngle < -15.0) yAngle = -15.0;
+            if (yAngle > 15.0) yAngle = 15.0;
+
+            if (zAngle > 210.0) zAngle = 210.0;
+            if (zAngle < 150.0) zAngle = 150.0;
+
+            if (currentxuewei == ZHIYANG_DETECTED && bFirst) {
+                xAngle = -178.0;
+                yAngle = 0.0;
+                bFirst = false;
+            }
+
+            if (!bFirst) {
+                xAngle = -178.0;
+                yAngle = 0.0;
+            }
+
+            qDebug() << "Move to next: " << xPos << " " << yPos << " " << currentZ
+                << " " << xAngle << " " << yAngle << " " << zAngle
+                << " Upright:" << isUpright;
+
+            MovL(xPos, yPos, currentZ, xAngle, yAngle, NORMAL_ANGLE);
+        }
+        else {
+            double xAngle = -178.0;
+            double yAngle = 0.0;
+            double zAngle = m_vCurrentPos[5];
+
+            if (zAngle > 210.0) zAngle = 210.0;
+            if (zAngle < 150.0) zAngle = 150.0;
+
+            qDebug() << "Move to next (upright): " << xPos << " " << yPos << " " << currentZ
+                << " " << xAngle << " " << yAngle << " " << zAngle;
+
+            MovL(xPos, yPos, currentZ, xAngle, yAngle, NORMAL_ANGLE);
+        }
+
+        Wait_Done();
+
+        m_vCurrentPos[0] = xPos;
+        m_vCurrentPos[1] = yPos;
+        m_vCurrentPos[2] = currentZ;
+
+        if (isUpright) {
+            m_vCurrentPos[3] = -178.0;
+            m_vCurrentPos[4] = 0.0;
+        }
+
+        m_CurrForce = Point3D(filteredFx, filteredFy, filteredFz);
+
+        qDebug() << "Force mag is : " << filteredMag;
+        qDebug() << "Detected force is : " << filteredFx << " " << filteredFy << " " << filteredFz
+            << " " << group << " " << row;
+
+        deltaZ = 0.0;
+
+        double safeZoneMin = adaptiveMidForce - deadZoneLow;
+        double safeZoneMax = adaptiveMidForce + deadZoneHigh;
+
+        if (filteredMag > maxForce) {
+            highForceCounter++;
+            lowForceCounter = 0;
+            stableCounter = 0;
+            
+            if (highForceCounter >= hysteresisCountThreshold) {
+                double excess = filteredMag - maxForce;
+                double baseDelta = 1.5;
+                if (excess > 20) {
+                    baseDelta = 4.0;
+                }
+                else if (excess > 10) {
+                    baseDelta = 2.5;
+                }
+                else {
+                    baseDelta = 1.5;
+                }
+                deltaZ = baseDelta * deltaScaleFactor;
+                highForceCounter = 0;
+                consecutiveAdjustments++;
+            }
+        }
+        else if (filteredMag < touchForce) {
+            lowForceCounter++;
+            highForceCounter = 0;
+            stableCounter = 0;
+            
+            if (lowForceCounter >= 3) {
+                if (lastValidZ == 0.0) {
+                    lastValidZ = currentZ;
+                }
+                
+                double deficit = touchForce - filteredMag;
+                double baseDelta = -0.8;
+                if (deficit > 15) {
+                    baseDelta = -2.5;
+                }
+                else if (deficit > 8) {
+                    baseDelta = -1.5;
+                }
+                else {
+                    baseDelta = -0.8;
+                }
+                deltaZ = baseDelta * deltaScaleFactor;
+                lowForceCounter = 0;
+                consecutiveAdjustments++;
+            }
+        }
+        else if (filteredMag >= safeZoneMin && filteredMag <= safeZoneMax) {
+            stableCounter++;
+            lowForceCounter = 0;
+            highForceCounter = 0;
+            
+            if (stableCounter >= safeZoneStableThreshold) {
+                lastValidZ = currentZ;
+                
+                if (consecutiveAdjustments > 5) {
+                    adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;
+                }
+                consecutiveAdjustments = 0;
+            }
+            
+            deltaZ = 0.0;
+        }
+        else {
+            lowForceCounter = 0;
+            highForceCounter = 0;
+            stableCounter = 0;
+            
+            if (filteredMag > adaptiveMidForce && filteredMag < maxForce) {
+                double excess = filteredMag - adaptiveMidForce;
+                double baseDelta = 0.5;
+                if (excess > 5) {
+                    baseDelta = 1.0;
+                }
+                else {
+                    baseDelta = 0.5;
+                }
+                deltaZ = baseDelta * deltaScaleFactor;
+                consecutiveAdjustments++;
+            }
+            else if (filteredMag < adaptiveMidForce && filteredMag > touchForce) {
+                double deficit = adaptiveMidForce - filteredMag;
+                double baseDelta = -0.5;
+                if (deficit > 5) {
+                    baseDelta = -1.0;
+                }
+                else {
+                    baseDelta = -0.5;
+                }
+                deltaZ = baseDelta * deltaScaleFactor;
+                consecutiveAdjustments++;
+            }
+        }
+
+        if (deltaZ != 0.0) {
+            currentZ += deltaZ;
+            m_vCurrentPos[2] = currentZ;
+        }
+
+        qDebug() << "Delta Z: " << deltaZ << " | Stable: " << stableCounter 
+                 << " | Low: " << lowForceCounter << " | High: " << highForceCounter
+                 << " | Adaptive Mid: " << adaptiveMidForce;
+    }
+
+    next[2] = currentZ;
+
+    qDebug() << "Finish from shoulder to QiHaiYu !";
+    qDebug() << "Last valid Z: " << g_lastValidZ;
+    qDebug() << "Total traveled distance: " << totalTraveledDistance;
+    qDebug() << "Upright mode activated: " << isUpright;
+
+    return true;
+}
+
+bool MyWindow::MoveToNextAcupointNew_ImprovedV7(int group, int row, DETECTED_XUEWEI currentxuewei,
+    DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int level)
 {
     bool bFirst = true;
     double maxForce = 20.0;
@@ -1422,7 +1741,42 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUE
     double deadZoneHigh = 3.0;
     
     double step = 3.0;
-    qDebug() << "speed is " << step;
+    if (level == 1) {
+        step = 3.0;
+    } else if (level == 2) {
+        step = 6.0;
+    } else if (level == 3) {
+        step = 10.0;
+    }
+    
+    double filterWindowSize = 5;
+    double filterAlpha = 0.3;
+    double hysteresisCountThreshold = 2;
+    double safeZoneStableThreshold = 3;
+    double deltaScaleFactor = 1.0;
+    
+    if (level == 2) {
+        filterWindowSize = 7;
+        filterAlpha = 0.2;
+        hysteresisCountThreshold = 3;
+        safeZoneStableThreshold = 4;
+        deltaScaleFactor = 0.7;
+    } else if (level == 3) {
+        filterWindowSize = 9;
+        filterAlpha = 0.15;
+        hysteresisCountThreshold = 4;
+        safeZoneStableThreshold = 5;
+        deltaScaleFactor = 0.5;
+    }
+    
+    LowPassFilter forceFilterX(filterWindowSize, filterAlpha);
+    LowPassFilter forceFilterY(filterWindowSize, filterAlpha);
+    LowPassFilter forceFilterZ(filterWindowSize, filterAlpha);
+    LowPassFilter forceMagFilter(filterWindowSize, filterAlpha);
+    
+    qDebug() << "speed level: " << level << ", step: " << step
+             << " | filterWindow:" << filterWindowSize << " alpha:" << filterAlpha
+             << " | deltaScale:" << deltaScaleFactor;
     
     bool isLeftSideRoute = (currentxuewei == ZUOJIANJING_DETECTED && nextxuewei == ZUOQIHAIYU_DETECTED);
     bool isRightSideRoute = (currentxuewei == YOUJIANJING_DETECTED && nextxuewei == YOUQIHAIYU_DETECTED);
@@ -1432,13 +1786,10 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUE
     double totalTraveledDistance = 0.0;
     bool isUpright = false;
     
-    g_forceFilterX.reset();
-    g_forceFilterY.reset();
-    g_forceFilterZ.reset();
-    g_forceMagFilter.reset();
-    g_lowForceCounter = 0;
-    g_highForceCounter = 0;
-    g_stableCounter = 0;
+    int lowForceCounter = 0;
+    int highForceCounter = 0;
+    int stableCounter = 0;
+    double lastValidZ = m_vCurrentPos[2];
     
     double startX = m_vCurrentPos[0];
     double startY = m_vCurrentPos[1];
@@ -1455,6 +1806,9 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUE
     
     double adaptiveMidForce = midForce;
     int consecutiveAdjustments = 0;
+    
+    bool forceStabilized = false;
+    int forceCheckCount = 0;
     
     for (int i = 1; i < divid; ++i)
     {
