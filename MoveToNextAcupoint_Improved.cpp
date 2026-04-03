@@ -968,7 +968,7 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
     bool bFirst = true;
     int consecutiveAdjustments = 0;
     
-    // Force control parameters
+    // Force control parameters - optimized for stable 20N force at ration=3
     double maxForce = 15.0;
     double warningForce = 12.0;
     double midForce = 8.0;
@@ -977,29 +977,51 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
     double deadZoneHigh = 4.0;
     
     if (ration >= 3) {
-        maxForce = 15.0 + (ration - 2) * 1.0;
-        warningForce = 12.0 + (ration - 2) * 0.8;
-        midForce = 8.0 + (ration - 2) * 0.5;
-        touchForce = 3.0 + (ration - 2) * 0.2;
-        deadZoneLow = 4.0 + (ration - 2) * 0.5;
-        deadZoneHigh = 4.0 + (ration - 2) * 0.5;
+        // 针对ration=3优化参数，目标是保持20N稳定力
+        maxForce = 30.0;        // 提高最大力阈值，避免过早调整
+        warningForce = 25.0;    // 警告力设为25，接近目标力20时开始调整
+        midForce = 20.0;        // 目标力设为20N
+        touchForce = 15.0;      // 提高触发力，确保稳定接触
+        deadZoneLow = 3.0;      // 减小死区，提高灵敏度
+        deadZoneHigh = 3.0;
+        
+        // 如果ration>3，进一步调整
+        if (ration > 3) {
+            maxForce = 30.0 + (ration - 3) * 2.0;
+            warningForce = 25.0 + (ration - 3) * 1.5;
+            midForce = 20.0 + (ration - 3) * 1.0;
+            touchForce = 15.0 + (ration - 3) * 0.5;
+            deadZoneLow = 3.0 + (ration - 3) * 0.2;
+            deadZoneHigh = 3.0 + (ration - 3) * 0.2;
+        }
     }
 
-    // Threshold parameters
+    // Threshold parameters - optimized for ration=3
     int highForceThreshold = 3;
     int lowForceThreshold = 4;
     int stableThreshold = 4;
     
     if (ration >= 3) {
-        highForceThreshold = 3 + (ration - 2);
-        lowForceThreshold = 4 + (ration - 2);
-        stableThreshold = 4 + (ration - 2);
+        // 降低阈值，使系统响应更快速
+        highForceThreshold = 2;  // 快速响应高力
+        lowForceThreshold = 3;   // 快速响应低力
+        stableThreshold = 3;     // 更快确认稳定状态
+        
+        if (ration > 3) {
+            highForceThreshold = 2 + (ration - 3);
+            lowForceThreshold = 3 + (ration - 3);
+            stableThreshold = 3 + (ration - 3);
+        }
     }
 
     double step = 3.0 * ration;
     double maxStep = 15.0;
     if (ration >= 3) {
-        maxStep = 6.0 + (ration - 3) * 1.0;
+        // 限制最大步长，提高精度
+        maxStep = 8.0;  // 适当提高maxStep，但不要太大
+        if (ration > 3) {
+            maxStep = 8.0 + (ration - 3) * 0.5;
+        }
     }
     if (step > maxStep) {
         step = maxStep;
@@ -1050,10 +1072,16 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
     double adaptiveMidForce = midForce;
 
-    // Z-axis adjustment optimization
+    // Z-axis adjustment optimization - optimized for stable force control
     double zAdjustScale = 0.6;
     if (ration >= 3) {
-        zAdjustScale = 0.4 - (ration - 3) * 0.08;
+        // 针对ration=3优化Z轴调整比例
+        zAdjustScale = 0.8;  // 提高调整比例，使系统响应更积极
+        if (ration > 3) {
+            // ration>3时适当降低调整比例，避免过度调整
+            zAdjustScale = 0.8 - (ration - 3) * 0.1;
+            if (zAdjustScale < 0.4) zAdjustScale = 0.4;
+        }
     }
 
     for (int i = 1; i < divid; ++i) {
@@ -1209,10 +1237,10 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
         deltaZ = 0.0;
 
-        double safeZoneMin = adaptiveMidForce - deadZoneLow;
+double safeZoneMin = adaptiveMidForce - deadZoneLow;
         double safeZoneMax = adaptiveMidForce + deadZoneHigh;
 
-        // === 优化的力控制逻辑 - 增加警告力检查 ===
+        // === 优化的力控制逻辑 - 针对ration=3优化，保持20N稳定力 ===
         if (filteredMag > maxForce) {
             // 超过最大力，紧急调整
             g_highForceCounter++;
@@ -1221,17 +1249,36 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
             if (g_highForceCounter >= highForceThreshold) {
                 double excess = filteredMag - maxForce;
-                if (excess > 15) {
-                    deltaZ = 2.0 * zAdjustScale;
-                }
-                else if (excess > 8) {
-                    deltaZ = 1.2 * zAdjustScale;
-                }
-                else if (excess > 3) {
-                    deltaZ = 0.6 * zAdjustScale;
+                // 针对ration=3优化调整步长
+                if (ration >= 3) {
+                    // 使用更精细的调整，避免力的剧烈波动
+                    if (excess > 10) {
+                        deltaZ = 1.5 * zAdjustScale;  // 减小最大调整步长
+                    }
+                    else if (excess > 5) {
+                        deltaZ = 1.0 * zAdjustScale;
+                    }
+                    else if (excess > 2) {
+                        deltaZ = 0.5 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.2 * zAdjustScale;
+                    }
                 }
                 else {
-                    deltaZ = 0.3 * zAdjustScale;
+                    // 原逻辑保持不变
+                    if (excess > 15) {
+                        deltaZ = 2.0 * zAdjustScale;
+                    }
+                    else if (excess > 8) {
+                        deltaZ = 1.2 * zAdjustScale;
+                    }
+                    else if (excess > 3) {
+                        deltaZ = 0.6 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.3 * zAdjustScale;
+                    }
                 }
                 g_highForceCounter = 0;
                 consecutiveAdjustments++;
@@ -1245,12 +1292,27 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
             if (g_highForceCounter >= highForceThreshold) {
                 double excess = filteredMag - warningForce;
-                // 预防性调整，更小的步进值
-                if (excess > 3) {
-                    deltaZ = 0.8 * zAdjustScale;
+                // 针对ration=3优化预防性调整
+                if (ration >= 3) {
+                    // 更精细的预防性调整，确保平稳过渡到目标力
+                    if (excess > 5) {
+                        deltaZ = 0.6 * zAdjustScale;
+                    }
+                    else if (excess > 2) {
+                        deltaZ = 0.3 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.1 * zAdjustScale;
+                    }
                 }
                 else {
-                    deltaZ = 0.4 * zAdjustScale;
+                    // 原逻辑保持不变
+                    if (excess > 3) {
+                        deltaZ = 0.8 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.4 * zAdjustScale;
+                    }
                 }
                 g_highForceCounter = 0;
                 consecutiveAdjustments++;
@@ -1267,17 +1329,36 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
                 }
 
                 double deficit = touchForce - filteredMag;
-                if (deficit > 12) {
-                    deltaZ = -1.5 * zAdjustScale;
-                }
-                else if (deficit > 6) {
-                    deltaZ = -0.9 * zAdjustScale;
-                }
-                else if (deficit > 2) {
-                    deltaZ = -0.5 * zAdjustScale;
+                // 针对ration=3优化低力调整，避免过度补偿
+                if (ration >= 3) {
+                    // 使用更保守的低力调整，避免力的急剧上升
+                    if (deficit > 8) {
+                        deltaZ = -1.0 * zAdjustScale;  // 减小最大负向调整
+                    }
+                    else if (deficit > 4) {
+                        deltaZ = -0.6 * zAdjustScale;
+                    }
+                    else if (deficit > 1) {
+                        deltaZ = -0.3 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = -0.1 * zAdjustScale;
+                    }
                 }
                 else {
-                    deltaZ = -0.2 * zAdjustScale;
+                    // 原逻辑保持不变
+                    if (deficit > 12) {
+                        deltaZ = -1.5 * zAdjustScale;
+                    }
+                    else if (deficit > 6) {
+                        deltaZ = -0.9 * zAdjustScale;
+                    }
+                    else if (deficit > 2) {
+                        deltaZ = -0.5 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = -0.2 * zAdjustScale;
+                    }
                 }
                 g_lowForceCounter = 0;
                 consecutiveAdjustments++;
@@ -1291,8 +1372,34 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
             if (g_stableCounter >= stableThreshold) {
                 g_lastValidZ = currentZ;
 
-                if (consecutiveAdjustments > 5) {
-                    adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;
+                // 针对ration=3优化自适应力调整，使力更稳定在20N
+                if (ration >= 3) {
+                    // 使用更强的目标力维持策略
+                    if (consecutiveAdjustments > 3) {  // 降低调整阈值
+                        // 更激进地向目标力20N调整
+                        double targetForce = 20.0;
+                        if (ration > 3) {
+                            targetForce = 20.0 + (ration - 3) * 1.0;
+                        }
+                        
+                        // 如果当前自适应力与目标力差距较大，更快地调整
+                        double forceDiff = fabs(adaptiveMidForce - targetForce);
+                        if (forceDiff > 2.0) {
+                            adaptiveMidForce = adaptiveMidForce * 0.8 + targetForce * 0.2;  // 更快调整
+                        }
+                        else if (forceDiff > 0.5) {
+                            adaptiveMidForce = adaptiveMidForce * 0.9 + targetForce * 0.1;
+                        }
+                        else {
+                            adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;  // 原逻辑
+                        }
+                    }
+                }
+                else {
+                    // 原逻辑保持不变
+                    if (consecutiveAdjustments > 5) {
+                        adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;
+                    }
                 }
                 consecutiveAdjustments = 0;
             }
@@ -1306,27 +1413,59 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
             if (filteredMag > adaptiveMidForce && filteredMag < maxForce) {
                 double excess = filteredMag - adaptiveMidForce;
-                if (excess > 4) {
-                    deltaZ = 0.6 * zAdjustScale;
-                }
-                else if (excess > 1.5) {
-                    deltaZ = 0.3 * zAdjustScale;
+                // 针对ration=3优化中间区域调整，实现更平稳的力控制
+                if (ration >= 3) {
+                    // 使用更小的调整步长，实现更精细的力控制
+                    if (excess > 3) {
+                        deltaZ = 0.4 * zAdjustScale;
+                    }
+                    else if (excess > 1) {
+                        deltaZ = 0.2 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.05 * zAdjustScale;  // 极小调整，保持稳定性
+                    }
                 }
                 else {
-                    deltaZ = 0.1 * zAdjustScale;
+                    // 原逻辑保持不变
+                    if (excess > 4) {
+                        deltaZ = 0.6 * zAdjustScale;
+                    }
+                    else if (excess > 1.5) {
+                        deltaZ = 0.3 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = 0.1 * zAdjustScale;
+                    }
                 }
                 consecutiveAdjustments++;
             }
             else if (filteredMag < adaptiveMidForce && filteredMag > touchForce) {
                 double deficit = adaptiveMidForce - filteredMag;
-                if (deficit > 4) {
-                    deltaZ = -0.6 * zAdjustScale;
+                // 针对ration=3优化中间区域负向调整
+                if (ration >= 3) {
+                    // 使用更小的负向调整步长
+                    if (deficit > 3) {
+                        deltaZ = -0.4 * zAdjustScale;
+                    }
+                    else if (deficit > 1) {
+                        deltaZ = -0.2 * zAdjustScale;
+                    }
+                    else {
+                        deltaZ = -0.05 * zAdjustScale;  // 极小调整，保持稳定性
+                    }
                 }
-                else if (deficit > 1.5) {
-                    deltaZ = -0.3 * zAdjustScale;
-                }
-                else {                        // 微小不足
-                    deltaZ = -0.1 * zAdjustScale;
+                else {
+                    // 原逻辑保持不变
+                    if (deficit > 4) {
+                        deltaZ = -0.6 * zAdjustScale;
+                    }
+                    else if (deficit > 1.5) {
+                        deltaZ = -0.3 * zAdjustScale;
+                    }
+                    else {                        // 微小不足
+                        deltaZ = -0.1 * zAdjustScale;
+                    }
                 }
                 consecutiveAdjustments++;
             }
