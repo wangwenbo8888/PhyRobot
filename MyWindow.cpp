@@ -129,27 +129,27 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	connect(od.sktmsgreturn, &QTcpSocket::readyRead, this, &MyWindow::sktmsgreturn_readyRead);
 	connect(od.sktmsgreturn, &QTcpSocket::disconnected, this, &MyWindow::sktmsgreturn_disconnected);
 
-	//std::string modelPath = "last_0923.onnx";  // Ìæ»»ÎªÄãµÄÄ£ÐÍÂ·¾¶
+	//std::string modelPath = "last_0923.onnx";  // ï¿½æ»»Îªï¿½ï¿½ï¿½Ä£ï¿½ï¿½Â·ï¿½ï¿½
 	std::string modelPath = "last1021.onnx";
 	m_net = cv::dnn::readNet(modelPath);
 	m_net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
 	m_net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
 
-	// ¼ì²éÊÇ·ñ¼ÓÔØ³É¹¦
+	// ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Ø³É¹ï¿½
 	if (m_net.empty())
 	{
 		std::cerr << "Failed to load model: " << modelPath << std::endl;
 	}
 
 	AdmittanceParams params;
-	params.M = Eigen::MatrixXd::Identity(6, 6) * 10; // ÖÊÁ¿¾ØÕó£¬ÕâÀïÉèÖÃÎª¶Ô½Ç¾ØÕó²¢³ËÒÔ10
-	params.D = Eigen::MatrixXd::Identity(6, 6) * 1.0; // ×èÄá¾ØÕó£¬ÕâÀïÉèÖÃÎª¶Ô½Ç¾ØÕó²¢³ËÒÔ0.5
-	params.K.setZero(6, 6); // ¸Õ¶È¾ØÕóÉèÖÃÎªÁã£¨´¿µ¼ÄÉ¿ØÖÆ£©
+	params.M = Eigen::MatrixXd::Identity(6, 6) * 10; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ô½Ç¾ï¿½ï¿½ó²¢³ï¿½ï¿½ï¿½10
+	params.D = Eigen::MatrixXd::Identity(6, 6) * 1.0; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Ô½Ç¾ï¿½ï¿½ó²¢³ï¿½ï¿½ï¿½0.5
+	params.K.setZero(6, 6); // ï¿½Õ¶È¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ã£¨ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½ï¿½Æ£ï¿½
 
-	// ¿ØÖÆÖÜÆÚ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	double dt = 0.01; // 10ms
 
-	// ´´½¨µ¼ÄÉ¿ØÖÆÆ÷ÊµÀý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¿ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½
 	m_pAddmittance = new AdmittanceController(params, dt, this);
 	m_PreForceDir = Point3D(0.0, 0.0, -1.0);
 
@@ -179,7 +179,7 @@ MyWindow::~MyWindow()
 		m_pAddmittance = NULL;
 	}
 
-	delete m_pCommunicate;  // ´ËÊ± worker ÒÑÔÚÖ÷Ïß³Ì£¨ÒòÎª wait() ºó moveToThread ²»ÉúÐ§£¿£©
+	delete m_pCommunicate;  // ï¿½ï¿½Ê± worker ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì£ï¿½ï¿½ï¿½Îª wait() ï¿½ï¿½ moveToThread ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½
 }
 
 Communicate* MyWindow::GetCommunicate()
@@ -309,7 +309,7 @@ void MyWindow::On_pushButton_ClearError_Clicked()
 {
 	ClearError();
 
-	// ·¢ÉúÅö×²£¬Çå³ý¼Æ»®Ñ¨Î»
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ»ï¿½Ñ¨Î»
 	for (int j = 0; j < m_vXueweis.size(); ++j)
 	{
 		m_vXueweis[j].clear();
@@ -351,20 +351,20 @@ void MyWindow::On_timeout()
 	QString timeString = currentTime.toString("hh:mm");
 	ui.label_Time->setText(QObject::tr(timeString.toStdString().c_str()));
 
-	// »ñÈ¡µ±Ç°ÈÕÆÚ
+	// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
 	QDate currentDate = QDate::currentDate();
 
-	// ¸ñÊ½»¯Êä³öÈÕÆÚ
-	QString dateString = currentDate.toString(QStringLiteral("MMÔÂddÈÕ"));
+	// ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	QString dateString = currentDate.toString(QStringLiteral("MMï¿½ï¿½ddï¿½ï¿½"));
 
-	// ¸ñÊ½»¯Êä³öÐÇÆÚ
-	//QString weekDayString = currentDate.toString("dddd");  // ·µ»ØÓ¢ÎÄÐÇÆÚ
-	//qDebug() << "½ñÌìÊÇ: " << weekDayString;
+	// ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//QString weekDayString = currentDate.toString("dddd");  // ï¿½ï¿½ï¿½ï¿½Ó¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//qDebug() << "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " << weekDayString;
 
-	// Ê¹ÓÃ×Ô¶¨ÒåµÄÐÇÆÚ±íÊ¾
-	const QString daysOfWeek[] = { "", QStringLiteral("ÐÇÆÚÒ»"),
-		QStringLiteral("ÐÇÆÚ¶þ"), QStringLiteral("ÐÇÆÚÈý"), QStringLiteral("ÐÇÆÚËÄ"),
-		QStringLiteral("ÐÇÆÚÎå"), QStringLiteral("ÐÇÆÚÁù"), QStringLiteral("ÐÇÆÚÈÕ") };
+	// Ê¹ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Ê¾
+	const QString daysOfWeek[] = { "", QStringLiteral("ï¿½ï¿½ï¿½ï¿½Ò»"),
+		QStringLiteral("ï¿½ï¿½ï¿½Ú¶ï¿½"), QStringLiteral("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"), QStringLiteral("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+		QStringLiteral("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"), QStringLiteral("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"), QStringLiteral("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½") };
 	int dayOfWeek = currentDate.dayOfWeek();
 	QString text = dateString;
 	text.append(" ");
@@ -431,16 +431,16 @@ std::vector<std::string> extractContent(const std::string& input)
 {
 	std::vector<std::string> contents;
 	try {
-		// ¶¨ÒåÕýÔò±í´ïÊ½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 		std::regex pattern(R"(\{([^}]*)\})");
 		std::smatch match;
 
-		// ²éÕÒÆ¥ÅäÏî
+		// ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½
 		std::string temp = input;
 		while (std::regex_search(temp, match, pattern)) {
-			// »ñÈ¡À¨ºÅÄÚµÄÄÚÈÝ£¨µÚÒ»×é²¶»ñ£©
+			// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½Ò»ï¿½é²¶ï¿½ï¿½
 			contents.push_back(match[1].str());
-			// ¸üÐÂ×Ö·û´®ÒÔ¼ÌÐø²éÕÒÏÂÒ»¸öÆ¥ÅäÏî
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½
 			temp = match.suffix().str();
 		}
 	}
@@ -572,36 +572,36 @@ void MyWindow::sktmsg8_readyRead()
 	QByteArray msg = od.sktmsg8->readAll();
 	//qDebug() <<"Msg 8 is " << msg << endl;
 
-	// --- ºËÐÄÌáÈ¡Âß¼­ ---
+	// --- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ß¼ï¿½ ---
 	qint64 start_pos = 1304;
 	qint64 end_pos = 1351;
 
-	// **ÖØÒª£º±ß½ç¼ì²é**
+	// **ï¿½ï¿½Òªï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½**
 	if (start_pos < 0 || end_pos >= msg.size() || start_pos > end_pos) {
-		qWarning() << "Error out of range £¡";
+		qWarning() << "Error out of range ï¿½ï¿½";
 		return;
 	}
 
-	// ¼ÆËãÆðÊ¼Î»ÖÃºÍÒªÌáÈ¡µÄ³¤¶È
-	qint64 length = end_pos - start_pos + 1; // 1351 - 1304 + 1 = 48 ×Ö½Ú
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Î»ï¿½Ãºï¿½Òªï¿½ï¿½È¡ï¿½Ä³ï¿½ï¿½ï¿½
+	qint64 length = end_pos - start_pos + 1; // 1351 - 1304 + 1 = 48 ï¿½Ö½ï¿½
 
-	// Ê¹ÓÃ mid() º¯ÊýÌáÈ¡Êý¾Ý
-	// mid(start_pos, length) ´Ó start_pos ¿ªÊ¼£¬ÌáÈ¡ length ¸ö×Ö½Ú
+	// Ê¹ï¿½ï¿½ mid() ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	// mid(start_pos, length) ï¿½ï¿½ start_pos ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½È¡ length ï¿½ï¿½ï¿½Ö½ï¿½
 	QByteArray extractedData = msg.mid(start_pos, length);
 
-	// --- Êä³ö½á¹û ---
+	// --- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ---
 	//qDebug() << "Exect success " << extractedData.size() << " byte !";
-	// ´æ´¢×ª»»½á¹ûµÄÈÝÆ÷
+	// ï¿½æ´¢×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	std::vector<double> doubleValues;
 
-	// Ê¹ÓÃ QDataStream ´Ó QByteArray ¶ÁÈ¡Êý¾Ý
+	// Ê¹ï¿½ï¿½ QDataStream ï¿½ï¿½ QByteArray ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 	QDataStream stream(&extractedData, QIODevice::ReadOnly);
-	stream.setByteOrder(QDataStream::LittleEndian); // Ã÷È·ÉèÖÃÎªÐ¡¶ËÄ£Ê½
+	stream.setByteOrder(QDataStream::LittleEndian); // ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ÎªÐ¡ï¿½ï¿½Ä£Ê½
 
-	// ¶ÁÈ¡ 6 ¸ö double Öµ
+	// ï¿½ï¿½È¡ 6 ï¿½ï¿½ double Öµ
 	for (int i = 0; i < 6; ++i) {
 		double value;
-		stream >> value; // QDataStream »á×Ô¶¯°´Ð¡¶Ë¸ñÊ½¶ÁÈ¡ 8 ×Ö½Ú²¢×ª»»Îª double
+		stream >> value; // QDataStream ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ð¡ï¿½Ë¸ï¿½Ê½ï¿½ï¿½È¡ 8 ï¿½Ö½Ú²ï¿½×ªï¿½ï¿½Îª double
 		doubleValues.push_back(value);
 	}
 
@@ -716,7 +716,7 @@ void MyWindow::sendrunodr(QByteArray odr)
 	}
 }
 
-// ¿ªÊ¼»úÐµ±ÛÍÏ×§Ä£Ê½
+// ï¿½ï¿½Ê¼ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½×§Ä£Ê½
 void MyWindow::StartDrag()
 {
 	sendrunodr("StartDrag()");
@@ -734,14 +734,14 @@ void MyWindow::RobotStorage()
 void MyWindow::ClearError()
 {
 	sendodr("ClearError()");
-	// °´Ä¦Í·ÖØÁ¿ 20250721 0.5ÊÇ¹«½ï
+	// ï¿½ï¿½Ä¦Í·ï¿½ï¿½ï¿½ï¿½ 20250721 0.5ï¿½Ç¹ï¿½ï¿½ï¿½
 	sendodr("EnableRobot(0.5,0,0,0)");
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	RobotStorage();
 	Wait_Done();
 }
 
-// Í£Ö¹»úÐµ±ÛÍÏ×§Ä£Ê½
+// Í£Ö¹ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½×§Ä£Ê½
 void MyWindow::StopDrag()
 {
 	sendrunodr("StopDrag()");
@@ -846,9 +846,9 @@ bool MyWindow::AdmittanceControlNew(int group, int row)
 	}
 
 	int circle_time = 33;
-	// ÉèÖÃµ¼ÄÉ¿ØÖÆ²ÎÊý
+	// ï¿½ï¿½ï¿½Ãµï¿½ï¿½É¿ï¿½ï¿½Æ²ï¿½ï¿½ï¿½
 	//m_pAddmittance->setPos(pos);
-	// Ä£ÄâÖ÷Ñ­»·
+	// Ä£ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 	//GetSixForceData();
 	qsleep(15);
 	//Wait_ForForces();
@@ -968,9 +968,9 @@ bool MyWindow::AdmittanceControl()
 		return true;
 	}
 
-	// ÉèÖÃµ¼ÄÉ¿ØÖÆ²ÎÊý
+	// ï¿½ï¿½ï¿½Ãµï¿½ï¿½É¿ï¿½ï¿½Æ²ï¿½ï¿½ï¿½
 	//m_pAddmittance->setPos(pos);
-	// Ä£ÄâÖ÷Ñ­»·
+	// Ä£ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 	GetSixForceData();
 	Wait_ForForces();
 	//m_vRawForces = m_vForces;
@@ -1012,11 +1012,11 @@ bool MyWindow::AdmittanceControl()
 	}
 }
 
-// Ä£Äâ»ñÈ¡ÁùÎ¬Á¦·´À¡µÄº¯Êý
+// Ä£ï¿½ï¿½ï¿½È¡ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½
 Eigen::VectorXd MyWindow::getForceFeedback()
 {
-	// ÕâÀïÓ¦¸Ãµ÷ÓÃÊµ¼ÊµÄÁ¦´«¸ÐÆ÷½Ó¿Ú»ñÈ¡Êý¾Ý
-	// ·µ»ØÒ»¸ö6Î¬ÏòÁ¿£¬°üº¬Èý¸öÏßÐÔ·ÖÁ¿ºÍÈý¸ö½Ç·ÖÁ¿
+	// ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ãµï¿½ï¿½ï¿½Êµï¿½Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú»ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½6Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
 	GetSixForceData();
 
 	Eigen::VectorXd force_feedback(6);
@@ -1036,7 +1036,7 @@ Eigen::VectorXd MyWindow::getForceFeedback()
 			double e = m_vForces[4];
 			double f = m_vForces[5];
 			force_feedback << a, b, c, d, e, f;
-			return force_feedback; // Ê¾ÀýÖÐÉú³ÉÄ£ÄâÊý¾Ý
+			return force_feedback; // Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		}
 	}
 }
@@ -1079,7 +1079,7 @@ void MyWindow::ResetRobot()
 }
 
 
-// ÉèÖÃµ±Ç°ÏîÄ¿
+// ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½Ä¿
 void MyWindow::SetCurrentProj(QString str)
 {
 	m_pAutoTreat->SetCurrentProj(str);
@@ -1090,11 +1090,11 @@ void MyWindow::SetModel(OPENBACK_MODEL model)
 	m_eModel = model;
 }
 
-// ²½½øÄ£Ê½
+// ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 bool MyWindow::StepModel(PROTOCOL pro,int level)
 {
 	const double saft_hight = -50.0;
-	// »ñÈ¡³õÊ¼Ð£Áã¼õµôµÄÁ¦
+	// ï¿½ï¿½È¡ï¿½ï¿½Ê¼Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//GetSixForceData();
 	//Wait_ForForces();
 	bool bFirst = true;
@@ -1114,14 +1114,14 @@ bool MyWindow::StepModel(PROTOCOL pro,int level)
 			cv::Point3d& n = m_vXueweis[j][i].n3d;
 			//m_pAutoTreat->GetWidgetTreatOnGoing()->SetLabelTreating(i);
 
-			// ·ÀÖ¹×²»÷ÈËÌå£¬·ÖÁ½²½£¬ÏÈË®Æ½·½Ïò£¬ÔÙÊúÖ±·½Ïò
+			// ï¿½ï¿½Ö¹×²ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 			sendodr("TCPSpeed(40)");
-			MovL(p.x, p.y, saft_hight, -178, 0, NORMAL_ANGLE);   //Áªµ÷     //
-			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //Áªµ÷     //
+			MovL(p.x, p.y, saft_hight, -178, 0, NORMAL_ANGLE);   //ï¿½ï¿½ï¿½ï¿½     //
+			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //ï¿½ï¿½ï¿½ï¿½     //
 			Wait_Done();
-			//MovJ(p.x, p.y, p.z, -178, 0, 179.5);   //Áªµ÷     //
-			MovL(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //Áªµ÷     //
-			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //Áªµ÷     //
+			//MovJ(p.x, p.y, p.z, -178, 0, 179.5);   //ï¿½ï¿½ï¿½ï¿½     //
+			MovL(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //ï¿½ï¿½ï¿½ï¿½     //
+			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //ï¿½ï¿½ï¿½ï¿½     //
 			Wait_Done();
 
 			sendodr("TCPSpeedEnd()");
@@ -1361,7 +1361,7 @@ bool MyWindow::GetNextAcupoint(int i, int j, DETECTED_XUEWEI& nextxuewei, std::v
 		return false;
 		if (i + 1 < m_vXueweis.size())
 		{
-			// µ½ÏÂÒ»ÐÐ²»ÊÇÁ¬Ðø¹ýÈ¥£¬ÌøÔ¾¹ýÈ¥
+			// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½È¥
 			return false;
 			//point.push_back(m_vXueweis[i+1][0].p3d.x);
 			//point.push_back(m_vXueweis[i+1][0].p3d.y);
@@ -1386,7 +1386,7 @@ bool MyWindow::GetNextAcupoint(int i, int j, DETECTED_XUEWEI& nextxuewei, std::v
 bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI currentxuewei,
 	DETECTED_XUEWEI nextxuewei, std::vector<double>& next)
 {
-	// ´ËÑ¨Î»µÚÒ»´Îµ÷½Ú£¬ÉèÖÃ³ÉÖ¸¶¨×ËÌ¬
+	// ï¿½ï¿½Ñ¨Î»ï¿½ï¿½Ò»ï¿½Îµï¿½ï¿½Ú£ï¿½ï¿½ï¿½ï¿½Ã³ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ì¬
 	bool bFirst = true;
 	double maxForce = 20.0;
 	double midForce = 10.0;
@@ -1522,7 +1522,7 @@ bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI current
 											zAngle = 150.0;
 										}
 
-										// µ½ÖÁÑô£¬ÀíÁÆÍ·ÊúÆðÀ´
+										// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 										//if (currentxuewei == ZHIYANG_DETECTED
 										//    && bFirst)
 										//{
@@ -1582,7 +1582,7 @@ bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI current
 
 										m_PreForce = m_CurrForce;
 	}
-	// Ë¢ÐÂZÖµ
+	// Ë¢ï¿½ï¿½ZÖµ
 	next[2] = currentZ;
 
 	//sendodr("TCPSpeedEnd()");
@@ -1704,7 +1704,7 @@ bool MyWindow::MoveToNextAcupoint(int group, int row, std::vector<double>& next)
 
 		m_PreForce = m_CurrForce;
 	}
-	// Ë¢ÐÂZÖµ
+	// Ë¢ï¿½ï¿½ZÖµ
 	next[2] = currentZ;
 
 	//sendodr("TCPSpeedEnd()");
@@ -1713,12 +1713,12 @@ bool MyWindow::MoveToNextAcupoint(int group, int row, std::vector<double>& next)
 	return true;
 }
 
-// Á¬ÐøÄ£Ê½
+// ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 {
 	const double saft_hight = -130.0;
 	bool bFirstAcu = true;
-	// »ñÈ¡³õÊ¼Ð£Áã¼õµôµÄÁ¦
+	// ï¿½ï¿½È¡ï¿½ï¿½Ê¼Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//GetSixForceData();
 	//Wait_ForForces();
 	qsleep(15);
@@ -1748,7 +1748,7 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				double xAngle = -178.0;
 				double yAngle = 0.0;
 
-				// ³õÊ¼×´Ì¬
+				// ï¿½ï¿½Ê¼×´Ì¬
 				if (currentxuewei == FENGFU_DETECTED
 					|| FENGFU_DETECTED == currentxuewei
 					|| ZUOJIANJING_DETECTED == currentxuewei)
@@ -1762,12 +1762,12 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 					yAngle = 10.0;
 				}
 
-				// ·ÀÖ¹×²»÷ÈËÌå£¬·ÖÁ½²½£¬ÏÈË®Æ½·½Ïò£¬ÔÙÊúÖ±·½Ïò
+				// ï¿½ï¿½Ö¹×²ï¿½ï¿½ï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 				sendodr("TCPSpeed(40)");
-				MovL(p.x, p.y, saft_hight, -178.0, 0.0, NORMAL_ANGLE);   //Áªµ÷     //
+				MovL(p.x, p.y, saft_hight, -178.0, 0.0, NORMAL_ANGLE);   //ï¿½ï¿½ï¿½ï¿½     //
 				Wait_Done();
-				MovL(p.x, p.y, p.z, xAngle, yAngle, NORMAL_ANGLE);   //Áªµ÷     //
-				//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //Áªµ÷     //
+				MovL(p.x, p.y, p.z, xAngle, yAngle, NORMAL_ANGLE);   //ï¿½ï¿½ï¿½ï¿½     //
+				//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //ï¿½ï¿½ï¿½ï¿½     //
 				Wait_Done();
 
 				sendodr("TCPSpeedEnd()");
@@ -1867,7 +1867,7 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				sendodr("TCPSpeed(6)"); // 6
 				m_PreForceDir = Point3D(n.x, n.y, n.z);
 
-				// ÉèÖÃ½çÃæÉÏ½Ó´¥Á¼ºÃ±êÖ¾
+				// ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½Ï½Ó´ï¿½ï¿½ï¿½ï¿½Ã±ï¿½Ö¾
 				On_received_contact_state(CONTACT_OK);
 			}
 			else
@@ -1895,8 +1895,8 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				qDebug() << "From pos : " << j << " group " << i << " pos " << m_vCurrentPos[0] << " " << m_vCurrentPos[1] << " " << m_vCurrentPos[2] << " " << m_vCurrentPos[3] << " " << m_vCurrentPos[4] << " " << m_vCurrentPos[5];
 				qDebug() << "Move to: " << j << " group " << i << " pos " << next[0] << " " << next[1] << " " << next[2] << " " << next[3] << " " << next[4] << " " << next[5];
 				//MoveToNextAcupointNew(j, i, currentxuewei, nextxuewei, next);
-				//MoveToNextAcupointNew_ImprovedV6(j, i, currentxuewei, nextxuewei, next,level);
-				MoveToNextAcupointNew_ImprovedV7(j, i, currentxuewei, nextxuewei, next, level);
+				MoveToNextAcupointNew_ImprovedV10(j, i, currentxuewei, nextxuewei, next, level);
+				//MoveToNextAcupointNew_ImprovedV6_Optimized(j, i, currentxuewei, nextxuewei, next, level);
 				m_vCurrentPos[0] = next[0];
 				m_vCurrentPos[1] = next[1];
 				m_vCurrentPos[2] = next[2];
@@ -2009,8 +2009,8 @@ void MyWindow::go()
 	{
 		cv::Point3d& p = points[i].p3d;
 		m_pAutoTreat->GetWidgetTreatOnGoing()->SetLabelTreating(i);
-		MovJ(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //Áªµ÷     //
-		//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //Áªµ÷     //
+		MovJ(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //ï¿½ï¿½ï¿½ï¿½     //
+		//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //ï¿½ï¿½ï¿½ï¿½     //
 		Wait_Done();
 
 		Eigen::VectorXd pos(6);
@@ -2119,7 +2119,7 @@ void MyWindow::DecrIntensity()
 
 void MyWindow::stop()
 {
-	// ÇåÀí´æ´¢µÄÑ¨Î»µã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½æ´¢ï¿½ï¿½Ñ¨Î»ï¿½ï¿½
 	points.clear();
 	sendodr("ResetRobot()");
 	Wait_Done();
@@ -2221,10 +2221,10 @@ void MyWindow::poweron()
 	//sendodr("PowerOn()");
 	//qsleep(10000);
 	sendodr("DisableRobot()");
-	// °´Ä¦Í·ÖØÁ¿ 20250721 1.5ÊÇ¹«½ï
+	// ï¿½ï¿½Ä¦Í·ï¿½ï¿½ï¿½ï¿½ 20250721 1.5ï¿½Ç¹ï¿½ï¿½ï¿½
 	sendodr("EnableRobot(0.5,0,0,0)");
 	//sendodr("BrakeControl(1,1)");
-	// »úÐµ±ÛËÙ¶È 20250721
+	// ï¿½ï¿½Ðµï¿½ï¿½ï¿½Ù¶ï¿½ 20250721
 	sendodr("SpeedFactor(25)");
 	//sendodr("RobotMode()");
 	Tool(2);
@@ -2235,19 +2235,19 @@ std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<Robot3d> point
 	for (uint i = 0; i < pointsC.size(); ++i)
 	{
 		//cv::Point3d point = cv::Point3d(start_Camera_Point.x - pointsC[i].p3d.x,
-		//    start_Camera_Point.y + pointsC[i].p3d.y - 155.0,     // ¼õÈ¥ÉãÏñÍ·ºÍ°´Ä¦Í·µÄ¾àÀë
+		//    start_Camera_Point.y + pointsC[i].p3d.y - 155.0,     // ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½Í·ï¿½Í°ï¿½Ä¦Í·ï¿½Ä¾ï¿½ï¿½ï¿½
 		//    200.0 + start_Camera_Point.z - pointsC[i].p3d.z);
 
 		cv::Point3d point = cv::Point3d(start_Camera_Point.x + 11 - pointsC[i].p3d.x/*+70.0*/,
-			start_Camera_Point.y - 105.0 + pointsC[i].p3d.y/*-20.0*/,     // ¼õÈ¥ÉãÏñÍ·ºÍ°´Ä¦Í·µÄ¾àÀë
+			start_Camera_Point.y - 105.0 + pointsC[i].p3d.y/*-20.0*/,     // ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½Í·ï¿½Í°ï¿½Ä¦Í·ï¿½Ä¾ï¿½ï¿½ï¿½
 			start_Camera_Point.z + 168.45 - pointsC[i].p3d.z);
 
-		if (point.z < -240.0 || point.z>-130.0)  // -50 -120£¿
+		if (point.z < -240.0 || point.z>-130.0)  // -50 -120ï¿½ï¿½
 		{
 			point.z = -240.0;
 		}
 
-		tmp_points.push_back(point); // ¼ÓÉÏÀíÁÆÍ·¸ß¶È£ºzÖáÏòÉÏ
+		tmp_points.push_back(point); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ß¶È£ï¿½zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	}
 
 	return tmp_points;
@@ -2302,7 +2302,7 @@ QImage MyWindow::cvMatToQImage(const cv::Mat& inMat)
 			inMat.cols, inMat.rows,
 			static_cast<int>(inMat.step),
 			QImage::Format_Grayscale8);//Format_Alpha8 and Format_Grayscale8 were added in Qt 5.5
-#else//ÕâÀï»¹ÓÐÒ»ÖÖÐ´·¨£¬×îºó¸ø³ö
+#else//ï¿½ï¿½ï¿½ï»¹ï¿½ï¿½Ò»ï¿½ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		static QVector<QRgb>  sColorTable;
 
 		// only create our color table the first time
@@ -2340,7 +2340,7 @@ QPixmap MyWindow::cvMatToQPixmap(const cv::Mat& inMat)
 	return QPixmap::fromImage(cvMatToQImage(inMat));
 }
 
-// »úÐµ±ÛÒÆ¶¯µ½Ä¬ÈÏµÄ³õÊ¼Î»ÖÃ
+// ï¿½ï¿½Ðµï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ä¬ï¿½ÏµÄ³ï¿½Ê¼Î»ï¿½ï¿½
 void MyWindow::MoveToNormalPos()
 {
 	sendodr("EnableRobot(0.5,0,0,0)");
@@ -2401,7 +2401,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 		qDebug() << "2d index " << i << "y " << base0[i].position.y * ratio_y << " x " << (colorRawMat.rows - 1) - base0[i].position.x * ratio_x;
 	}
 
-	std::vector<Robot3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //ÐèÒªÒ»¸ö±ä»»¾ØÕóm
+	std::vector<Robot3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //ï¿½ï¿½ÒªÒ»ï¿½ï¿½ï¿½ä»»ï¿½ï¿½ï¿½ï¿½m
 
 	// points = convert_camera2arm(pointsC);
 	std::vector<cv::Point3d> tempPoints = convert_camera2arm(pointsC);
@@ -2437,7 +2437,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 		points.push_back(p);
 	}
 
-	//todo: µãµÄË³Ðò  //
+	//todo: ï¿½ï¿½ï¿½Ë³ï¿½ï¿½  //
 	qDebug() << QString("points size is %1 ").arg(points.size());
 	for (uint i = 0; i < tempPoints.size(); ++i) {
 		qDebug() << i << tempPoints[i].x << tempPoints[i].y << tempPoints[i].z;
@@ -2496,7 +2496,7 @@ std::vector<Robot3d> MyWindow::get3Dpoints(std::vector<cv::Point> base, std::vec
 	std::vector<Robot3d> Points;
 	for (uint i = 0; i < base.size(); ++i)
 	{
-		OBColorPoint& pointA = pointCloud_frame_data[int(base[i].y) * imageWidth + int(base[i].x)];                                     //¿í0->1279£¬¸ß0-719
+		OBColorPoint& pointA = pointCloud_frame_data[int(base[i].y) * imageWidth + int(base[i].x)];                                     //ï¿½ï¿½0->1279ï¿½ï¿½ï¿½ï¿½0-719
 		pcl::Normal& normal = normals->at(int(base[i].y) * imageWidth + int(base[i].x));
 		Robot3d point;
 		point.n3d = cv::Point3d(normal.normal_x, normal.normal_y, normal.normal_z);
@@ -2527,7 +2527,7 @@ double MyWindow::strToDouble(std::string str)
 	return d;
 }
 
-// ´´½¨ÎÄ¼þ¼ÐµÄº¯Êý
+// ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ÐµÄºï¿½ï¿½ï¿½
 void CreateFolder(const QString& folderPath)
 {
 	QDir dir(folderPath);

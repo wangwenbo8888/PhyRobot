@@ -161,8 +161,20 @@ public:
     bool MoveToNextAcupointNew_ImprovedV6(int group, int row, DETECTED_XUEWEI currentxuewei,
         DETECTED_XUEWEI nextxuewei, std::vector<double>& next,int level);
 
+    bool MoveToNextAcupointNew_ImprovedV6_Optimized(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int ration);
+
     bool MoveToNextAcupointNew_ImprovedV7(int group, int row, DETECTED_XUEWEI currentxuewei,
         DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int level);
+
+    bool MoveToNextAcupointNew_ImprovedV8(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int level);
+
+    bool MoveToNextAcupointNew_ImprovedV9(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int ration);
+
+    bool MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XUEWEI currentxuewei,
+        DETECTED_XUEWEI nextxuewei, std::vector<double>& next, int ration);
 
 public slots:
 	void On_PushButton_Exit_Clicked();
