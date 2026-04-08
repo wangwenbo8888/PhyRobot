@@ -964,63 +964,86 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV9(int group, int row, DETECTED_XUE
 bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XUEWEI currentxuewei,
     DETECTED_XUEWEI nextxuewei, vector<double>& next, int ration)
 {
+    // V10 function - 参照V6优化，减少理疗头摇晃，同时控制力在20N左右
+    // 主要优化点：
+    // 1. 参照V6的简单稳定性，减少复杂的自适应逻辑
+    // 2. 提高响应阈值：高力2次，低力3次，稳定3次（与V6一致）
+    // 3. 简化力控制区域：移除复杂的警告力检查，只保留高力、低力和稳定区
+    // 4. 使用固定且较大的调整步长：4.0/2.5/1.5（高力），-2.5/-1.5/-0.8（低力），1.0/0.5（中间）
+    // 5. 限制最大分割步数：ration=3时150，ration=5时200，避免过度分割
+    // 6. 自适应中力调整：使用与V6相同的0.95/0.05权重
     // V10 function variables declaration
     bool bFirst = true;
     int consecutiveAdjustments = 0;
     
-    // Force control parameters - optimized for stable 20N force at ration=3
-    double maxForce = 15.0;
-    double warningForce = 12.0;
-    double midForce = 8.0;
-    double touchForce = 3.0;
-    double deadZoneLow = 4.0;
-    double deadZoneHigh = 4.0;
+    // Force control parameters - 参照V6优化，减少摇晃但保持力控制
+    double maxForce = 20.0;
+    double midForce = 10.0;
+    double touchForce = 5.0;
+    double deadZoneLow = 3.0;
+    double deadZoneHigh = 3.0;
     
     if (ration >= 3) {
-        // 针对ration=3优化参数，目标是保持20N稳定力
-        maxForce = 30.0;        // 提高最大力阈值，避免过早调整
-        warningForce = 25.0;    // 警告力设为25，接近目标力20时开始调整
+        // 参照V6的稳定特性，同时控制力在20N左右
+        maxForce = 22.0;        // 适度降低最大力阈值，防止过大
         midForce = 20.0;        // 目标力设为20N
-        touchForce = 15.0;      // 提高触发力，确保稳定接触
-        deadZoneLow = 3.0;      // 减小死区，提高灵敏度
-        deadZoneHigh = 3.0;
+        touchForce = 18.0;      // 提高触发力，避免频繁调整
+        deadZoneLow = 2.0;      // 适中死区，避免过度敏感
+        deadZoneHigh = 2.0;
         
-        // 如果ration>3，进一步调整
-        if (ration > 3) {
-            maxForce = 30.0 + (ration - 3) * 2.0;
-            warningForce = 25.0 + (ration - 3) * 1.5;
-            midForce = 20.0 + (ration - 3) * 1.0;
-            touchForce = 15.0 + (ration - 3) * 0.5;
-            deadZoneLow = 3.0 + (ration - 3) * 0.2;
-            deadZoneHigh = 3.0 + (ration - 3) * 0.2;
+        // 针对ration=5的特殊优化
+        if (ration >= 5) {
+            maxForce = 21.0;    // 进一步降低最大力阈值
+            midForce = 20.0;    // 目标力保持20N
+            touchForce = 18.5;  // 稍微提高触发力
+            deadZoneLow = 1.8;  // 适中死区
+            deadZoneHigh = 1.8;
+        }
+        else if (ration == 4) {
+            maxForce = 21.5;
+            midForce = 20.0;
+            touchForce = 18.2;
+            deadZoneLow = 1.9;
+            deadZoneHigh = 1.9;
         }
     }
 
-    // Threshold parameters - optimized for ration=3
-    int highForceThreshold = 3;
-    int lowForceThreshold = 4;
-    int stableThreshold = 4;
+    // Threshold parameters - 参照V6的稳定性，提高响应阈值
+    int highForceThreshold = 2;
+    int lowForceThreshold = 3;
+    int stableThreshold = 3;
     
     if (ration >= 3) {
-        // 降低阈值，使系统响应更快速
-        highForceThreshold = 2;  // 快速响应高力
-        lowForceThreshold = 3;   // 快速响应低力
-        stableThreshold = 3;     // 更快确认稳定状态
+        // 参照V6的稳定性，使用更高的响应阈值
+        highForceThreshold = 2;  // 需要连续2次检测到才响应，减少摇晃
+        lowForceThreshold = 3;   // 需要连续3次检测到才响应
+        stableThreshold = 3;     // 需要连续3次检测到才确认稳定
         
-        if (ration > 3) {
-            highForceThreshold = 2 + (ration - 3);
-            lowForceThreshold = 3 + (ration - 3);
-            stableThreshold = 3 + (ration - 3);
+        // 针对ration=5的特殊优化
+        if (ration >= 5) {
+            highForceThreshold = 2;  // 保持较高阈值
+            lowForceThreshold = 3;
+            stableThreshold = 4;     // 稍微增加稳定阈值，避免频繁调整
+        }
+        else if (ration == 4) {
+            highForceThreshold = 2;
+            lowForceThreshold = 3;
+            stableThreshold = 3;
         }
     }
 
     double step = 3.0 * ration;
     double maxStep = 15.0;
     if (ration >= 3) {
-        // 限制最大步长，提高精度
-        maxStep = 8.0;  // 适当提高maxStep，但不要太大
-        if (ration > 3) {
-            maxStep = 8.0 + (ration - 3) * 0.5;
+        // 参照V6，使用适中步长
+        maxStep = 10.0;  // 适中的最大步长，平衡速度和稳定性
+        
+        // 针对ration=5的特殊优化
+        if (ration >= 5) {
+            maxStep = 9.0;  // 稍小一点，但不要太小
+        }
+        else if (ration == 4) {
+            maxStep = 9.5;  // 中等步长
         }
     }
     if (step > maxStep) {
@@ -1061,8 +1084,21 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
     if (divid < 1) divid = 1;
     
     if (ration >= 3) {
+        // 参照V6，使用适中的分割步数，避免过度分割导致摇晃
         divid = (int)(divid * (1.0 + (ration - 2) * 0.3));
-        if (divid > 300) divid = 300;
+        
+        // 针对ration=5的特殊优化
+        if (ration >= 5) {
+            divid = (int)(divid * 1.5);  // 适度增加分割点，但不要过度
+            if (divid > 200) divid = 200;  // 参照V6，限制最大分割数
+        }
+        else if (ration == 4) {
+            divid = (int)(divid * 1.3);
+            if (divid > 180) divid = 180;
+        }
+        else {
+            if (divid > 150) divid = 150;
+        }
     }
 
     double deltaZ = 0.0;
@@ -1072,15 +1108,16 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 
     double adaptiveMidForce = midForce;
 
-    // Z-axis adjustment optimization - optimized for stable force control
-    double zAdjustScale = 0.6;
+    // Z-axis adjustment optimization - 参照V6的稳定性，使用固定比例
+    double zAdjustScale = 1.0;  // 参照V6，使用固定比例
     if (ration >= 3) {
-        // 针对ration=3优化Z轴调整比例
-        zAdjustScale = 0.8;  // 提高调整比例，使系统响应更积极
-        if (ration > 3) {
-            // ration>3时适当降低调整比例，避免过度调整
-            zAdjustScale = 0.8 - (ration - 3) * 0.1;
-            if (zAdjustScale < 0.4) zAdjustScale = 0.4;
+        // 参照V6的稳定性，使用适度且固定的调整比例
+        zAdjustScale = 0.8;  // 适中的调整比例，平衡响应性和稳定性
+        if (ration >= 5) {
+            zAdjustScale = 0.7;  // ration=5时稍小一点，但不要太小
+        }
+        else if (ration == 4) {
+            zAdjustScale = 0.75;  // 中等调整比例
         }
     }
 
@@ -1240,79 +1277,24 @@ bool MyWindow::MoveToNextAcupointNew_ImprovedV10(int group, int row, DETECTED_XU
 double safeZoneMin = adaptiveMidForce - deadZoneLow;
         double safeZoneMax = adaptiveMidForce + deadZoneHigh;
 
-        // === 优化的力控制逻辑 - 针对ration=3优化，保持20N稳定力 ===
+        // === 参照V6优化的力控制逻辑 - 简化区域，减少摇晃 ===
         if (filteredMag > maxForce) {
-            // 超过最大力，紧急调整
+            // 超过最大力，紧急调整 - 参照V6的简单逻辑
             g_highForceCounter++;
             g_lowForceCounter = 0;
             g_stableCounter = 0;
 
             if (g_highForceCounter >= highForceThreshold) {
                 double excess = filteredMag - maxForce;
-                // 针对ration=3优化调整步长
-                if (ration >= 3) {
-                    // 使用更精细的调整，避免力的剧烈波动
-                    if (excess > 10) {
-                        deltaZ = 1.5 * zAdjustScale;  // 减小最大调整步长
-                    }
-                    else if (excess > 5) {
-                        deltaZ = 1.0 * zAdjustScale;
-                    }
-                    else if (excess > 2) {
-                        deltaZ = 0.5 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.2 * zAdjustScale;
-                    }
+                // 参照V6，使用简单且固定的调整步长
+                if (excess > 10.0) {
+                    deltaZ = 4.0 * zAdjustScale;  // 参照V6的大调整
+                }
+                else if (excess > 5.0) {
+                    deltaZ = 2.5 * zAdjustScale;  // 参照V6的中调整
                 }
                 else {
-                    // 原逻辑保持不变
-                    if (excess > 15) {
-                        deltaZ = 2.0 * zAdjustScale;
-                    }
-                    else if (excess > 8) {
-                        deltaZ = 1.2 * zAdjustScale;
-                    }
-                    else if (excess > 3) {
-                        deltaZ = 0.6 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.3 * zAdjustScale;
-                    }
-                }
-                g_highForceCounter = 0;
-                consecutiveAdjustments++;
-            }
-        }
-        else if (filteredMag > warningForce) {
-            // 接近警告力，提前调整
-            g_highForceCounter++;
-            g_lowForceCounter = 0;
-            g_stableCounter = 0;
-
-            if (g_highForceCounter >= highForceThreshold) {
-                double excess = filteredMag - warningForce;
-                // 针对ration=3优化预防性调整
-                if (ration >= 3) {
-                    // 更精细的预防性调整，确保平稳过渡到目标力
-                    if (excess > 5) {
-                        deltaZ = 0.6 * zAdjustScale;
-                    }
-                    else if (excess > 2) {
-                        deltaZ = 0.3 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.1 * zAdjustScale;
-                    }
-                }
-                else {
-                    // 原逻辑保持不变
-                    if (excess > 3) {
-                        deltaZ = 0.8 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.4 * zAdjustScale;
-                    }
+                    deltaZ = 1.5 * zAdjustScale;  // 参照V6的小调整
                 }
                 g_highForceCounter = 0;
                 consecutiveAdjustments++;
@@ -1329,36 +1311,15 @@ double safeZoneMin = adaptiveMidForce - deadZoneLow;
                 }
 
                 double deficit = touchForce - filteredMag;
-                // 针对ration=3优化低力调整，避免过度补偿
-                if (ration >= 3) {
-                    // 使用更保守的低力调整，避免力的急剧上升
-                    if (deficit > 8) {
-                        deltaZ = -1.0 * zAdjustScale;  // 减小最大负向调整
-                    }
-                    else if (deficit > 4) {
-                        deltaZ = -0.6 * zAdjustScale;
-                    }
-                    else if (deficit > 1) {
-                        deltaZ = -0.3 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = -0.1 * zAdjustScale;
-                    }
+                // 参照V6，使用简单且固定的调整步长
+                if (deficit > 15.0) {
+                    deltaZ = -2.5 * zAdjustScale;  // 参照V6的大调整
+                }
+                else if (deficit > 8.0) {
+                    deltaZ = -1.5 * zAdjustScale;  // 参照V6的中调整
                 }
                 else {
-                    // 原逻辑保持不变
-                    if (deficit > 12) {
-                        deltaZ = -1.5 * zAdjustScale;
-                    }
-                    else if (deficit > 6) {
-                        deltaZ = -0.9 * zAdjustScale;
-                    }
-                    else if (deficit > 2) {
-                        deltaZ = -0.5 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = -0.2 * zAdjustScale;
-                    }
+                    deltaZ = -0.8 * zAdjustScale;  // 参照V6的小调整
                 }
                 g_lowForceCounter = 0;
                 consecutiveAdjustments++;
@@ -1372,34 +1333,10 @@ double safeZoneMin = adaptiveMidForce - deadZoneLow;
             if (g_stableCounter >= stableThreshold) {
                 g_lastValidZ = currentZ;
 
-                // 针对ration=3优化自适应力调整，使力更稳定在20N
-                if (ration >= 3) {
-                    // 使用更强的目标力维持策略
-                    if (consecutiveAdjustments > 3) {  // 降低调整阈值
-                        // 更激进地向目标力20N调整
-                        double targetForce = 20.0;
-                        if (ration > 3) {
-                            targetForce = 20.0 + (ration - 3) * 1.0;
-                        }
-                        
-                        // 如果当前自适应力与目标力差距较大，更快地调整
-                        double forceDiff = fabs(adaptiveMidForce - targetForce);
-                        if (forceDiff > 2.0) {
-                            adaptiveMidForce = adaptiveMidForce * 0.8 + targetForce * 0.2;  // 更快调整
-                        }
-                        else if (forceDiff > 0.5) {
-                            adaptiveMidForce = adaptiveMidForce * 0.9 + targetForce * 0.1;
-                        }
-                        else {
-                            adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;  // 原逻辑
-                        }
-                    }
-                }
-                else {
-                    // 原逻辑保持不变
-                    if (consecutiveAdjustments > 5) {
-                        adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;
-                    }
+                // 参照V6的自适应力调整，简化逻辑，减少摇晃
+                if (consecutiveAdjustments > 5) {  // 参照V6的阈值
+                    g_lastValidZ = currentZ;
+                    adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;  // 参照V6的权重
                 }
                 consecutiveAdjustments = 0;
             }
@@ -1413,59 +1350,23 @@ double safeZoneMin = adaptiveMidForce - deadZoneLow;
 
             if (filteredMag > adaptiveMidForce && filteredMag < maxForce) {
                 double excess = filteredMag - adaptiveMidForce;
-                // 针对ration=3优化中间区域调整，实现更平稳的力控制
-                if (ration >= 3) {
-                    // 使用更小的调整步长，实现更精细的力控制
-                    if (excess > 3) {
-                        deltaZ = 0.4 * zAdjustScale;
-                    }
-                    else if (excess > 1) {
-                        deltaZ = 0.2 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.05 * zAdjustScale;  // 极小调整，保持稳定性
-                    }
+                // 参照V6，使用简单且固定的调整步长
+                if (excess > 5.0) {
+                    deltaZ = 1.0 * zAdjustScale;  // 参照V6的大调整
                 }
                 else {
-                    // 原逻辑保持不变
-                    if (excess > 4) {
-                        deltaZ = 0.6 * zAdjustScale;
-                    }
-                    else if (excess > 1.5) {
-                        deltaZ = 0.3 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = 0.1 * zAdjustScale;
-                    }
+                    deltaZ = 0.5 * zAdjustScale;  // 参照V6的小调整
                 }
                 consecutiveAdjustments++;
             }
             else if (filteredMag < adaptiveMidForce && filteredMag > touchForce) {
                 double deficit = adaptiveMidForce - filteredMag;
-                // 针对ration=3优化中间区域负向调整
-                if (ration >= 3) {
-                    // 使用更小的负向调整步长
-                    if (deficit > 3) {
-                        deltaZ = -0.4 * zAdjustScale;
-                    }
-                    else if (deficit > 1) {
-                        deltaZ = -0.2 * zAdjustScale;
-                    }
-                    else {
-                        deltaZ = -0.05 * zAdjustScale;  // 极小调整，保持稳定性
-                    }
+                // 参照V6，使用简单且固定的负向调整步长
+                if (deficit > 5.0) {
+                    deltaZ = -1.0 * zAdjustScale;  // 参照V6的大调整
                 }
                 else {
-                    // 原逻辑保持不变
-                    if (deficit > 4) {
-                        deltaZ = -0.6 * zAdjustScale;
-                    }
-                    else if (deficit > 1.5) {
-                        deltaZ = -0.3 * zAdjustScale;
-                    }
-                    else {                        // 微小不足
-                        deltaZ = -0.1 * zAdjustScale;
-                    }
+                    deltaZ = -0.5 * zAdjustScale;  // 参照V6的小调整
                 }
                 consecutiveAdjustments++;
             }
