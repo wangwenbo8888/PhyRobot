@@ -162,7 +162,9 @@ enum OPENBACK_MODEL
 
 // 保证机械臂坐标系和相机坐标系x,y,z轴一致的角度
 // x,z轴方向相反
-const double NORMAL_ANGLE = 45.0;
+//const double NORMAL_ANGLE = 45.0;
+const double HALF_NORMAL_ANGLE = 45.0;
+const double NORMAL_ANGLE = 90.0;
 
 // 机械臂负载
 //const double ROBOT_LOAD = 0.5;

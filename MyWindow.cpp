@@ -189,8 +189,8 @@ Communicate* MyWindow::GetCommunicate()
 
 void MyWindow::RobotGoHome()
 {
-	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-	RobotStorage();
+	JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	//RobotStorage();
 	Wait_Done();
 }
 
@@ -1895,8 +1895,9 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				qDebug() << "From pos : " << j << " group " << i << " pos " << m_vCurrentPos[0] << " " << m_vCurrentPos[1] << " " << m_vCurrentPos[2] << " " << m_vCurrentPos[3] << " " << m_vCurrentPos[4] << " " << m_vCurrentPos[5];
 				qDebug() << "Move to: " << j << " group " << i << " pos " << next[0] << " " << next[1] << " " << next[2] << " " << next[3] << " " << next[4] << " " << next[5];
 				//MoveToNextAcupointNew(j, i, currentxuewei, nextxuewei, next);
-				MoveToNextAcupointNew_ImprovedV10(j, i, currentxuewei, nextxuewei, next, level);
-				//MoveToNextAcupointNew_ImprovedV6(j, i, currentxuewei, nextxuewei, next, level);
+				//MoveToNextAcupointNew_ImprovedV10(j, i, currentxuewei, nextxuewei, next, level);
+				//MoveToNextAcupointNew_ImprovedV11(j, i, currentxuewei, nextxuewei, next, level);
+				MoveToNextAcupointNew_ImprovedV6(j, i, currentxuewei, nextxuewei, next, level);
 				m_vCurrentPos[0] = next[0];
 				m_vCurrentPos[1] = next[1];
 				m_vCurrentPos[2] = next[2];
@@ -2355,6 +2356,8 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 	//Sync();
 	sendodr("EnableRobot(0.5,0,0,0)");
 
+	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
+	Wait_Done();
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
 	Wait_Done();
 

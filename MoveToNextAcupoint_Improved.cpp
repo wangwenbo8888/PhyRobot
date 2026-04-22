@@ -1391,3 +1391,419 @@ double safeZoneMin = adaptiveMidForce - deadZoneLow;
 
     return true;
 }
+
+bool MyWindow::MoveToNextAcupointNew_ImprovedV11(int group, int row, DETECTED_XUEWEI currentxuewei,
+    DETECTED_XUEWEI nextxuewei, vector<double>& next, int ration)
+{
+    // V11函数 - 大幅优化ration=5时的运动，完全避免碰撞锁死
+    // 主要优化点：
+    // 1. 显著减小ration=5时的步长(从3.0*ration改为2.0*ration，最大步长从18.0降到8.0)
+    // 2. 大幅增加ration=5时的路径分割(2.5倍，最多300个分割点)
+    // 3. 降低力阈值(最大力19.0N，目标力18.0N)，减小压力
+    // 4. 显著减小Z轴调整比例(ration=5时仅0.5)，避免过激调整
+    // 5. 全面减小所有力区域的Z轴调整幅度(减少50%以上)
+    // 6. 保持较高响应阈值，增加稳定性
+    
+    bool bFirst = true;
+    int consecutiveAdjustments = 0;
+    
+    // 基础力控制参数 - 与V10保持一致
+    double maxForce = 20.0;
+    double midForce = 10.0;
+    double touchForce = 5.0;
+    double deadZoneLow = 3.0;
+    double deadZoneHigh = 3.0;
+    
+    if (ration >= 3) {
+        maxForce = 22.0;
+        midForce = 20.0;
+        touchForce = 18.0;
+        deadZoneLow = 2.0;
+        deadZoneHigh = 2.0;
+        
+        if (ration >= 5) {
+            maxForce = 19.0;    // 进一步降低最大力阈值，更早触发调整
+            midForce = 18.0;    // 降低目标力，减小压力
+            touchForce = 17.0;  // 提高触发力，减少调整次数
+            deadZoneLow = 2.0;  // 增加死区，减少频繁调整
+            deadZoneHigh = 2.0;
+        }
+        else if (ration == 4) {
+            maxForce = 21.5;
+            midForce = 20.0;
+            touchForce = 18.2;
+            deadZoneLow = 1.9;
+            deadZoneHigh = 1.9;
+        }
+    }
+
+    // 优化的响应阈值 - 参照V10，提高稳定性避免碰撞
+    int highForceThreshold = 2;
+    int lowForceThreshold = 3;
+    int stableThreshold = 3;
+    
+    if (ration >= 3) {
+        // 参照V10的稳定性，避免ration=5时的碰撞问题
+        highForceThreshold = 2;
+        lowForceThreshold = 3;
+        stableThreshold = 3;
+        
+        if (ration >= 5) {
+            highForceThreshold = 2;  // 参照V10：保持较高阈值，避免频繁调整
+            lowForceThreshold = 3;   // 参照V10：保持较高阈值，增加稳定性
+            stableThreshold = 3;     // 参照V10：保持较高阈值，减少震动
+        }
+        else if (ration == 4) {
+            highForceThreshold = 2;
+            lowForceThreshold = 3;
+            stableThreshold = 3;
+        }
+    }
+
+    // 进一步优化：使用更小的步长，特别针对ration=5避免碰撞
+    double step = 2.0 * ration;  // 降低基本步长系数
+    double maxStep = 12.0;
+    
+    if (ration >= 3) {
+        // 使用更小的步长，提高稳定性
+        if (ration >= 5) {
+            maxStep = 8.0;   // ration=5时使用更小的步长，避免碰撞
+            step = 2.0 * ration;  // 进一步减小基本步长
+        }
+        else if (ration == 4) {
+            maxStep = 10.0; // ration=4时使用较小步长
+            step = 2.5 * ration;
+        }
+        else {
+            maxStep = 12.0; // ration=3时可以使用适中步长
+            step = 3.0 * ration;
+        }
+    }
+    
+    if (step > maxStep) {
+        step = maxStep;
+    }
+    
+    qDebug() << "V11 speed is " << step << " (ration=" << ration << ")";
+
+    bool isLeftSideRoute = false;
+    bool isRightSideRoute = false;
+    if (currentxuewei == ZUOJIANJING_DETECTED && nextxuewei == ZUOQIHAIYU_DETECTED) {
+        isLeftSideRoute = true;
+    }
+    if (currentxuewei == YOUJIANJING_DETECTED && nextxuewei == YOUQIHAIYU_DETECTED) {
+        isRightSideRoute = true;
+    }
+    bool isShoulderToQiHaiRoute = isLeftSideRoute || isRightSideRoute;
+
+    double forceUprightDistance = 100.0;
+    double totalTraveledDistance = 0.0;
+    bool isUpright = false;
+
+    g_forceFilterX.reset();
+    g_forceFilterY.reset();
+    g_forceFilterZ.reset();
+    g_forceMagFilter.reset();
+    g_lowForceCounter = 0;
+    g_highForceCounter = 0;
+    g_stableCounter = 0;
+
+    double startX = m_vCurrentPos[0];
+    double startY = m_vCurrentPos[1];
+
+    double dis2D = sqrt((next[0] - m_vCurrentPos[0]) * (next[0] - m_vCurrentPos[0]) +
+        (next[1] - m_vCurrentPos[1]) * (next[1] - m_vCurrentPos[1]));
+    
+    // 进一步优化：使用更多的路径分割，大幅提高精度避免碰撞
+    int divid = (int)(dis2D / step);
+    if (divid < 1) divid = 1;
+    
+    if (ration >= 3) {
+        // 使用更多的分割步数，大幅提高精度
+        if (ration >= 5) {
+            divid = (int)(divid * 2.5);  // ration=5时大幅增加分割
+            if (divid > 300) divid = 300;  // ration=5时允许更多分割点
+        }
+        else if (ration == 4) {
+            divid = (int)(divid * 2.0);  // ration=4时适度增加分割
+            if (divid > 250) divid = 250;
+        }
+        else {
+            divid = (int)(divid * 1.5);  // ration=3时适度增加分割
+            if (divid > 200) divid = 200;
+        }
+    }
+    
+    qDebug() << "V11 divid: " << divid << " (ration=" << ration << ")";
+
+    double deltaZ = 0.0;
+    double currentZ = m_vCurrentPos[2];
+    double xRaw = m_vCurrentPos[0];
+    double yRaw = m_vCurrentPos[1];
+
+    double adaptiveMidForce = midForce;
+
+    // 进一步优化：使用更小的Z轴调整比例，大幅减少调整幅度
+    double zAdjustScale = 1.0;
+    if (ration >= 3) {
+        if (ration >= 5) {
+            zAdjustScale = 0.5;  // ration=5时使用更小的调整比例，大幅减少调整幅度
+        }
+        else if (ration == 4) {
+            zAdjustScale = 0.6;  // ration=4时使用较小调整比例
+        }
+        else {
+            zAdjustScale = 0.7;  // ration=3时使用适中调整比例
+        }
+    }
+
+    for (int i = 1; i < divid; ++i) {
+        double xPos = xRaw + (next[0] - xRaw) * i / divid;
+        double yPos = yRaw + (next[1] - yRaw) * i / divid;
+        currentZ += deltaZ;
+        
+        // Get filtered force magnitude
+        double rawFx = m_vForces[0] - m_vRawForces[0];
+        double rawFy = m_vForces[1] - m_vRawForces[1];
+        double rawFz = m_vForces[2] - m_vRawForces[2];
+        
+        double filteredFx = g_forceFilterX.filter(rawFx);
+        double filteredFy = g_forceFilterY.filter(rawFy);
+        double filteredFz = g_forceFilterZ.filter(rawFz);
+        
+        Point3D filteredForce(filteredFx, filteredFy, filteredFz);
+        double filteredMag = g_forceMagFilter.filter(filteredForce.Magnitude());
+
+        if (isShoulderToQiHaiRoute && !isUpright) {
+            double stepDistance = sqrt((xPos - m_vCurrentPos[0]) * (xPos - m_vCurrentPos[0]) +
+                (yPos - m_vCurrentPos[1]) * (yPos - m_vCurrentPos[1]));
+            totalTraveledDistance += stepDistance;
+
+            if (totalTraveledDistance >= forceUprightDistance) {
+                isUpright = true;
+                qDebug() << "Distance threshold reached: " << totalTraveledDistance
+                    << "mm, switching to upright posture";
+            }
+        }
+
+        GetPose();
+
+        double y = 0.0;
+        double p = 0.0;
+        double r = 0.0;
+
+        if (!isUpright) {
+            if (filteredForce.x() > 10.0) {
+                y = fabs(filteredForce.x()) * 0.2;
+            }
+            else if (filteredForce.x() > 1.0) {
+                y = fabs(filteredForce.x()) * 0.05;
+            }
+            else if (filteredForce.x() < -10.0) {
+                y = fabs(filteredForce.x()) * -0.2;
+            }
+            else if (filteredForce.x() < -1.0) {
+                y = fabs(filteredForce.x()) * -0.05;
+            }
+
+            if (filteredForce.y() > 10.0) {
+                p = fabs(filteredForce.y()) * -0.2;
+            }
+            else if (filteredForce.y() > 1.0) {
+                p = fabs(filteredForce.y()) * -0.05;
+            }
+            else if (filteredForce.y() < -10.0) {
+                p = fabs(filteredForce.y()) * 0.2;
+            }
+            else if (filteredForce.y() < -1.0) {
+                p = fabs(filteredForce.y()) * 0.05;
+            }
+
+            double a = 0.0;
+            double b = 0.0;
+
+            if (m_vForces[3] < -0.1) {
+                a = -1.0 * fabs(m_vForces[3]);
+            }
+            else if (m_vForces[3] > 0.1) {
+                a = 6.0 * fabs(m_vForces[3]);
+            }
+
+            if (m_vForces[4] < -0.1) {
+                b = 6.0 * fabs(m_vForces[4]);
+            }
+            else if (m_vForces[4] > 0.1) {
+                b = -1.0 * fabs(m_vForces[4]);
+            }
+
+            double xAngle = m_vCurrentPos[3] - y - a;
+            double yAngle = m_vCurrentPos[4] - p - b;
+            double zAngle = m_vCurrentPos[5] - r;
+
+            if (xAngle < -200.0) xAngle = -200.0;
+            if (xAngle > -160.0) xAngle = -160.0;
+
+            if (yAngle < -15.0) yAngle = -15.0;
+            if (yAngle > 15.0) yAngle = 15.0;
+
+            if (zAngle > 210.0) zAngle = 210.0;
+            if (zAngle < 150.0) zAngle = 150.0;
+
+            if (currentxuewei == ZHIYANG_DETECTED && bFirst) {
+                xAngle = -178.0;
+                yAngle = 0.0;
+                bFirst = false;
+            }
+
+            if (!bFirst) {
+                xAngle = -178.0;
+                yAngle = 0.0;
+            }
+
+            qDebug() << "V11 Move: " << xPos << " " << yPos << " " << currentZ
+                << " " << xAngle << " " << yAngle << " " << zAngle
+                << " Upright:" << isUpright;
+
+            MovL(xPos, yPos, currentZ, xAngle, yAngle, NORMAL_ANGLE);
+        }
+        else {
+            double xAngle = -178.0;
+            double yAngle = 0.0;
+            double zAngle = m_vCurrentPos[5];
+
+            if (zAngle > 210.0) zAngle = 210.0;
+            if (zAngle < 150.0) zAngle = 150.0;
+
+            qDebug() << "V11 Move (upright): " << xPos << " " << yPos << " " << currentZ
+                << " " << xAngle << " " << yAngle << " " << zAngle;
+
+            MovL(xPos, yPos, currentZ, xAngle, yAngle, NORMAL_ANGLE);
+        }
+
+        Wait_Done();
+
+        m_vCurrentPos[0] = xPos;
+        m_vCurrentPos[1] = yPos;
+        m_vCurrentPos[2] = currentZ;
+
+        if (isUpright) {
+            m_vCurrentPos[3] = -178.0;
+            m_vCurrentPos[4] = 0.0;
+        }
+
+        m_CurrForce = Point3D(filteredFx, filteredFy, filteredFz);
+
+        qDebug() << "V11 Force: " << filteredMag;
+
+        deltaZ = 0.0;
+
+        double safeZoneMin = adaptiveMidForce - deadZoneLow;
+        double safeZoneMax = adaptiveMidForce + deadZoneHigh;
+
+        // V11进一步优化的力控制逻辑 - 减小调整幅度，避免碰撞
+        if (filteredMag > maxForce) {
+            g_highForceCounter++;
+            g_lowForceCounter = 0;
+            g_stableCounter = 0;
+
+            if (g_highForceCounter >= highForceThreshold) {
+                double excess = filteredMag - maxForce;
+                if (excess > 10.0) {
+                    deltaZ = 2.0 * zAdjustScale;  // 减小最大调整幅度
+                }
+                else if (excess > 5.0) {
+                    deltaZ = 1.2 * zAdjustScale;  // 减小中等调整幅度
+                }
+                else {
+                    deltaZ = 0.8 * zAdjustScale;  // 减小小调整幅度
+                }
+                g_highForceCounter = 0;
+                consecutiveAdjustments++;
+            }
+        }
+        else if (filteredMag < touchForce) {
+            g_lowForceCounter++;
+            g_highForceCounter = 0;
+            g_stableCounter = 0;
+
+            if (g_lowForceCounter >= lowForceThreshold) {
+                if (g_lastValidZ == 0.0) {
+                    g_lastValidZ = currentZ;
+                }
+
+                double deficit = touchForce - filteredMag;
+                if (deficit > 15.0) {
+                    deltaZ = -1.2 * zAdjustScale;  // 减小最大调整幅度
+                }
+                else if (deficit > 8.0) {
+                    deltaZ = -0.8 * zAdjustScale;  // 减小中等调整幅度
+                }
+                else {
+                    deltaZ = -0.5 * zAdjustScale;  // 减小小调整幅度
+                }
+                g_lowForceCounter = 0;
+                consecutiveAdjustments++;
+            }
+        }
+        else if (filteredMag >= safeZoneMin && filteredMag <= safeZoneMax) {
+            g_stableCounter++;
+            g_lowForceCounter = 0;
+            g_highForceCounter = 0;
+
+            if (g_stableCounter >= stableThreshold) {
+                g_lastValidZ = currentZ;
+
+                if (consecutiveAdjustments > 5) {
+                    adaptiveMidForce = adaptiveMidForce * 0.95 + filteredMag * 0.05;
+                }
+                consecutiveAdjustments = 0;
+            }
+
+            deltaZ = 0.0;
+        }
+        else {
+            g_lowForceCounter = 0;
+            g_highForceCounter = 0;
+            g_stableCounter = 0;
+
+            if (filteredMag > adaptiveMidForce && filteredMag < maxForce) {
+                double excess = filteredMag - adaptiveMidForce;
+                if (excess > 5.0) {
+                    deltaZ = 0.6 * zAdjustScale;  // 减小调整幅度
+                }
+                else {
+                    deltaZ = 0.3 * zAdjustScale;  // 减小调整幅度
+                }
+                consecutiveAdjustments++;
+            }
+            else if (filteredMag < adaptiveMidForce && filteredMag > touchForce) {
+                double deficit = adaptiveMidForce - filteredMag;
+                if (deficit > 5.0) {
+                    deltaZ = -0.6 * zAdjustScale;  // 减小调整幅度
+                }
+                else {
+                    deltaZ = -0.3 * zAdjustScale;  // 减小调整幅度
+                }
+                consecutiveAdjustments++;
+            }
+        }
+
+        if (deltaZ != 0.0) {
+            currentZ += deltaZ;
+            m_vCurrentPos[2] = currentZ;
+        }
+
+        qDebug() << "V11 Delta Z: " << deltaZ << " | Scale: " << zAdjustScale
+            << " | Stable: " << g_stableCounter << " | Low: " << g_lowForceCounter 
+            << " | High: " << g_highForceCounter << " | Adaptive Mid: " << adaptiveMidForce;
+    }
+
+    next[2] = currentZ;
+
+    qDebug() << "V11 Finish! Ration: " << ration;
+    qDebug() << "Last valid Z: " << g_lastValidZ;
+    qDebug() << "Total traveled distance: " << totalTraveledDistance;
+    qDebug() << "Upright mode activated: " << isUpright;
+
+    return true;
+}
