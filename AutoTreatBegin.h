@@ -38,6 +38,29 @@ public:
 
 	void SetStarted(bool);
 
+	void ClearImage()
+	{
+		ui.label_Image->clear();
+	}
+
+	void ResumeBar()
+	{
+		if (!barDumai.isNull())
+		{
+			barDumai->setValue(0);
+		}
+
+		if (!barZuopangguangjing.isNull())
+		{
+			barZuopangguangjing->setValue(0);
+		}
+
+		if (!barYoupangguangjing.isNull())
+		{
+			barYoupangguangjing->setValue(0);
+		}
+	}
+
 public slots:
 	void on_Pushbutton_StartOrStop_Clicked();
 

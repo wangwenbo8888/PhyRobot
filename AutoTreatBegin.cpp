@@ -90,7 +90,7 @@ AutoTreatBegin::~AutoTreatBegin()
 
 void AutoTreatBegin::on_pushButton_Back_Clicked()
 {
-
+	m_pWindow->GetAutoTreat()->FinishReturn();
 }
 
 void AutoTreatBegin::on_pushButton_PauseOrContinue_clicked()

@@ -32,6 +32,11 @@ public:
 	AutoTreatPrePrepare(AutoTreat* treat,QWidget *parent = nullptr);
 	~AutoTreatPrePrepare();
 
+	void ResumeOption()
+	{
+		m_eOperation = PREPARE_ONE;
+	}
+
 	void SetFirstStep()
 	{
 		m_eOperation = PREPARE_ONE;

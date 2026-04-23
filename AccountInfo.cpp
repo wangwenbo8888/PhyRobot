@@ -7,7 +7,7 @@ AccountInfo::AccountInfo(MyWindow* window, QWidget *parent)
 	, QWidget(parent)
 {
 	ui.setupUi(this);
-	this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint);
+	//this->setWindowFlags(Qt::FramelessWindowHint| Qt::WindowStaysOnTopHint);
 
 	disconnect(ui.pushButton_Logout, SIGNAL(clicked()), this, SLOT(On_pushButton_Logout_Clicked()));
 	connect(ui.pushButton_Logout, SIGNAL(clicked()), this, SLOT(On_pushButton_Logout_Clicked()));

@@ -83,6 +83,7 @@ void AutoTreat::SetWidgetPrePrepare()
 	ui.label_BeginFlag->hide();
 	ui.label_OrganizeFlag->hide();
 
+	m_pAutoTreatPrePrepare->ResumeOption();
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatPrePrepare.get());
 }
 
@@ -179,6 +180,9 @@ void AutoTreat::SetWidgetTreatBegin(OPENBACK_MODEL model,XUEWEI_TYPE type,int ti
 	int speed = m_pAutoTreatOpenBack->GetSpeed();
 	m_pAutoTreatBegin->SetSpeed(speed);
 	m_pAutoTreatBegin->SetOpenBack(m_pAutoTreatOpenBack.get());
+	m_pAutoTreatBegin->ClearImage();
+	m_pAutoTreatBegin->ResumeBar();
+
 	ui.stackedWidget_AutoTreat_Pages->setCurrentWidget(m_pAutoTreatBegin.get());
 }
 

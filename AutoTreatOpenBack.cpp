@@ -88,7 +88,7 @@ AutoTreatOpenBack::~AutoTreatOpenBack()
 
 void AutoTreatOpenBack::On_pushButton_BackToHome_Clicked()
 {
-
+	m_pAuto->FinishReturn();
 }
 
 void AutoTreatOpenBack::On_pushButton_LastStep_Clicked()

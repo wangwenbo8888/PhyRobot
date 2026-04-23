@@ -87,6 +87,11 @@ public:
 
     void SetWidgetHomePage();
 
+    AutoTreat* GetAutoTreat()
+    {
+        return m_pAutoTreat.get();
+    }
+
     void SetWidgetSetUp();
 
     void SetWidgetInstruction(TreatType type);
