@@ -727,7 +727,8 @@ void MyWindow::StartDrag()
 }
 void MyWindow::RobotStorage()
 {
-	JointMovJ(90.0, 0.0, 159.0, -60.0, -90.0, 250.0);
+	//JointMovJ(90.0, 0.0, 159.0, -60.0, -90.0, 250.0);
+	JointMovJ(90.0, 0.0, 159.0, -70.0, -90.0, 250.0);
 	Wait_Done();
 }
 
@@ -2348,8 +2349,9 @@ QPixmap MyWindow::cvMatToQPixmap(const cv::Mat& inMat)
 void MyWindow::MoveToNormalPos()
 {
 	sendodr("EnableRobot(1.0,0,0,0)");
-
-	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, 45);
+	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
+	Wait_Done();
+	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
 	Wait_Done();
 }
 
