@@ -35,10 +35,10 @@
   <widget class="QPushButton" name="pushButton_DragModel">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>170</y>
-     <width>471</width>
-     <height>262</height>
+     <x>70</x>
+     <y>100</y>
+     <width>730</width>
+     <height>500</height>
     </rect>
    </property>
    <property name="font">
@@ -61,12 +61,13 @@ background:transparent;
    </property>
    <property name="icon">
     <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/DragModelUnpush.png</normaloff>:/DragModelUnpush.png</iconset>
+     <normaloff>:/DragModelUnpush.png</normaloff>
+     <normalon>:/DragModelPushed.png</normalon>:/DragModelUnpush.png</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>471</width>
-     <height>262</height>
+     <width>730</width>
+     <height>500</height>
     </size>
    </property>
    <property name="checkable">
@@ -82,10 +83,10 @@ background:transparent;
   <widget class="QPushButton" name="pushButton_HandleModel">
    <property name="geometry">
     <rect>
-     <x>1230</x>
-     <y>170</y>
-     <width>471</width>
-     <height>262</height>
+     <x>850</x>
+     <y>100</y>
+     <width>730</width>
+     <height>500</height>
     </rect>
    </property>
    <property name="font">
@@ -108,12 +109,13 @@ background:transparent;
    </property>
    <property name="icon">
     <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/HandleModelUnpush.png</normaloff>:/HandleModelUnpush.png</iconset>
+     <normaloff>:/HandleModelUnpush.png</normaloff>
+     <normalon>:/HandleModelPushed.png</normalon>:/HandleModelUnpush.png</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>471</width>
-     <height>262</height>
+     <width>730</width>
+     <height>500</height>
     </size>
    </property>
    <property name="checkable">
@@ -140,22 +142,6 @@ background:transparent;
    </property>
    <property name="text">
     <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_ManualImage">
-   <property name="geometry">
-    <rect>
-     <x>650</x>
-     <y>20</y>
-     <width>506</width>
-     <height>602</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/ManualModelSetImage.png</pixmap>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_BackToHome">

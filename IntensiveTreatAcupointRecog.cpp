@@ -33,12 +33,15 @@ void IntensiveTreatAcupointRecog::On_pushButton_DragModel_Clicked()
 {
 	ui.pushButton_DragModel->setIcon(QIcon(":/DragModelPushed.png"));
 	m_pIntensiveTreat->SetWidgetDragBegin();
+	ui.pushButton_DragModel->setIcon(QIcon(":/DragModelUnpush.png"));
 }
 
 void IntensiveTreatAcupointRecog::On_pushButton_HandleModel_Clicked()
 {
 	ui.pushButton_HandleModel->setIcon(QIcon(":/HandleModelPushed.png"));
 	m_pIntensiveTreat->SetWidgetHandleBegin();
+
+	ui.pushButton_HandleModel->setIcon(QIcon(":/HandleModelUnpush.png"));
 }
 
 

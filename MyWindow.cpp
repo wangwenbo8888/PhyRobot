@@ -1,4 +1,4 @@
-#include "MyWindow.h"
+﻿#include "MyWindow.h"
 #include "PhysicalTherapyRobot.h"
 
 #include "Communicate.h"
@@ -129,27 +129,27 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	connect(od.sktmsgreturn, &QTcpSocket::readyRead, this, &MyWindow::sktmsgreturn_readyRead);
 	connect(od.sktmsgreturn, &QTcpSocket::disconnected, this, &MyWindow::sktmsgreturn_disconnected);
 
-	//std::string modelPath = "last_0923.onnx";  // �滻Ϊ���ģ��·��
+	//std::string modelPath = "last_0923.onnx";  // 替换为你的模型路径
 	std::string modelPath = "last1021.onnx";
 	m_net = cv::dnn::readNet(modelPath);
 	m_net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
 	m_net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
 
-	// ����Ƿ���سɹ�
+	// 检查是否加载成功
 	if (m_net.empty())
 	{
 		std::cerr << "Failed to load model: " << modelPath << std::endl;
 	}
 
 	AdmittanceParams params;
-	params.M = Eigen::MatrixXd::Identity(6, 6) * 10; // ����������������Ϊ�ԽǾ��󲢳���10
-	params.D = Eigen::MatrixXd::Identity(6, 6) * 1.0; // ���������������Ϊ�ԽǾ��󲢳���0.5
-	params.K.setZero(6, 6); // �նȾ�������Ϊ�㣨�����ɿ��ƣ�
+	params.M = Eigen::MatrixXd::Identity(6, 6) * 10; // 质量矩阵，这里设置为对角矩阵并乘以10
+	params.D = Eigen::MatrixXd::Identity(6, 6) * 1.0; // 阻尼矩阵，这里设置为对角矩阵并乘以0.5
+	params.K.setZero(6, 6); // 刚度矩阵设置为零（纯导纳控制）
 
-	// ��������
+	// 控制周期
 	double dt = 0.01; // 10ms
 
-	// �������ɿ�����ʵ��
+	// 创建导纳控制器实例
 	m_pAddmittance = new AdmittanceController(params, dt, this);
 	m_PreForceDir = Point3D(0.0, 0.0, -1.0);
 
@@ -179,7 +179,7 @@ MyWindow::~MyWindow()
 		m_pAddmittance = NULL;
 	}
 
-	delete m_pCommunicate;  // ��ʱ worker �������̣߳���Ϊ wait() �� moveToThread ����Ч����
+	delete m_pCommunicate;  // 此时 worker 已在主线程（因为 wait() 后 moveToThread 不生效？）
 }
 
 Communicate* MyWindow::GetCommunicate()
@@ -309,7 +309,7 @@ void MyWindow::On_pushButton_ClearError_Clicked()
 {
 	ClearError();
 
-	// ������ײ������ƻ�Ѩλ
+	// 发生碰撞，清除计划穴位
 	for (int j = 0; j < m_vXueweis.size(); ++j)
 	{
 		m_vXueweis[j].clear();
@@ -351,20 +351,20 @@ void MyWindow::On_timeout()
 	QString timeString = currentTime.toString("hh:mm");
 	ui.label_Time->setText(QObject::tr(timeString.toStdString().c_str()));
 
-	// ��ȡ��ǰ����
+	// 获取当前日期
 	QDate currentDate = QDate::currentDate();
 
-	// ��ʽ���������
-	QString dateString = currentDate.toString(QStringLiteral("MM��dd��"));
+	// 格式化输出日期
+	QString dateString = currentDate.toString(QStringLiteral("MM月dd日"));
 
-	// ��ʽ���������
-	//QString weekDayString = currentDate.toString("dddd");  // ����Ӣ������
-	//qDebug() << "������: " << weekDayString;
+	// 格式化输出星期
+	//QString weekDayString = currentDate.toString("dddd");  // 返回英文星期
+	//qDebug() << "今天是: " << weekDayString;
 
-	// ʹ���Զ�������ڱ�ʾ
-	const QString daysOfWeek[] = { "", QStringLiteral("����һ"),
-		QStringLiteral("���ڶ�"), QStringLiteral("������"), QStringLiteral("������"),
-		QStringLiteral("������"), QStringLiteral("������"), QStringLiteral("������") };
+	// 使用自定义的星期表示
+	const QString daysOfWeek[] = { "", QStringLiteral("星期一"),
+		QStringLiteral("星期二"), QStringLiteral("星期三"), QStringLiteral("星期四"),
+		QStringLiteral("星期五"), QStringLiteral("星期六"), QStringLiteral("星期日") };
 	int dayOfWeek = currentDate.dayOfWeek();
 	QString text = dateString;
 	text.append(" ");
@@ -431,16 +431,16 @@ std::vector<std::string> extractContent(const std::string& input)
 {
 	std::vector<std::string> contents;
 	try {
-		// �����������ʽ
+		// 定义正则表达式
 		std::regex pattern(R"(\{([^}]*)\})");
 		std::smatch match;
 
-		// ����ƥ����
+		// 查找匹配项
 		std::string temp = input;
 		while (std::regex_search(temp, match, pattern)) {
-			// ��ȡ�����ڵ����ݣ���һ�鲶��
+			// 获取括号内的内容（第一组捕获）
 			contents.push_back(match[1].str());
-			// �����ַ����Լ���������һ��ƥ����
+			// 更新字符串以继续查找下一个匹配项
 			temp = match.suffix().str();
 		}
 	}
@@ -572,36 +572,36 @@ void MyWindow::sktmsg8_readyRead()
 	QByteArray msg = od.sktmsg8->readAll();
 	//qDebug() <<"Msg 8 is " << msg << endl;
 
-	// --- ������ȡ�߼� ---
+	// --- 核心提取逻辑 ---
 	qint64 start_pos = 1304;
 	qint64 end_pos = 1351;
 
-	// **��Ҫ���߽���**
+	// **重要：边界检查**
 	if (start_pos < 0 || end_pos >= msg.size() || start_pos > end_pos) {
-		qWarning() << "Error out of range ��";
+		qWarning() << "Error out of range ！";
 		return;
 	}
 
-	// ������ʼλ�ú�Ҫ��ȡ�ĳ���
-	qint64 length = end_pos - start_pos + 1; // 1351 - 1304 + 1 = 48 �ֽ�
+	// 计算起始位置和要提取的长度
+	qint64 length = end_pos - start_pos + 1; // 1351 - 1304 + 1 = 48 字节
 
-	// ʹ�� mid() ������ȡ����
-	// mid(start_pos, length) �� start_pos ��ʼ����ȡ length ���ֽ�
+	// 使用 mid() 函数提取数据
+	// mid(start_pos, length) 从 start_pos 开始，提取 length 个字节
 	QByteArray extractedData = msg.mid(start_pos, length);
 
-	// --- ������ ---
+	// --- 输出结果 ---
 	//qDebug() << "Exect success " << extractedData.size() << " byte !";
-	// �洢ת�����������
+	// 存储转换结果的容器
 	std::vector<double> doubleValues;
 
-	// ʹ�� QDataStream �� QByteArray ��ȡ����
+	// 使用 QDataStream 从 QByteArray 读取数据
 	QDataStream stream(&extractedData, QIODevice::ReadOnly);
-	stream.setByteOrder(QDataStream::LittleEndian); // ��ȷ����ΪС��ģʽ
+	stream.setByteOrder(QDataStream::LittleEndian); // 明确设置为小端模式
 
-	// ��ȡ 6 �� double ֵ
+	// 读取 6 个 double 值
 	for (int i = 0; i < 6; ++i) {
 		double value;
-		stream >> value; // QDataStream ���Զ���С�˸�ʽ��ȡ 8 �ֽڲ�ת��Ϊ double
+		stream >> value; // QDataStream 会自动按小端格式读取 8 字节并转换为 double
 		doubleValues.push_back(value);
 	}
 
@@ -716,7 +716,7 @@ void MyWindow::sendrunodr(QByteArray odr)
 	}
 }
 
-// ��ʼ��е����קģʽ
+// 开始机械臂拖拽模式
 void MyWindow::StartDrag()
 {
 	sendrunodr("StartDrag()");
@@ -734,14 +734,14 @@ void MyWindow::RobotStorage()
 void MyWindow::ClearError()
 {
 	sendodr("ClearError()");
-	// ��Ħͷ���� 20250721 0.5�ǹ���
-	sendodr("EnableRobot(0.5,0,0,0)");
+	// 按摩头重量 20250721 0.5是公斤
+	sendodr("EnableRobot(1.0,0,0,0)");
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	RobotStorage();
 	Wait_Done();
 }
 
-// ֹͣ��е����קģʽ
+// 停止机械臂拖拽模式
 void MyWindow::StopDrag()
 {
 	sendrunodr("StopDrag()");
@@ -846,9 +846,9 @@ bool MyWindow::AdmittanceControlNew(int group, int row)
 	}
 
 	int circle_time = 33;
-	// ���õ��ɿ��Ʋ���
+	// 设置导纳控制参数
 	//m_pAddmittance->setPos(pos);
-	// ģ����ѭ��
+	// 模拟主循环
 	//GetSixForceData();
 	qsleep(15);
 	//Wait_ForForces();
@@ -968,9 +968,9 @@ bool MyWindow::AdmittanceControl()
 		return true;
 	}
 
-	// ���õ��ɿ��Ʋ���
+	// 设置导纳控制参数
 	//m_pAddmittance->setPos(pos);
-	// ģ����ѭ��
+	// 模拟主循环
 	GetSixForceData();
 	Wait_ForForces();
 	//m_vRawForces = m_vForces;
@@ -1012,11 +1012,11 @@ bool MyWindow::AdmittanceControl()
 	}
 }
 
-// ģ���ȡ��ά�������ĺ���
+// 模拟获取六维力反馈的函数
 Eigen::VectorXd MyWindow::getForceFeedback()
 {
-	// ����Ӧ�õ���ʵ�ʵ����������ӿڻ�ȡ����
-	// ����һ��6ά�����������������Է����������Ƿ���
+	// 这里应该调用实际的力传感器接口获取数据
+	// 返回一个6维向量，包含三个线性分量和三个角分量
 	GetSixForceData();
 
 	Eigen::VectorXd force_feedback(6);
@@ -1036,7 +1036,7 @@ Eigen::VectorXd MyWindow::getForceFeedback()
 			double e = m_vForces[4];
 			double f = m_vForces[5];
 			force_feedback << a, b, c, d, e, f;
-			return force_feedback; // ʾ��������ģ������
+			return force_feedback; // 示例中生成模拟数据
 		}
 	}
 }
@@ -1079,7 +1079,7 @@ void MyWindow::ResetRobot()
 }
 
 
-// ���õ�ǰ��Ŀ
+// 设置当前项目
 void MyWindow::SetCurrentProj(QString str)
 {
 	m_pAutoTreat->SetCurrentProj(str);
@@ -1090,11 +1090,12 @@ void MyWindow::SetModel(OPENBACK_MODEL model)
 	m_eModel = model;
 }
 
-// ����ģʽ
+// 步进模式
 bool MyWindow::StepModel(PROTOCOL pro,int level)
 {
+	// const double saft_hight = -50.0;
 	const double saft_hight = -50.0;
-	// ��ȡ��ʼУ���������
+	// 获取初始校零减掉的力
 	//GetSixForceData();
 	//Wait_ForForces();
 	bool bFirst = true;
@@ -1114,14 +1115,14 @@ bool MyWindow::StepModel(PROTOCOL pro,int level)
 			cv::Point3d& n = m_vXueweis[j][i].n3d;
 			//m_pAutoTreat->GetWidgetTreatOnGoing()->SetLabelTreating(i);
 
-			// ��ֹײ�����壬����������ˮƽ��������ֱ����
+			// 防止撞击人体，分两步，先水平方向，再竖直方向
 			sendodr("TCPSpeed(40)");
-			MovL(p.x, p.y, saft_hight, -178, 0, NORMAL_ANGLE);   //����     //
-			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //����     //
+			MovL(p.x, p.y, saft_hight, -178, 0, NORMAL_ANGLE);   //联调     //
+			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
 			Wait_Done();
-			//MovJ(p.x, p.y, p.z, -178, 0, 179.5);   //����     //
-			MovL(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //����     //
-			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //����     //
+			//MovJ(p.x, p.y, p.z, -178, 0, 179.5);   //联调     //
+			MovL(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //联调     //
+			//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
 			Wait_Done();
 
 			sendodr("TCPSpeedEnd()");
@@ -1361,7 +1362,7 @@ bool MyWindow::GetNextAcupoint(int i, int j, DETECTED_XUEWEI& nextxuewei, std::v
 		return false;
 		if (i + 1 < m_vXueweis.size())
 		{
-			// ����һ�в���������ȥ����Ծ��ȥ
+			// 到下一行不是连续过去，跳跃过去
 			return false;
 			//point.push_back(m_vXueweis[i+1][0].p3d.x);
 			//point.push_back(m_vXueweis[i+1][0].p3d.y);
@@ -1386,7 +1387,7 @@ bool MyWindow::GetNextAcupoint(int i, int j, DETECTED_XUEWEI& nextxuewei, std::v
 bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI currentxuewei,
 	DETECTED_XUEWEI nextxuewei, std::vector<double>& next)
 {
-	// ��Ѩλ��һ�ε��ڣ����ó�ָ����̬
+	// 此穴位第一次调节，设置成指定姿态
 	bool bFirst = true;
 	double maxForce = 20.0;
 	double midForce = 10.0;
@@ -1522,7 +1523,7 @@ bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI current
 											zAngle = 150.0;
 										}
 
-										// ������������ͷ������
+										// 到至阳，理疗头竖起来
 										//if (currentxuewei == ZHIYANG_DETECTED
 										//    && bFirst)
 										//{
@@ -1582,7 +1583,7 @@ bool MyWindow::MoveToNextAcupointNew(int group, int row, DETECTED_XUEWEI current
 
 										m_PreForce = m_CurrForce;
 	}
-	// ˢ��Zֵ
+	// 刷新Z值
 	next[2] = currentZ;
 
 	//sendodr("TCPSpeedEnd()");
@@ -1704,7 +1705,7 @@ bool MyWindow::MoveToNextAcupoint(int group, int row, std::vector<double>& next)
 
 		m_PreForce = m_CurrForce;
 	}
-	// ˢ��Zֵ
+	// 刷新Z值
 	next[2] = currentZ;
 
 	//sendodr("TCPSpeedEnd()");
@@ -1713,12 +1714,14 @@ bool MyWindow::MoveToNextAcupoint(int group, int row, std::vector<double>& next)
 	return true;
 }
 
-// ����ģʽ
+// 连续模式
 bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 {
-	const double saft_hight = -130.0;
+    //const double saft_hight = -130.0;
+	//const double saft_hight = 100.0;
+	const double saft_hight = -50.0;
 	bool bFirstAcu = true;
-	// ��ȡ��ʼУ���������
+	// 获取初始校零减掉的力
 	//GetSixForceData();
 	//Wait_ForForces();
 	qsleep(15);
@@ -1748,7 +1751,7 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				double xAngle = -178.0;
 				double yAngle = 0.0;
 
-				// ��ʼ״̬
+				// 初始状态
 				if (currentxuewei == FENGFU_DETECTED
 					|| FENGFU_DETECTED == currentxuewei
 					|| ZUOJIANJING_DETECTED == currentxuewei)
@@ -1762,12 +1765,12 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 					yAngle = 10.0;
 				}
 
-				// ��ֹײ�����壬����������ˮƽ��������ֱ����
+				// 防止撞击人体，分两步，先水平方向，再竖直方向
 				sendodr("TCPSpeed(40)");
-				MovL(p.x, p.y, saft_hight, -178.0, 0.0, NORMAL_ANGLE);   //����     //
+				MovL(p.x, p.y, saft_hight, -178.0, 0.0, NORMAL_ANGLE);   //联调     //
 				Wait_Done();
-				MovL(p.x, p.y, p.z, xAngle, yAngle, NORMAL_ANGLE);   //����     //
-				//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //����     //
+				MovL(p.x, p.y, p.z, xAngle, yAngle, NORMAL_ANGLE);   //联调     //
+				//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
 				Wait_Done();
 
 				sendodr("TCPSpeedEnd()");
@@ -1867,7 +1870,7 @@ bool MyWindow::ContinueModel(PROTOCOL pro,int level)
 				sendodr("TCPSpeed(6)"); // 6
 				m_PreForceDir = Point3D(n.x, n.y, n.z);
 
-				// ���ý����ϽӴ����ñ�־
+				// 设置界面上接触良好标志
 				On_received_contact_state(CONTACT_OK);
 			}
 			else
@@ -2010,8 +2013,8 @@ void MyWindow::go()
 	{
 		cv::Point3d& p = points[i].p3d;
 		m_pAutoTreat->GetWidgetTreatOnGoing()->SetLabelTreating(i);
-		MovJ(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //����     //
-		//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //����     //
+		MovJ(p.x, p.y, p.z, -178, 0, NORMAL_ANGLE);   //联调     //
+		//MovJ(points[i].x, points[i].y, 0.0, -178, 0, 179.5);   //联调     //
 		Wait_Done();
 
 		Eigen::VectorXd pos(6);
@@ -2120,7 +2123,7 @@ void MyWindow::DecrIntensity()
 
 void MyWindow::stop()
 {
-	// �����洢��Ѩλ��
+	// 清理存储的穴位点
 	points.clear();
 	sendodr("ResetRobot()");
 	Wait_Done();
@@ -2222,10 +2225,10 @@ void MyWindow::poweron()
 	//sendodr("PowerOn()");
 	//qsleep(10000);
 	sendodr("DisableRobot()");
-	// ��Ħͷ���� 20250721 1.5�ǹ���
-	sendodr("EnableRobot(0.5,0,0,0)");
+	// 按摩头重量 20250721 1.5是公斤
+	sendodr("EnableRobot(1.0,0,0,0)");
 	//sendodr("BrakeControl(1,1)");
-	// ��е���ٶ� 20250721
+	// 机械臂速度 20250721
 	sendodr("SpeedFactor(25)");
 	//sendodr("RobotMode()");
 	Tool(2);
@@ -2236,11 +2239,11 @@ std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<Robot3d> point
 	for (uint i = 0; i < pointsC.size(); ++i)
 	{
 		//cv::Point3d point = cv::Point3d(start_Camera_Point.x - pointsC[i].p3d.x,
-		//    start_Camera_Point.y + pointsC[i].p3d.y - 155.0,     // ��ȥ����ͷ�Ͱ�Ħͷ�ľ���
+		//    start_Camera_Point.y + pointsC[i].p3d.y - 155.0,     // 减去摄像头和按摩头的距离
 		//    200.0 + start_Camera_Point.z - pointsC[i].p3d.z);
 
 		cv::Point3d point = cv::Point3d(start_Camera_Point.x + 11 - pointsC[i].p3d.x/*+70.0*/,
-			start_Camera_Point.y - 105.0 + pointsC[i].p3d.y/*-20.0*/,     // ��ȥ����ͷ�Ͱ�Ħͷ�ľ���
+			start_Camera_Point.y - 105.0 + pointsC[i].p3d.y/*-20.0*/,     // 减去摄像头和按摩头的距离
 			start_Camera_Point.z + 168.45 - pointsC[i].p3d.z);
 
 		if (point.z < -240.0 || point.z>-130.0)  // -50 -120��
@@ -2248,7 +2251,7 @@ std::vector<cv::Point3d> MyWindow::convert_camera2arm(std::vector<Robot3d> point
 			point.z = -240.0;
 		}
 
-		tmp_points.push_back(point); // ��������ͷ�߶ȣ�z������
+		tmp_points.push_back(point); // 加上理疗头高度：z轴向上
 	}
 
 	return tmp_points;
@@ -2303,7 +2306,7 @@ QImage MyWindow::cvMatToQImage(const cv::Mat& inMat)
 			inMat.cols, inMat.rows,
 			static_cast<int>(inMat.step),
 			QImage::Format_Grayscale8);//Format_Alpha8 and Format_Grayscale8 were added in Qt 5.5
-#else//���ﻹ��һ��д����������
+#else//这里还有一种写法，最后给出
 		static QVector<QRgb>  sColorTable;
 
 		// only create our color table the first time
@@ -2341,10 +2344,10 @@ QPixmap MyWindow::cvMatToQPixmap(const cv::Mat& inMat)
 	return QPixmap::fromImage(cvMatToQImage(inMat));
 }
 
-// ��е���ƶ���Ĭ�ϵĳ�ʼλ��
+// 机械臂移动到默认的初始位置
 void MyWindow::MoveToNormalPos()
 {
-	sendodr("EnableRobot(0.5,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,0)");
 
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, 45);
 	Wait_Done();
@@ -2354,7 +2357,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 {
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	//Sync();
-	sendodr("EnableRobot(0.5,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,0)");
 
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
 	Wait_Done();
@@ -2404,7 +2407,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 		qDebug() << "2d index " << i << "y " << base0[i].position.y * ratio_y << " x " << (colorRawMat.rows - 1) - base0[i].position.x * ratio_x;
 	}
 
-	std::vector<Robot3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //��Ҫһ���任����m
+	std::vector<Robot3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
 
 	// points = convert_camera2arm(pointsC);
 	std::vector<cv::Point3d> tempPoints = convert_camera2arm(pointsC);
@@ -2440,7 +2443,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 		points.push_back(p);
 	}
 
-	//todo: ���˳��  //
+	//todo: 点的顺序  //
 	qDebug() << QString("points size is %1 ").arg(points.size());
 	for (uint i = 0; i < tempPoints.size(); ++i) {
 		qDebug() << i << tempPoints[i].x << tempPoints[i].y << tempPoints[i].z;
@@ -2516,7 +2519,7 @@ std::vector<Robot3d> MyWindow::get3Dpoints(std::vector<cv::Point> base, std::vec
 }
 
 double MyWindow::strToDouble(std::string str)
-{ // stringתdouble
+{ // string转double
 	char* ch = new char[str.length()];
 	double d;
 	for (int i = 0; i != str.length(); i++)
@@ -2530,7 +2533,7 @@ double MyWindow::strToDouble(std::string str)
 	return d;
 }
 
-// �����ļ��еĺ���
+// 创建文件夹的函数
 void CreateFolder(const QString& folderPath)
 {
 	QDir dir(folderPath);

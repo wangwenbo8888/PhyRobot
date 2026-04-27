@@ -1,5 +1,18 @@
 <RCC>
   <qresource prefix="/">
+    <file>LabelDrag.png</file>
+    <file>DragStop.png</file>
+    <file>DragStart.png</file>
+    <file>LabelLocation.png</file>
+    <file>LabelOutputIntensity.png</file>
+    <file>LabelDecr.png</file>
+    <file>LabelIncr.png</file>
+    <file>LabelDragStart.png</file>
+    <file>LabelDragStartPushed.png</file>
+    <file>LabelDragStartUnpush.png</file>
+    <file>LabelDragStop.png</file>
+    <file>LabelDragStopPushed.png</file>
+    <file>LabelDragStopUnpush.png</file>
     <file>Contact_Error.png</file>
     <file>Contact_OK.png</file>
     <file>ShoulderUnblockImage.png</file>

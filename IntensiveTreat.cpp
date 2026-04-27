@@ -98,6 +98,7 @@ void IntensiveTreat::SetWidgetDragBegin()
 	ui.label_AdjStartFlag->show();
 	ui.label_FinishFlag->hide();
 
+	m_pManualTreatDragBegin->SetFirstFlag();
 	ui.stackedWidget_ManualTreat_Pages->setCurrentWidget(m_pManualTreatDragBegin.get());
 }
 

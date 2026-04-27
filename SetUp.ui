@@ -194,6 +194,50 @@ QPushButton:disabled {
       <string>通信调试</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_ReturnHome">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>540</y>
+       <width>261</width>
+       <height>80</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>36</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+    background-color:#059FC9;
+    color: white;
+	border-radius:15px;
+    padding: 5px 10px;
+}
+ 
+QPushButton:hover {
+    background-color:#059FC9;
+	color: black;
+}
+ 
+QPushButton:pressed {
+    background-color:#059FC9;
+	color: black;
+}
+ 
+QPushButton:disabled {
+    background-color: #f0f0f0;
+    color: #999;
+}</string>
+     </property>
+     <property name="text">
+      <string>返回主页</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton_StartOrStop">
    <property name="geometry">
     <rect>
-     <x>1590</x>
-     <y>679</y>
+     <x>910</x>
+     <y>680</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -53,7 +53,7 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_LastStep">
    <property name="geometry">
     <rect>
-     <x>1210</x>
+     <x>1100</x>
      <y>679</y>
      <width>180</width>
      <height>60</height>
@@ -90,8 +90,8 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_Back">
    <property name="geometry">
     <rect>
-     <x>1020</x>
-     <y>679</y>
+     <x>1480</x>
+     <y>680</y>
      <width>180</width>
      <height>60</height>
     </rect>
@@ -127,7 +127,7 @@ QPushButton:pressed
   <widget class="QPushButton" name="pushButton_PauseOrContinue">
    <property name="geometry">
     <rect>
-     <x>1400</x>
+     <x>1290</x>
      <y>679</y>
      <width>180</width>
      <height>60</height>
@@ -201,13 +201,13 @@ QPushButton:pressed
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_StartOrClose">
+  <widget class="QPushButton" name="pushButton_DragStartOrStop">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>20</y>
-     <width>220</width>
-     <height>262</height>
+     <x>130</x>
+     <y>260</y>
+     <width>202</width>
+     <height>47</height>
     </rect>
    </property>
    <property name="font">
@@ -230,13 +230,17 @@ background:transparent;
    </property>
    <property name="icon">
     <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/ManualTreatDragStartOrCloseImageUnpush.png</normaloff>:/ManualTreatDragStartOrCloseImageUnpush.png</iconset>
+     <normaloff>:/DragStop.png</normaloff>
+     <normalon>:/DragStart.png</normalon>:/DragStop.png</iconset>
    </property>
    <property name="iconSize">
     <size>
      <width>220</width>
      <height>262</height>
     </size>
+   </property>
+   <property name="shortcut">
+    <string>D</string>
    </property>
    <property name="checkable">
     <bool>true</bool>
@@ -246,136 +250,31 @@ background:transparent;
    </property>
    <property name="flat">
     <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_PosFixed">
-   <property name="geometry">
-    <rect>
-     <x>350</x>
-     <y>20</y>
-     <width>220</width>
-     <height>262</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>阿里巴巴普惠体</family>
-     <pointsize>26</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QPushButton
-{
-border:none;
-background:transparent;
-}</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/ManualTreatDragFixedImage.png</normaloff>:/ManualTreatDragFixedImage.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>220</width>
-     <height>262</height>
-    </size>
-   </property>
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="autoExclusive">
-    <bool>true</bool>
-   </property>
-   <property name="flat">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_Note">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>290</y>
-     <width>481</width>
-     <height>301</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/ManualTreatDragNote.png</pixmap>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>610</x>
-     <y>20</y>
-     <width>506</width>
-     <height>602</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/ManualTreatAdjStartImage.png</pixmap>
    </property>
   </widget>
   <widget class="QLabel" name="label_Adj">
    <property name="geometry">
     <rect>
-     <x>1210</x>
-     <y>25</y>
-     <width>511</width>
-     <height>401</height>
+     <x>410</x>
+     <y>80</y>
+     <width>798</width>
+     <height>454</height>
     </rect>
    </property>
    <property name="text">
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/ManualTreatAdjRectangleImage.png</pixmap>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_TimerDecr">
-   <property name="geometry">
-    <rect>
-     <x>1256</x>
-     <y>154</y>
-     <width>50</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:25px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/--.png</normaloff>:/--.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>50</width>
-     <height>50</height>
-    </size>
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LabelOutputIntensity.png</pixmap>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_IntensityIncr">
    <property name="geometry">
     <rect>
-     <x>1616</x>
-     <y>294</y>
-     <width>50</width>
-     <height>50</height>
+     <x>1030</x>
+     <y>290</y>
+     <width>180</width>
+     <height>180</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -386,68 +285,25 @@ background:transparent;
    </property>
    <property name="icon">
     <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/++.png</normaloff>:/++.png</iconset>
+     <normaloff>:/LabelIncr.png</normaloff>:/LabelIncr.png</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>180</width>
+     <height>180</height>
     </size>
    </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_TimerIncr">
-   <property name="geometry">
-    <rect>
-     <x>1616</x>
-     <y>154</y>
-     <width>50</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:25px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/++.png</normaloff>:/++.png</iconset>
-   </property>
-   <property name="iconSize">
-    <size>
-     <width>50</width>
-     <height>50</height>
-    </size>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>1250</x>
-     <y>150</y>
-     <width>421</width>
-     <height>59</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:3px solid #B6B6B7;
-border-radius:29px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/WaiKuang.png</pixmap>
+   <property name="shortcut">
+    <string>A</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_IntensityDecr">
    <property name="geometry">
     <rect>
-     <x>1256</x>
-     <y>294</y>
-     <width>50</width>
-     <height>50</height>
+     <x>410</x>
+     <y>290</y>
+     <width>180</width>
+     <height>180</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -458,50 +314,31 @@ border-radius:29px;</string>
    </property>
    <property name="icon">
     <iconset resource="PhysicalTherapyRobot.qrc">
-     <normaloff>:/--.png</normaloff>:/--.png</iconset>
+     <normaloff>:/LabelDecr.png</normaloff>:/LabelDecr.png</iconset>
    </property>
    <property name="iconSize">
     <size>
-     <width>50</width>
-     <height>50</height>
+     <width>180</width>
+     <height>180</height>
     </size>
    </property>
-  </widget>
-  <widget class="QLabel" name="label_TimerValue">
-   <property name="geometry">
-    <rect>
-     <x>1350</x>
-     <y>160</y>
-     <width>211</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>阿里巴巴普惠体</family>
-     <pointsize>36</pointsize>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:#757475;</string>
-   </property>
-   <property name="text">
-    <string>00:01:00</string>
+   <property name="shortcut">
+    <string>W</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_IntensityValue">
    <property name="geometry">
     <rect>
-     <x>1360</x>
-     <y>300</y>
+     <x>700</x>
+     <y>350</y>
      <width>211</width>
-     <height>41</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>阿里巴巴普惠体</family>
-     <pointsize>36</pointsize>
+     <pointsize>48</pointsize>
     </font>
    </property>
    <property name="styleSheet">
@@ -514,104 +351,205 @@ border-radius:29px;</string>
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QPushButton" name="pushButton_LocationStartOrStop">
    <property name="geometry">
     <rect>
-     <x>1250</x>
-     <y>290</y>
-     <width>421</width>
-     <height>59</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">border:3px solid #B6B6B7;
-border-radius:29px;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/WaiKuang.png</pixmap>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_Timer">
-   <property name="geometry">
-    <rect>
-     <x>1340</x>
-     <y>570</y>
-     <width>211</width>
-     <height>41</height>
+     <x>130</x>
+     <y>540</y>
+     <width>202</width>
+     <height>47</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>阿里巴巴普惠体</family>
-     <pointsize>36</pointsize>
+     <pointsize>26</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color:#757475;</string>
-   </property>
-   <property name="text">
-    <string>00:01:00</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_Hourglass">
-   <property name="geometry">
-    <rect>
-     <x>1260</x>
-     <y>480</y>
-     <width>39</width>
-     <height>44</height>
-    </rect>
+    <string notr="true">QPushButton
+{
+border:none;
+background:transparent;
+}</string>
    </property>
    <property name="text">
     <string/>
    </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/Hourglass.png</pixmap>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/DragStop.png</normaloff>
+     <normalon>:/DragStart.png</normalon>:/DragStop.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>220</width>
+     <height>262</height>
+    </size>
+   </property>
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>true</bool>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="label_Tik">
+  <widget class="QLabel" name="label_Drag">
    <property name="geometry">
     <rect>
-     <x>1630</x>
-     <y>480</y>
-     <width>38</width>
-     <height>38</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="PhysicalTherapyRobot.qrc">:/GrayTik.png</pixmap>
-   </property>
-  </widget>
-  <widget class="QProgressBar" name="progressBar">
-   <property name="geometry">
-    <rect>
-     <x>1330</x>
-     <y>490</y>
-     <width>281</width>
-     <height>23</height>
+     <x>130</x>
+     <y>50</y>
+     <width>180</width>
+     <height>180</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QProgressBar
- { border: 2px solid #4CAF50;
-   border-radius: 5px;
-    text-align: center;
- }
-
- QProgressBar::chunk
- { 
-background-color:green;
- width: 5px;
- };</string>
+    <string notr="true">QLabel
+{
+ border:none;
+ background:transparent;
+}
+</string>
    </property>
-   <property name="value">
-    <number>24</number>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LabelDrag.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Location">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>340</y>
+     <width>180</width>
+     <height>180</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel
+{
+ border:none;
+ background:transparent;
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LabelLocation.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Drag_2">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>180</y>
+     <width>198</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel
+{
+ border:none;
+ background:transparent;
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LabelDragStart.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_Drag_3">
+   <property name="geometry">
+    <rect>
+     <x>1400</x>
+     <y>390</y>
+     <width>198</width>
+     <height>70</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel
+{
+ border:none;
+ background:transparent;
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="PhysicalTherapyRobot.qrc">:/LabelDragStop.png</pixmap>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_TreatStart">
+   <property name="geometry">
+    <rect>
+     <x>1220</x>
+     <y>140</y>
+     <width>150</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:25px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LabelDragStartUnpush.png</normaloff>
+     <normalon>:/LabelDragStartPushed.png</normalon>:/LabelDragStartUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>180</width>
+     <height>180</height>
+    </size>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_TreatStop">
+   <property name="geometry">
+    <rect>
+     <x>1230</x>
+     <y>350</y>
+     <width>150</width>
+     <height>150</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius:25px;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="PhysicalTherapyRobot.qrc">
+     <normaloff>:/LabelDragStopUnpush.png</normaloff>
+     <normalon>:/LabelDragStopPushed.png</normalon>:/LabelDragStopUnpush.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>180</width>
+     <height>180</height>
+    </size>
    </property>
   </widget>
   <zorder>label_flag2</zorder>
@@ -620,23 +558,18 @@ background-color:green;
   <zorder>pushButton_LastStep</zorder>
   <zorder>pushButton_PauseOrContinue</zorder>
   <zorder>pushButton_StartOrStop</zorder>
-  <zorder>pushButton_StartOrClose</zorder>
-  <zorder>pushButton_PosFixed</zorder>
-  <zorder>label_Note</zorder>
-  <zorder>label</zorder>
+  <zorder>pushButton_DragStartOrStop</zorder>
   <zorder>label_Adj</zorder>
-  <zorder>label_3</zorder>
-  <zorder>label_TimerValue</zorder>
-  <zorder>label_4</zorder>
   <zorder>label_IntensityValue</zorder>
   <zorder>pushButton_IntensityDecr</zorder>
   <zorder>pushButton_IntensityIncr</zorder>
-  <zorder>pushButton_TimerDecr</zorder>
-  <zorder>pushButton_TimerIncr</zorder>
-  <zorder>label_Timer</zorder>
-  <zorder>label_Hourglass</zorder>
-  <zorder>label_Tik</zorder>
-  <zorder>progressBar</zorder>
+  <zorder>pushButton_LocationStartOrStop</zorder>
+  <zorder>label_Drag</zorder>
+  <zorder>label_Location</zorder>
+  <zorder>label_Drag_2</zorder>
+  <zorder>label_Drag_3</zorder>
+  <zorder>pushButton_TreatStart</zorder>
+  <zorder>pushButton_TreatStop</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

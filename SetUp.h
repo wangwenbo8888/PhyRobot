@@ -21,6 +21,8 @@ public slots:
 
 	void On_pushButton_CommunicateTest_Clicked();
 
+	void On_pushButton_ReturnHome_Clicked();
+
 private:
 	Ui::SetUpClass ui;
 

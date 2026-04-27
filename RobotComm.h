@@ -167,5 +167,8 @@ const double HALF_NORMAL_ANGLE = 45.0;
 const double NORMAL_ANGLE = 90.0;
 
 // 机械臂负载
+const double LOAD = 1.0;
+
+// 机械臂负载
 //const double ROBOT_LOAD = 0.5;
 #define ROBOT_LOAD 0.5;
