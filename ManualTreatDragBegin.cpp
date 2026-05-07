@@ -34,8 +34,8 @@ ManualTreatDragBegin::ManualTreatDragBegin(MyWindow* window,QWidget *parent)
 	disconnect(ui.pushButton_DragStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_DragStartOrStop_Clicked()));
 	connect(ui.pushButton_DragStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_DragStartOrStop_Clicked()));
 	
-	disconnect(ui.pushButton_LocationStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_LocationStartOrStop_Clicked()));
-	connect(ui.pushButton_LocationStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_LocationStartOrStop_Clicked()));
+	//disconnect(ui.pushButton_LocationStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_LocationStartOrStop_Clicked()));
+	//connect(ui.pushButton_LocationStartOrStop, SIGNAL(clicked()), this, SLOT(On_pushButton_LocationStartOrStop_Clicked()));
 	//disconnect(ui.pushButton_PosFixed, SIGNAL(clicked()), this, SLOT(On_pushButton_PosFixed_Clicked()));
 	//connect(ui.pushButton_PosFixed, SIGNAL(clicked()), this, SLOT(On_pushButton_PosFixed_Clicked()));
 
@@ -120,6 +120,12 @@ void ManualTreatDragBegin::On_pushButton_Back_Clicked()
 {
 	m_pMyWindow->SetWidgetHomePage();
 	m_pMyWindow->show();
+
+	// 如果拖拽模式打开，则关闭
+	if (m_bStartFlag)
+	{
+		On_pushButton_DragStartOrStop_Clicked();
+	}
 	//this->hide();
 }
 void ManualTreatDragBegin::On_pushButton_LastStep_Clicked()
@@ -196,6 +202,7 @@ void ManualTreatDragBegin::On_pushButton_DragStartOrStop_Clicked()
 {
 	if (!m_bStartFlag)
 	{
+		m_bStartFlag = true;
 		ui.pushButton_DragStartOrStop->setIcon(QIcon(":/DragStart.png"));
 
 		if (m_bFirstDrag)
@@ -221,7 +228,7 @@ void ManualTreatDragBegin::On_pushButton_DragStartOrStop_Clicked()
 
 		m_pMyWindow->StartDrag();
 
-		m_bStartFlag = true;
+		//m_bStartFlag = true;
 	}
 	else if (m_bStartFlag)
 	{
@@ -275,6 +282,7 @@ void ManualTreatDragBegin::On_pushButton_IntensityDecr_Clicked()
 	{
 		int value = ui.label_IntensityValue->text().toInt();
 		ui.label_IntensityValue->setText(QString::number(value - 1));
+		m_pMyWindow->DecrIntensity();
 	}
 }
 
@@ -288,6 +296,7 @@ void ManualTreatDragBegin::On_pushButton_IntensityIncr_Clicked()
 	{
 		int value = ui.label_IntensityValue->text().toInt();
 		ui.label_IntensityValue->setText(QString::number(value + 1));
+		m_pMyWindow->IncrIntensity();
 	}
 }
 

@@ -90,6 +90,8 @@ AutoTreatBegin::~AutoTreatBegin()
 
 void AutoTreatBegin::on_pushButton_Back_Clicked()
 {
+	// 先关闭拖拽模式
+
 	m_pWindow->GetAutoTreat()->FinishReturn();
 }
 

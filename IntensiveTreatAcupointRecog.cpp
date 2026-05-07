@@ -27,6 +27,7 @@ IntensiveTreatAcupointRecog::~IntensiveTreatAcupointRecog()
 
 void IntensiveTreatAcupointRecog::On_pushButton_BackToHome_Clicked()
 {
+	m_pIntensiveTreat->FinishReturn();
 }
 
 void IntensiveTreatAcupointRecog::On_pushButton_DragModel_Clicked()
