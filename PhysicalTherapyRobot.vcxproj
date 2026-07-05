@@ -20,7 +20,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -74,13 +74,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\opencv411\opencv\build\include;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include\libobsensor\hpp;..\PhysicalTherapyRobot\GTEngine-master\Include;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\include;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\include\QtNetwork;..\PhysicalTherapyRobot\eigen-3.3.8;..\PhysicalTherapyRobot\WifiList;C:\Program Files\PCL 1.12.1\include\pcl-1.12;C:\Program Files\PCL 1.12.1\3rdParty\Boost\include\boost-1_78;C:\Program Files\PCL 1.12.1\3rdParty\VTK\include\vtk-9.1;C:\Program Files\PCL 1.12.1\3rdParty\FLANN\include;..\PhysicalTherapyRobot\opencv411\opencv\build\include\opencv2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\PhysicalTherapyRobot\OrbbecSDK_v2-main\build_x64_Release\src\generated;..\PhysicalTherapyRobot\opencv411\opencv\build\include;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\include;..\PhysicalTherapyRobot\OrbbecSDK_v2-main\include\libobsensor\hpp;..\PhysicalTherapyRobot\GTEngine-master\Include;..\PhysicalTherapyRobot\OrbbecSDK_v2-main\include;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\include\QtNetwork;..\PhysicalTherapyRobot\eigen-3.3.8;..\PhysicalTherapyRobot\WifiList;C:\Program Files\PCL 1.12.1\include\pcl-1.12;C:\Program Files\PCL 1.12.1\3rdParty\Boost\include\boost-1_78;C:\Program Files\PCL 1.12.1\3rdParty\VTK\include\vtk-9.1;C:\Program Files\PCL 1.12.1\3rdParty\FLANN\include;..\PhysicalTherapyRobot\opencv411\opencv\build\include\opencv2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>BOOST_ALL_NO_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opencv_world4110.lib;OrbbecSDK.lib;onnxruntime.lib;Qt5Network.lib;pcl_search.lib;pcl_kdtree.lib;pcl_common.lib;pcl_features.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\opencv411\opencv\build\x64\vc16\lib;..\PhysicalTherapyRobot\OrbbecSDK_v1.10.12\SDK\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\lib;C:\Program Files\PCL 1.12.1\3rdParty\Boost\lib;C:\Program Files\PCL 1.12.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\PhysicalTherapyRobot\opencv411\opencv\build\x64\vc16\lib;..\PhysicalTherapyRobot\OrbbecSDK_v2-main\build_x64_Release\win_x64\lib;..\PhysicalTherapyRobot\onnxruntime\v1.12.1\win\x64\lib;C:\Qt\Qt5.12.8\5.12.8\msvc2017_64\lib;C:\Program Files\PCL 1.12.1\3rdParty\Boost\lib;C:\Program Files\PCL 1.12.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

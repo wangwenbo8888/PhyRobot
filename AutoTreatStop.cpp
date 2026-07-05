@@ -41,7 +41,8 @@ void AutoTreatStop::On_pushButton_Confirm_Clicked()
 		m_pWindow->SetStoped(true);
 
 		m_pWindow->ResetRobot();
-		m_pWindow->RobotGoHome();
+		//m_pWindow->RobotGoHome();
+		m_pWindow->RobotStorage();
 	}
 
 	emit EmitConfirmed();

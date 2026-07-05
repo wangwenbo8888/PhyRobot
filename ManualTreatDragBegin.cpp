@@ -282,7 +282,15 @@ void ManualTreatDragBegin::On_pushButton_IntensityDecr_Clicked()
 	{
 		int value = ui.label_IntensityValue->text().toInt();
 		ui.label_IntensityValue->setText(QString::number(value - 1));
-		m_pMyWindow->DecrIntensity();
+		//m_pMyWindow->DecrIntensity();
+		int begin = 1;
+		//int run = ui.label_IntensityValue->text().toInt();
+		int run = value - 1;
+		QByteArray data;
+		m_pMyWindow->GetCommunicate()->setData(HANDLE_MODEL, begin, run, true, data);
+
+		qDebug() << "Drag model send start data " << data.toHex().toUpper();
+		m_pMyWindow->GetCommunicate()->sendData(data);
 	}
 }
 
@@ -296,7 +304,15 @@ void ManualTreatDragBegin::On_pushButton_IntensityIncr_Clicked()
 	{
 		int value = ui.label_IntensityValue->text().toInt();
 		ui.label_IntensityValue->setText(QString::number(value + 1));
-		m_pMyWindow->IncrIntensity();
+		//m_pMyWindow->IncrIntensity();
+		int begin = 1;
+		//int run = ui.label_IntensityValue->text().toInt();
+		int run = value + 1;
+		QByteArray data;
+		m_pMyWindow->GetCommunicate()->setData(HANDLE_MODEL, begin, run, true, data);
+
+		qDebug() << "Drag model send start data " << data.toHex().toUpper();
+		m_pMyWindow->GetCommunicate()->sendData(data);
 	}
 }
 
