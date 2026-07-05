@@ -568,80 +568,38 @@ void MyWindow::sktmsg8_error()
 
 void MyWindow::sktmsg8_readyRead()
 {
-	//qDebug() << "sktmsg8_readyRead" << endl;
 	QByteArray msg = od.sktmsg8->readAll();
-	//qDebug() <<"Msg 8 is " << msg << endl;
 
-	// --- 核心提取逻辑 ---
-	qint64 start_pos = 1304;
-	qint64 end_pos = 1351;
+	// V4: SixForceValue(六维力原始数据) 偏移量计算
+	// V3/V4 兼容: SixForceValue 均在偏移 1304 处
+	// V4 新增: ActualTCPForce(末端实际力) 在偏移 576 处
+	const qint64 SIX_FORCE_OFFSET = 1304;    // SixForceValue 起始
+	const qint64 TCP_FORCE_OFFSET = 576;     // ActualTCPForce 起始 (V4)
+	const qint64 FORCE_SIZE = 48;            // 6个double
+
+	qint64 start_pos = SIX_FORCE_OFFSET;
+	qint64 end_pos = start_pos + FORCE_SIZE - 1;
 
 	// **重要：边界检查**
 	if (start_pos < 0 || end_pos >= msg.size() || start_pos > end_pos) {
-		qWarning() << "Error out of range ！";
+		qWarning() << "Force data out of range!";
 		return;
 	}
 
-	// 计算起始位置和要提取的长度
-	qint64 length = end_pos - start_pos + 1; // 1351 - 1304 + 1 = 48 字节
+	QByteArray extractedData = msg.mid(start_pos, FORCE_SIZE);
 
-	// 使用 mid() 函数提取数据
-	// mid(start_pos, length) 从 start_pos 开始，提取 length 个字节
-	QByteArray extractedData = msg.mid(start_pos, length);
-
-	// --- 输出结果 ---
-	//qDebug() << "Exect success " << extractedData.size() << " byte !";
-	// 存储转换结果的容器
 	std::vector<double> doubleValues;
-
-	// 使用 QDataStream 从 QByteArray 读取数据
 	QDataStream stream(&extractedData, QIODevice::ReadOnly);
-	stream.setByteOrder(QDataStream::LittleEndian); // 明确设置为小端模式
+	stream.setByteOrder(QDataStream::LittleEndian);
 
-	// 读取 6 个 double 值
 	for (int i = 0; i < 6; ++i) {
 		double value;
-		stream >> value; // QDataStream 会自动按小端格式读取 8 字节并转换为 double
+		stream >> value;
 		doubleValues.push_back(value);
 	}
 
-	// qDebug() << "Real time force is " << doubleValues[0]<<" "<< doubleValues[1]<<" "<< doubleValues[2]<<" " << doubleValues[3]<<" "<< doubleValues[4]<<" "<<doubleValues[5];
-
 	m_vForces.clear();
 	m_vForces = doubleValues;
-	//qDebug() << "sktwork_readyRead" << endl;
-	//QByteArray msg = od.sktwork->readAll();
-	//qDebug() << msg << endl;
-#if 0
-	QString str(msg);
-
-	std::vector<std::vector<std::string>> numbers;
-	if (str.contains("GetSixForceData()"))
-	{
-		numbers = extractAndSplit(str.toStdString(), ',');
-
-		if (!numbers.empty())
-		{
-			std::vector<std::string> forces;
-			for (int i = 0; i < numbers.size(); ++i)
-			{
-				if (numbers[i].size() == 9)
-				{
-					forces = numbers[i];
-				}
-			}
-
-			m_vForces.clear();
-			for (int i = 0; i < forces.size(); ++i)
-			{
-				double value = strToDouble(forces[i]);
-				m_vForces.push_back(value);
-				//qDebug() << "value is " << value << endl;
-			}
-		}
-	}
-
-#endif
 }
 
 void MyWindow::sktmsg8_disconnected()
@@ -734,10 +692,11 @@ void MyWindow::RobotStorage()
 
 void MyWindow::ClearError()
 {
+	// V4: 先确保有 TCP 控制权
+	RequestControl();
 	sendodr("ClearError()");
-	// 按摩头重量 20250721 0.5是公斤
-	sendodr("EnableRobot(1.0,0,0,0)");
-	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	// V4: EnableRobot 支持 isCheck 参数
+	sendodr("EnableRobot(1.0,0,0,0,0)");
 	RobotStorage();
 	Wait_Done();
 }
@@ -771,34 +730,39 @@ void MyWindow::GetSixForceData()
 	qDebug() << "send time is " << current_time << endl;
 }
 
-void MyWindow::PositiveSolution(double J1, double J2, double J3, double J4, double J5, double J6, int User, int Tool)
+void MyWindow::PositiveKin(double J1, double J2, double J3, double J4, double J5, double J6, int user, int tool)
 {
-	sendodr("PositiveSolution(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
-		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "," +
-		QByteArray::number(User) + "," + QByteArray::number(Tool) + ")");
+	QString cmd = "PositiveKin(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6);
+	if (user >= 0) cmd += ",user=" + QString::number(user);
+	if (tool >= 0) cmd += ",tool=" + QString::number(tool);
+	cmd += ")";
+	sendodr(cmd.toUtf8());
 }
 
-void MyWindow::InverseSolution(double X, double Y, double Z, double Rx, double Ry, double Rz,
-	int User, int Tool, int isJointNear, QString JointNear)
+void MyWindow::InverseKin(double X, double Y, double Z, double Rx, double Ry, double Rz,
+	int user, int tool, int useJointNear, QString jointNear)
 {
-	if (isJointNear)
-	{
-		sendodr("InverseSolution(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
-			QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "," +
-			QByteArray::number(User) + "," + QByteArray::number(Tool) + "," +
-			QByteArray::number(isJointNear) + "," + JointNear.toLatin1() + ")");
-	}
-	else {
-		sendodr("InverseSolution(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
-			QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "," +
-			QByteArray::number(User) + "," + QByteArray::number(Tool) + ")");
-	}
+	QString cmd = "InverseKin(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz);
+	if (user >= 0) cmd += ",user=" + QString::number(user);
+	if (tool >= 0) cmd += ",tool=" + QString::number(tool);
+	if (useJointNear) cmd += ",useJointNear=1,jointNear=" + jointNear;
+	cmd += ")";
+	sendodr(cmd.toUtf8());
 }
 
-void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t, float lookahead_time, float gain) {
+void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t, float aheadtime, float gain) {
+	// V4: ServoJ(J1,J2,J3,J4,J5,J6,t,aheadtime,gain)
 	sendrunodr("ServoJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
 		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "," +
-		QByteArray::number(double(t)) + "," + QByteArray::number(double(lookahead_time)) + "," + QByteArray::number(double(gain)) + ")");
+		QByteArray::number(double(t)) + "," + QByteArray::number(double(aheadtime)) + "," + QByteArray::number(double(gain)) + ")");
+}
+
+void MyWindow::RequestControl()
+{
+	sendodr("RequestControl()");
+	qsleep(500);
 }
 
 void MyWindow::JointMovJ(double J1, double J2, double J3, double J4, double J5, double J6)
@@ -819,8 +783,94 @@ void MyWindow::Tool(int tool)
 
 void MyWindow::ServoP(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
+	// V4: ServoP(X,Y,Z,Rx,Ry,Rz) 可选参数 t,aheadtime,gain
 	sendrunodr("ServoP(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
 		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+}
+
+// === V4 力控 API 实现 ===
+void MyWindow::EnableFTSensor()
+{
+	sendodr("EnableFTSensor()");
+}
+
+void MyWindow::SixForceHome()
+{
+	sendodr("SixForceHome()");
+}
+
+void MyWindow::GetForce()
+{
+	sendrunodr("GetForce()");
+}
+
+void MyWindow::ForceDriveMode(int axis, double value, int index)
+{
+	sendrunodr("ForceDriveMode(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
+}
+
+void MyWindow::ForceDriveSpeed(int axis, double value, int index)
+{
+	sendrunodr("ForceDriveSpeed(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
+}
+
+void MyWindow::FCForceMode(int mode)
+{
+	sendodr("FCForceMode(" + QByteArray::number(mode) + ")");
+}
+
+void MyWindow::FCSetDeviation(double x, double y, double z, double rx, double ry, double rz)
+{
+	sendodr("FCSetDeviation(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + ","
+		+ QByteArray::number(rx) + "," + QByteArray::number(ry) + "," + QByteArray::number(rz) + ")");
+}
+
+void MyWindow::FCSetForceLimit(double x, double y, double z, double rx, double ry, double rz)
+{
+	sendodr("FCSetForceLimit(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + ","
+		+ QByteArray::number(rx) + "," + QByteArray::number(ry) + "," + QByteArray::number(rz) + ")");
+}
+
+void MyWindow::FCSetMass(double mass)
+{
+	sendodr("FCSetMass(" + QByteArray::number(mass) + ")");
+}
+
+void MyWindow::FCSetStiffness(double x, double y, double z, double rx, double ry, double rz)
+{
+	sendodr("FCSetStiffness(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + ","
+		+ QByteArray::number(rx) + "," + QByteArray::number(ry) + "," + QByteArray::number(rz) + ")");
+}
+
+void MyWindow::FCSetDamping(double x, double y, double z, double rx, double ry, double rz)
+{
+	sendodr("FCSetDamping(" + QByteArray::number(x) + "," + QByteArray::number(y) + "," + QByteArray::number(z) + ","
+		+ QByteArray::number(rx) + "," + QByteArray::number(ry) + "," + QByteArray::number(rz) + ")");
+}
+
+void MyWindow::FCOff()
+{
+	sendodr("FCOff()");
+}
+
+void MyWindow::FCSetForceSpeedLimit(double speed)
+{
+	sendodr("FCSetForceSpeedLimit(" + QByteArray::number(speed) + ")");
+}
+
+void MyWindow::SetFCCollision(double force, double torque)
+{
+	sendodr("SetFCCollision(" + QByteArray::number(force) + "," + QByteArray::number(torque) + ")");
+}
+
+void MyWindow::FCCollisionSwitch(int onoff)
+{
+	sendodr("FCCollisionSwitch(" + QByteArray::number(onoff) + ")");
+}
+
+void MyWindow::GetCurrentCommandId()
+{
+	sendrunodr("GetCurrentCommandId()");
 }
 void MyWindow::MovL(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
@@ -1075,8 +1125,9 @@ bool MyWindow::SetXuewei(const std::vector<std::vector<XUEWEI_INFO>>& xueweis)
 
 void MyWindow::ResetRobot()
 {
-	sendodr("ResetRobot()");
-	Wait_Done();
+	// V4: 使用 Stop() 停止运动队列
+	sendrunodr("Stop()");
+	qsleep(500);
 }
 
 
@@ -2126,8 +2177,9 @@ void MyWindow::stop()
 {
 	// 清理存储的穴位点
 	points.clear();
-	sendodr("ResetRobot()");
-	Wait_Done();
+	// V4: 用 Stop() 替代 ResetRobot()
+	sendrunodr("Stop()");
+	qsleep(500);
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	RobotStorage();
 	Wait_Done();
@@ -2223,11 +2275,13 @@ void MyWindow::poweron()
 {
 	if (pw == 1) return;
 	pw = 1;
+	// V4: 先请求 TCP 控制权
+	RequestControl();
 	//sendodr("PowerOn()");
 	//qsleep(10000);
 	sendodr("DisableRobot()");
-	// 按摩头重量 20250721 1.5是公斤
-	sendodr("EnableRobot(1.0,0,0,0)");
+	// V4: EnableRobot 支持 isCheck 参数（第5个参数，0=不检查负载）
+	sendodr("EnableRobot(1.0,0,0,0,0)");
 	//sendodr("BrakeControl(1,1)");
 	// 机械臂速度 20250721
 	sendodr("SpeedFactor(25)");
@@ -2348,7 +2402,7 @@ QPixmap MyWindow::cvMatToQPixmap(const cv::Mat& inMat)
 // 机械臂移动到默认的初始位置
 void MyWindow::MoveToNormalPos()
 {
-	sendodr("EnableRobot(1.0,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,0,0)");
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
 	Wait_Done();
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
@@ -2359,7 +2413,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 {
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	//Sync();
-	sendodr("EnableRobot(1.0,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,0,0)");
 
 	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
 	Wait_Done();

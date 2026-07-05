@@ -69,6 +69,9 @@ public:
 	MyWindow(PhysicalTherapyRobot* robot,QWidget *parent = nullptr);
 	~MyWindow();
 
+    // V4: 请求 TCP 控制权
+    void RequestControl();
+
     // 开始机械臂拖拽模式
     void StartDrag();
 
@@ -284,8 +287,8 @@ private:
 	QSharedPointer<EquipInfo> m_pEquipInfo;
 	QSharedPointer<SetUp> m_pSetUp;
 
-    //QString ip = "192.168.5.1";
-    QString ip = "192.168.100.6";
+    QString ip = "192.168.5.1";
+    //QString ip = "192.168.100.6";
     oder od;
     int cnt[5] = {1, 1, 0, 0, 0};
 
@@ -329,12 +332,34 @@ private:
 
     void GetPose();
 
-    void PositiveSolution(double J1, double J2, double J3, double J4, double J5, double J6, int User, int Tool);
+    // V4: PositiveSolution → PositiveKin
+    void PositiveKin(double J1, double J2, double J3, double J4, double J5, double J6, int user = -1, int tool = -1);
 
     void qsleep(int msec); 
     void qsleep_pause(int msec);
-    void InverseSolution(double X, double Y, double Z, double Rx, double Ry, double Rz, int User, int Tool, int isJointNear = 0, QString JointNear = "");
-    void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 3600.0f, float lookahead_time = 100.0f, float gain = 200.0f);
+    // V4: InverseSolution → InverseKin
+    void InverseKin(double X, double Y, double Z, double Rx, double Ry, double Rz, int user = -1, int tool = -1, int useJointNear = 0, QString jointNear = "");
+    // V4: ServoJ 参数调整
+    void ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t = 0.1f, float aheadtime = 50.0f, float gain = 500.0f);
+
+    // === V4 力控 API ===
+    void EnableFTSensor();
+    void SixForceHome();
+    void GetForce();
+    void ForceDriveMode(int axis, double value, int index = 0);
+    void ForceDriveSpeed(int axis, double value, int index = 0);
+    void FCForceMode(int mode);
+    void FCSetDeviation(double x, double y, double z, double rx, double ry, double rz);
+    void FCSetForceLimit(double x, double y, double z, double rx, double ry, double rz);
+    void FCSetMass(double mass);
+    void FCSetStiffness(double x, double y, double z, double rx, double ry, double rz);
+    void FCSetDamping(double x, double y, double z, double rx, double ry, double rz);
+    void FCOff();
+    void FCSetForceSpeedLimit(double speed);
+    void SetFCCollision(double force, double torque);
+    void FCCollisionSwitch(int onoff);
+    // V4: GetCurrentCommandId 用于同步
+    void GetCurrentCommandId();
     ////detecter dtt;
     void setip(QString ip);
     std::vector<RobotPoint> points;
