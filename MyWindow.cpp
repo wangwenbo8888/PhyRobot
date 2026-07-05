@@ -889,6 +889,16 @@ void MyWindow::MovJInterface(double x, double y, double z, double Rx, double Ry,
 	MovJ(x, y, z, Rx, Ry, Rz);
 }
 
+void MyWindow::SetDragTeachMode(bool enable)
+{
+	m_bDragTeachMode = enable;
+}
+
+bool MyWindow::IsDragTeachMode() const
+{
+	return m_bDragTeachMode;
+}
+
 bool MyWindow::AdmittanceControlNew(int group, int row)
 {
 	if (m_bStoped)

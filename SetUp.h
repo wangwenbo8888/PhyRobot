@@ -23,6 +23,8 @@ public slots:
 
 	void On_pushButton_ReturnHome_Clicked();
 
+	void On_checkBox_DragTeachMode_stateChanged(int state);
+
 private:
 	Ui::SetUpClass ui;
 

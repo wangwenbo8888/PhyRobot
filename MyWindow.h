@@ -72,6 +72,10 @@ public:
     // V4: 请求 TCP 控制权
     void RequestControl();
 
+    // 拖拽示教模式
+    void SetDragTeachMode(bool enable);
+    bool IsDragTeachMode() const;
+
     // 开始机械臂拖拽模式
     void StartDrag();
 
@@ -393,6 +397,9 @@ private:
 
     // 治疗被停止了
     bool m_bStoped;
+
+    // 拖拽示教模式（设置中勾选）
+    bool m_bDragTeachMode = false;
 
     void Wait_ForTreat(int timeout = INT_MAX);
 

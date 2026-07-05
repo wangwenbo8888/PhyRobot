@@ -238,6 +238,42 @@ QPushButton:disabled {
       <string>返回主页</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="checkBox_DragTeachMode">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>220</y>
+       <width>400</width>
+       <height>60</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>28</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QCheckBox {
+    color: white;
+    spacing: 15px;
+}
+QCheckBox::indicator {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid white;
+    background-color: transparent;
+}
+QCheckBox::indicator:checked {
+    background-color: #4CAF50;
+    border: 2px solid #4CAF50;
+}</string>
+     </property>
+     <property name="text">
+      <string>拖拽治疗模式</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

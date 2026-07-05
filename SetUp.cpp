@@ -22,6 +22,9 @@ SetUp::SetUp(MyWindow* window,QWidget *parent)
 
 	disconnect(ui.pushButton_ReturnHome, SIGNAL(clicked()), this, SLOT(On_pushButton_ReturnHome_Clicked()));
 	connect(ui.pushButton_ReturnHome, SIGNAL(clicked()), this, SLOT(On_pushButton_ReturnHome_Clicked()));
+
+	disconnect(ui.checkBox_DragTeachMode, SIGNAL(stateChanged(int)), this, SLOT(On_checkBox_DragTeachMode_stateChanged(int)));
+	connect(ui.checkBox_DragTeachMode, SIGNAL(stateChanged(int)), this, SLOT(On_checkBox_DragTeachMode_stateChanged(int)));
 	
 	m_pCommTestWidget = new QtWidgetsCommunicateTest(m_pWindow);
 }
@@ -49,4 +52,9 @@ void SetUp::On_pushButton_CommunicateTest_Clicked()
 void SetUp::On_pushButton_ReturnHome_Clicked()
 {
 	m_pWindow->GetAutoTreat()->FinishReturn();
+}
+
+void SetUp::On_checkBox_DragTeachMode_stateChanged(int state)
+{
+	m_pWindow->SetDragTeachMode(state == Qt::Checked);
 }
