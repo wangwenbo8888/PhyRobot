@@ -1,1 +1,43 @@
 .vs
+
+# Build outputs
+x64/
+Debug/
+Release/
+build-*
+*.o
+*.make
+*.stash
+*.exe
+*.obj
+*.pdb
+*.ilk
+*.lib
+*.exp
+
+# Large binary files
+*.rar
+*.zip
+*.onnx
+*.ply
+*.db
+
+# IDE files
+*.user
+*.aps
+*.sdf
+*.opensdf
+*.suo
+
+# Logs
+*.log
+
+# onnxruntime (third-party)
+onnxruntime/
+opencv411/
+opencv430/
+eigen-3.3.8/
+GTEngine-master/
+OrbbecSDK_v1.10.12/
+OrbbecSDK_v2-main/
+SDKpackage/
