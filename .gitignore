@@ -5,6 +5,7 @@ x64/
 Debug/
 Release/
 build-*
+Physical.CCDB3897/
 *.o
 *.make
 *.stash
@@ -14,6 +15,12 @@ build-*
 *.ilk
 *.lib
 *.exp
+*.tlog
+*.lastbuildstate
+*.idb
+*.ipdb
+*.iobj
+*.pch
 
 # Large binary files
 *.rar
@@ -21,6 +28,39 @@ build-*
 *.onnx
 *.ply
 *.db
+*.pdf
+*.dll
+*.so
+*.dylib
+*.jar
+*.class
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.ico
+*.svg
+*.gif
+*.ppm
+*.avi
+*.mp4
+*.eps
+
+# Config/data
+*.ini
+*.xml
+*.json
+*.cfg
+*.dat
+*.binary
+*.raw
+*.gz
+*.tar
+
+# Logs
+*.log
 
 # IDE files
 *.user
@@ -28,16 +68,21 @@ build-*
 *.sdf
 *.opensdf
 *.suo
+*.props
 
-# Logs
-*.log
-
-# onnxruntime (third-party)
+# Third-party libraries
 onnxruntime/
 opencv411/
 opencv430/
 eigen-3.3.8/
+eigen-3.3.8.rar
 GTEngine-master/
 OrbbecSDK_v1.10.12/
 OrbbecSDK_v2-main/
+OrbbecSDK_v2-main.zip
 SDKpackage/
+TCP-IP-CR-CPP-V3/
+TCP-IP-CR-CPP-V3.zip
+Algo/
+WifiList/
+nul

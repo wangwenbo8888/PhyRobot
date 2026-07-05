@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "xjc_sdk_lib.h": "c",
-        "iostream": "cpp"
-    },
-    "C_Cpp.errorSquiggles": "disabled"
-}

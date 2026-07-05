@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/XJC_SDK_Lib_USE.dir/src/XJC_SDK_Lib_USE.cpp.o -o XJC_SDK_Lib_USE   -L/home/honghezhang/WorkSpace/SDK/USE/lib  -Wl,-rpath,/home/honghezhang/WorkSpace/SDK/USE/lib -lXJC_SDK_Lib 

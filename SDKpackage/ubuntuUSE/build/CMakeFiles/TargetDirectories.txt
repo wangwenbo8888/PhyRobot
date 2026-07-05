@@ -1,3 +1,0 @@
-/home/honghezhang/WorkSpace/SDK/USE/build/CMakeFiles/XJC_SDK_Lib_USE.dir
-/home/honghezhang/WorkSpace/SDK/USE/build/CMakeFiles/edit_cache.dir
-/home/honghezhang/WorkSpace/SDK/USE/build/CMakeFiles/rebuild_cache.dir
