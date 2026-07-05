@@ -271,7 +271,7 @@ QCheckBox::indicator:checked {
 }</string>
      </property>
      <property name="text">
-      <string>拖拽治疗模式</string>
+      <string>只有拖拽治疗模式</string>
      </property>
     </widget>
    </widget>

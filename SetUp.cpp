@@ -25,6 +25,9 @@ SetUp::SetUp(MyWindow* window,QWidget *parent)
 
 	disconnect(ui.checkBox_DragTeachMode, SIGNAL(stateChanged(int)), this, SLOT(On_checkBox_DragTeachMode_stateChanged(int)));
 	connect(ui.checkBox_DragTeachMode, SIGNAL(stateChanged(int)), this, SLOT(On_checkBox_DragTeachMode_stateChanged(int)));
+
+	// 同步配置文件中的拖拽治疗模式状态
+	ui.checkBox_DragTeachMode->setChecked(m_pWindow->IsDragTeachMode());
 	
 	m_pCommTestWidget = new QtWidgetsCommunicateTest(m_pWindow);
 }

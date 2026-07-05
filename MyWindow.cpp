@@ -16,6 +16,8 @@
 #include <QDir>
 #include <QString>
 #include <QMessageBox>
+#include <QSettings>
+#include <QCoreApplication>
 
 #include "PCLAlgo.h"
 
@@ -27,6 +29,12 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 
 	m_bStoped = false;
 	m_eTreatType = Treat_Unknown;
+
+	// 从配置文件加载拖拽治疗模式设置
+	// user.ini 位于 exe 所在目录的上一级（x64/Release → x64 → 项目根目录）
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	m_bDragTeachMode = settings.value("config/dragTeachMode", false).toBool();
 
 	m_pAccountInfo = new AccountInfo(this);
 
@@ -892,6 +900,10 @@ void MyWindow::MovJInterface(double x, double y, double z, double Rx, double Ry,
 void MyWindow::SetDragTeachMode(bool enable)
 {
 	m_bDragTeachMode = enable;
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	settings.setValue("config/dragTeachMode", enable);
+	settings.sync();
 }
 
 bool MyWindow::IsDragTeachMode() const
