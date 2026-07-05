@@ -19,6 +19,13 @@ HomePage::HomePage(MyWindow* window,QWidget *parent)
 
 	disconnect(ui.pushButton_Set, SIGNAL(clicked()), this, SLOT(On_pushButton_Set_Clicked()));
 	connect(ui.pushButton_Set, SIGNAL(clicked()), this, SLOT(On_pushButton_Set_Clicked()));
+
+	RefreshButtonState();
+}
+
+void HomePage::RefreshButtonState()
+{
+	ui.pushButton_Auto->setEnabled(!m_pMyWindow->IsDragTeachMode());
 }
 
 HomePage::~HomePage()
@@ -28,6 +35,8 @@ HomePage::~HomePage()
 
 void HomePage::On_pushButton_Auto_Clicked()
 {
+	if (m_pMyWindow->IsDragTeachMode())
+		return;
 	ui.pushButton_Auto->setIcon(QIcon(":/HomeAutoPushed.png"));
 	m_pMyWindow->SetWidgetInstruction(Treat_Auto);
 }

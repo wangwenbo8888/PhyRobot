@@ -14,6 +14,8 @@ public:
 	QtHomePagsAuto(MyWindow* home,QWidget *parent = nullptr);
 	~QtHomePagsAuto();
 
+	void RefreshButtonState();
+
 public slots:
 	void on_Pushbutton_Auto_clicked();
 

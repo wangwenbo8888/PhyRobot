@@ -48,6 +48,9 @@ public slots:
 	void On_Timer_Out();
 
 	void ResumePara();
+protected:
+	void hideEvent(QHideEvent *event) override;
+
 private:
 	Ui::ManualTreatDragBeginClass ui;
 	uint64_t m_iTotalTime;

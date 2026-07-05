@@ -3,6 +3,7 @@
 #include "MyWindow.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 ManualTreatDragBegin::ManualTreatDragBegin(MyWindow* window,QWidget *parent)
 	: QWidget(parent)
@@ -77,6 +78,16 @@ ManualTreatDragBegin::~ManualTreatDragBegin()
 {
 }
 
+void ManualTreatDragBegin::hideEvent(QHideEvent *event)
+{
+	if (m_bStartFlag)
+	{
+		m_pMyWindow->StopDrag();
+		m_bStartFlag = false;
+	}
+	QWidget::hideEvent(event);
+}
+
 void ManualTreatDragBegin::On_Timer_Out()
 {
 	--m_iTotalTime;
@@ -121,7 +132,7 @@ void ManualTreatDragBegin::On_pushButton_Back_Clicked()
 	m_pMyWindow->SetWidgetHomePage();
 	m_pMyWindow->show();
 
-	// Èç¹ûÍÏ×§Ä£Ê½´ò¿ª£¬Ôò¹Ø±Õ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½×§Ä£Ê½ï¿½ò¿ª£ï¿½ï¿½ï¿½Ø±ï¿½
 	if (m_bStartFlag)
 	{
 		On_pushButton_DragStartOrStop_Clicked();
@@ -207,21 +218,26 @@ void ManualTreatDragBegin::On_pushButton_DragStartOrStop_Clicked()
 
 		if (m_bFirstDrag)
 		{
+			qDebug() << "[Drag] First drag - calling MoveToNormalPos()";
 			m_pMyWindow->MoveToNormalPos();
 
-			cv::Mat colorRawMat;
-			std::vector<OBColorPoint> pointCloud_frame_data;
-			obCapture(colorRawMat, pointCloud_frame_data);
-
-			if (colorRawMat.rows == 0 || colorRawMat.cols == 0)
+			qDebug() << "[Drag] IsDragTeachMode =" << m_pMyWindow->IsDragTeachMode();
+			if (!m_pMyWindow->IsDragTeachMode())
 			{
-				QMessageBox::information(NULL, "Info", "Capture image failed !", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				cv::Mat colorRawMat;
+				std::vector<OBColorPoint> pointCloud_frame_data;
+				obCapture(colorRawMat, pointCloud_frame_data);
 
-				m_bStartFlag = true;
-				return;
+				if (colorRawMat.rows == 0 || colorRawMat.cols == 0)
+				{
+					QMessageBox::information(NULL, "Info", "Capture image failed !", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+					m_bStartFlag = true;
+					return;
+				}
+
+				SaveImage(colorRawMat);
 			}
-
-			SaveImage(colorRawMat);
 
 			m_bFirstDrag = false;
 		}

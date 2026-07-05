@@ -385,6 +385,7 @@ void MyWindow::On_timeout()
 
 void MyWindow::SetWidgetHomePage()
 {
+	m_pHomePage->RefreshButtonState();
 	ui.stackedWidget_Pags->setCurrentWidget(m_pHomePage.get());
 }
 
@@ -419,14 +420,12 @@ void MyWindow::MyWindow_connect()
 
 void MyWindow::pause()
 {
-	sendrunodr("Pause()");
-	//pausebit = 1;
+	sendodr("Pause()");
 }
 
 void MyWindow::WorkContinue()
 {
-	sendrunodr("Continue()");
-	//pausebit = 0;
+	sendodr("Continue()");
 }
 
 void MyWindow::sktDashboard_connected()
@@ -667,9 +666,13 @@ void MyWindow::sendodr(QByteArray odr)
 	if (cnt[pDashboard])
 	{
 		od.sktDashboard->write(odr);
-		qDebug() << "Send Dash board oder: " << odr;
+		qDebug() << "[sendodr] Sent:" << odr;
 	}
-	qsleep(2000);
+	else
+	{
+		qDebug() << "[sendodr] SKIPPED (Dashboard not connected):" << odr;
+	}
+	qsleep(500);
 }
 
 
@@ -677,15 +680,22 @@ void MyWindow::sendrunodr(QByteArray odr)
 {
 	if (cnt[pwork])
 	{
-		od.sktwork->write(odr);
-		qDebug() << "Send run oder: " << odr;
+		if (od.sktwork->state() == QAbstractSocket::ConnectedState)
+		{
+			od.sktwork->write(odr);
+			qDebug() << "[sendrunodr] Sent:" << odr;
+		}
+		else
+		{
+			qDebug() << "[sendrunodr] SKIPPED (sktwork not connected):" << odr << "state =" << od.sktwork->state();
+		}
 	}
 }
 
 // 开始机械臂拖拽模式
 void MyWindow::StartDrag()
 {
-	sendrunodr("StartDrag()");
+	sendodr("StartDrag()");
 
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
@@ -704,7 +714,7 @@ void MyWindow::ClearError()
 	RequestControl();
 	sendodr("ClearError()");
 	// V4: EnableRobot 支持 isCheck 参数
-	sendodr("EnableRobot(1.0,0,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,20,0)");
 	RobotStorage();
 	Wait_Done();
 }
@@ -712,7 +722,7 @@ void MyWindow::ClearError()
 // 停止机械臂拖拽模式
 void MyWindow::StopDrag()
 {
-	sendrunodr("StopDrag()");
+	sendodr("StopDrag()");
 
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
@@ -721,7 +731,7 @@ void MyWindow::StopDrag()
 
 void MyWindow::GetPose()
 {
-	sendrunodr("GetPose()");
+	sendodr("GetPose()");
 
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
@@ -730,8 +740,7 @@ void MyWindow::GetPose()
 
 void MyWindow::GetSixForceData()
 {
-	//sendodr("GetSixForceData()");
-	sendrunodr("GetSixForceData()");
+	sendodr("GetSixForceData()");
 
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
@@ -761,8 +770,7 @@ void MyWindow::InverseKin(double X, double Y, double Z, double Rx, double Ry, do
 }
 
 void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, double J6, float t, float aheadtime, float gain) {
-	// V4: ServoJ(J1,J2,J3,J4,J5,J6,t,aheadtime,gain)
-	sendrunodr("ServoJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+	sendodr("ServoJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
 		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "," +
 		QByteArray::number(double(t)) + "," + QByteArray::number(double(aheadtime)) + "," + QByteArray::number(double(gain)) + ")");
 }
@@ -775,24 +783,23 @@ void MyWindow::RequestControl()
 
 void MyWindow::JointMovJ(double J1, double J2, double J3, double J4, double J5, double J6)
 {
-	sendrunodr("JointMovJ(" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
-		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + ")");
+	sendodr("MovJ(joint={" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
+		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "})");
 }
 
 void MyWindow::Sync()
 {
-	sendrunodr("Sync()");
+	sendodr("Sync()");
 }
 
 void MyWindow::Tool(int tool)
 {
-	sendrunodr("Tool(" + QByteArray::number(tool) + ")");
+	sendodr("Tool(" + QByteArray::number(tool) + ")");
 }
 
 void MyWindow::ServoP(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
-	// V4: ServoP(X,Y,Z,Rx,Ry,Rz) 可选参数 t,aheadtime,gain
-	sendrunodr("ServoP(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+	sendodr("ServoP(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
 		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
 }
 
@@ -809,17 +816,17 @@ void MyWindow::SixForceHome()
 
 void MyWindow::GetForce()
 {
-	sendrunodr("GetForce()");
+	sendodr("GetForce()");
 }
 
 void MyWindow::ForceDriveMode(int axis, double value, int index)
 {
-	sendrunodr("ForceDriveMode(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
+	sendodr("ForceDriveMode(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
 }
 
 void MyWindow::ForceDriveSpeed(int axis, double value, int index)
 {
-	sendrunodr("ForceDriveSpeed(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
+	sendodr("ForceDriveSpeed(" + QByteArray::number(axis) + "," + QByteArray::number(value) + "," + QByteArray::number(index) + ")");
 }
 
 void MyWindow::FCForceMode(int mode)
@@ -878,18 +885,18 @@ void MyWindow::FCCollisionSwitch(int onoff)
 
 void MyWindow::GetCurrentCommandId()
 {
-	sendrunodr("GetCurrentCommandId()");
+	sendodr("GetCurrentCommandId()");
 }
 void MyWindow::MovL(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
-	sendrunodr("MovL(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
-		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+	sendodr("MovL(pose={" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "})");
 }
 
 void MyWindow::MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
-	sendrunodr("MovJ(" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
-		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + ")");
+	sendodr("MovJ(pose={" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
+		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "})");
 }
 
 void MyWindow::MovJInterface(double x, double y, double z, double Rx, double Ry, double Rz)
@@ -1147,8 +1154,7 @@ bool MyWindow::SetXuewei(const std::vector<std::vector<XUEWEI_INFO>>& xueweis)
 
 void MyWindow::ResetRobot()
 {
-	// V4: 使用 Stop() 停止运动队列
-	sendrunodr("Stop()");
+	sendodr("Stop()");
 	qsleep(500);
 }
 
@@ -2197,12 +2203,10 @@ void MyWindow::DecrIntensity()
 
 void MyWindow::stop()
 {
-	// 清理存储的穴位点
 	points.clear();
-	// V4: 用 Stop() 替代 ResetRobot()
-	sendrunodr("Stop()");
+	sendodr("Stop()");
 	qsleep(500);
-	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+	sendodr("ClearError()");
 	RobotStorage();
 	Wait_Done();
 	sendodr("DisableRobot()");
@@ -2220,7 +2224,7 @@ void MyWindow::qsleep(int msec)
 	t.start();
 	QEventLoop loop;
 	connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-	loop.exec();
+	loop.exec(QEventLoop::ExcludeUserInputEvents);
 }
 
 void MyWindow::qsleep_pause(int msec)
@@ -2284,13 +2288,37 @@ void MyWindow::Wait_ForShort(int timeout)
 
 void MyWindow::Wait_Done(int timeout)
 {
-	qsleep(300);
 	int time_c = 0;
-	while (RobotMode != ROBOT_MODE_ENABLE || time_c > timeout)
+
+	// Phase 1: Wait up to 500ms for motion to start (RobotMode -> RUNNING)
+	int startLimit = (timeout < 500) ? timeout : 500;
+	bool motionStarted = false;
+	while (time_c < startLimit)
+	{
+		if (RobotMode == ROBOT_MODE_RUNNING)
+		{
+			motionStarted = true;
+			qDebug() << "[Wait_Done] motion started at" << time_c << "ms, RobotMode =" << RobotMode;
+			break;
+		}
+		qsleep(50);
+		time_c += 50;
+	}
+
+	if (!motionStarted)
+	{
+		qDebug() << "[Wait_Done] no RUNNING detected after" << time_c << "ms, RobotMode =" << RobotMode << "- fallback 200ms";
+		qsleep(200);
+		return;
+	}
+
+	// Phase 2: Wait for motion to complete (RobotMode -> ENABLE)
+	while (RobotMode != ROBOT_MODE_ENABLE && time_c < timeout)
 	{
 		qsleep(100);
 		time_c += 100;
 	}
+	qDebug() << "[Wait_Done] motion done at" << time_c << "ms, RobotMode =" << RobotMode;
 }
 
 void MyWindow::poweron()
@@ -2299,11 +2327,12 @@ void MyWindow::poweron()
 	pw = 1;
 	// V4: 先请求 TCP 控制权
 	RequestControl();
+	sendodr("ClearError()");
 	//sendodr("PowerOn()");
 	//qsleep(10000);
 	sendodr("DisableRobot()");
 	// V4: EnableRobot 支持 isCheck 参数（第5个参数，0=不检查负载）
-	sendodr("EnableRobot(1.0,0,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,20,0)");
 	//sendodr("BrakeControl(1,1)");
 	// 机械臂速度 20250721
 	sendodr("SpeedFactor(25)");
@@ -2424,23 +2453,35 @@ QPixmap MyWindow::cvMatToQPixmap(const cv::Mat& inMat)
 // 机械臂移动到默认的初始位置
 void MyWindow::MoveToNormalPos()
 {
-	sendodr("EnableRobot(1.0,0,0,0,0)");
-	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
+	sendodr("EnableRobot(1.0,0,0,20,0)");
+	// V4: 拍照位置关节角度 J1=90,J2=0,J3=90,J4=0,J5=-90,J6=270
+	JointMovJ(90.0, 0.0, 90.0, 0.0, -90.0, 270.0);
 	Wait_Done();
-	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
-	Wait_Done();
+	// 旧位姿运动代码（逆解无解，已注释）
+	//QString cmd1 = QString("MovJ(pose={%1,%2,%3,180,0,%4})")
+	//	.arg(start_Camera_Point.x).arg(start_Camera_Point.y).arg(start_Camera_Point.z).arg(HALF_NORMAL_ANGLE);
+	//sendodr(cmd1.toUtf8());
+	//Wait_Done();
+	//QString cmd2 = QString("MovJ(pose={%1,%2,%3,180,0,%4})")
+	//	.arg(start_Camera_Point.x).arg(start_Camera_Point.y).arg(start_Camera_Point.z).arg(NORMAL_ANGLE);
+	//sendodr(cmd2.toUtf8());
+	//Wait_Done();
 }
 
 bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	//Sync();
-	sendodr("EnableRobot(1.0,0,0,0,0)");
+	sendodr("EnableRobot(1.0,0,0,20,0)");
 
-	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
+	// V4: 拍照位置关节角度
+	JointMovJ(90.0, 0.0, 90.0, 0.0, -90.0, 270.0);
 	Wait_Done();
-	MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
-	Wait_Done();
+	// 旧位姿运动代码（逆解无解，已注释）
+	//MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
+	//Wait_Done();
+	//MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, NORMAL_ANGLE);
+	//Wait_Done();
 
 	std::vector<OBColorPoint> pointCloud_frame_data;
 	obCapture(colorRawMat, pointCloud_frame_data);

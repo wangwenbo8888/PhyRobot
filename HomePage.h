@@ -18,6 +18,8 @@ public:
 	HomePage(MyWindow* window,QWidget *parent = nullptr);
 	~HomePage();
 
+	void RefreshButtonState();
+
 public slots:
 	void On_pushButton_Auto_Clicked();
 
