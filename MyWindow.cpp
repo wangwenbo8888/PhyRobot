@@ -887,8 +887,8 @@ void MyWindow::ServoJ(double J1, double J2, double J3, double J4, double J5, dou
 
 void MyWindow::RequestControl()
 {
+	// sendodr 已经会等待 Dashboard 对 RequestControl 的真实应答,无需再固定等 500ms
 	sendodr("RequestControl()");
-	qsleep(500);
 }
 
 void MyWindow::JointMovJ(double J1, double J2, double J3, double J4, double J5, double J6)
@@ -2396,7 +2396,9 @@ void MyWindow::Wait_ForMove(int timeout)
 {
 	qsleep(30);
 	int time_c = 0;
-	while (RobotMode != ROBOT_MODE_ENABLE || time_c > timeout)
+	// 原条件用 || 且 time_c > timeout,一旦超时条件恒为真 -> 死循环。
+	// 改为 && time_c < timeout,并在 ERROR 时放行。
+	while (RobotMode != ROBOT_MODE_ENABLE && RobotMode != ROBOT_MODE_ERROR && time_c < timeout)
 	{
 		qsleep(5);
 		time_c += 5;
