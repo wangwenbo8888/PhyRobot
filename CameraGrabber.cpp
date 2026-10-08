@@ -2,6 +2,8 @@
 
 #include "CameraGrabber.h"
 
+#include <QElapsedTimer>
+
 #include "opencv2/opencv.hpp"
 
 // Save point cloud data to ply
@@ -228,44 +230,53 @@ void saveRGBPointsToPly(std::shared_ptr<ob::Frame> frame, std::string fileName) 
     fclose(fp);
 }
 
-int obCapture(cv::Mat &colorRawMat,std::vector<OBColorPoint>& pointCloud_frame_data)
-try {
+// ===== 常驻相机 Pipeline =====
+// 之前每次拍照都在 obCapture 里 new 一个 Pipeline 并 start()，Orbbec 冷启动 pipeline
+// 每次约 1.6s。这里改为全局只初始化并启动一次，之后拍照只 waitForFrames()。
+namespace {
+std::shared_ptr<ob::Pipeline>            g_pipeline;
+std::shared_ptr<ob::Config>              g_config;
+std::shared_ptr<ob::PointCloudFilter>    g_pointCloud;
+std::shared_ptr<ob::FormatConvertFilter> g_formatConvert;
+bool                                     g_sensorStarted = false;
+
+// 初始化并常驻启动相机 pipeline，只执行一次
+bool ensureSensorStarted()
+{
+    if(g_sensorStarted) {
+        return true;
+    }
+
     ob::Context::setLoggerSeverity(OB_LOG_SEVERITY_WARN);
-    // create pipeline
-    ob::Pipeline pipeline;
 
-    // Configure which streams to enable or disable for the Pipeline by creating a Config
-    std::shared_ptr<ob::Config> config = std::make_shared<ob::Config>();
-
-    // Turn on D2C alignment, which needs to be turned on when generating RGBD point clouds
+    g_pipeline = std::make_shared<ob::Pipeline>();
+    g_config   = std::make_shared<ob::Config>();
 
     std::shared_ptr<ob::VideoStreamProfile> colorProfile = nullptr;
     try {
         // Get all stream profiles of the color camera, including stream resolution, frame rate, and frame format
-        auto colorProfiles = pipeline.getStreamProfileList(OB_SENSOR_COLOR);
+        auto colorProfiles = g_pipeline->getStreamProfileList(OB_SENSOR_COLOR);
         if(colorProfiles) {
             auto profile = colorProfiles->getProfile(OB_PROFILE_DEFAULT);
             colorProfile = profile->as<ob::VideoStreamProfile>();
         }
-        config->enableStream(colorProfile);
+        g_config->enableStream(colorProfile);
     }
     catch(ob::Error &e) {
-        config->setAlignMode(ALIGN_DISABLE);
-        std::cerr << "Current device is not support color sensor!" ;
+        g_config->setAlignMode(ALIGN_DISABLE);
+        std::cerr << "Current device is not support color sensor!";
     }
 
     // Get all stream profiles of the depth camera, including stream resolution, frame rate, and frame format
     std::shared_ptr<ob::StreamProfileList> depthProfileList;
     OBAlignMode                            alignMode = ALIGN_DISABLE;
     if(colorProfile) {
-        // Try find supported depth to color align hardware mode profile
-        depthProfileList = pipeline.getD2CDepthProfileList(colorProfile, ALIGN_D2C_HW_MODE);
+        depthProfileList = g_pipeline->getD2CDepthProfileList(colorProfile, ALIGN_D2C_HW_MODE);
         if(depthProfileList->count() > 0) {
             alignMode = ALIGN_D2C_HW_MODE;
         }
         else {
-            // Try find supported depth to color align software mode profile
-            depthProfileList = pipeline.getD2CDepthProfileList(colorProfile, ALIGN_D2C_SW_MODE);
+            depthProfileList = g_pipeline->getD2CDepthProfileList(colorProfile, ALIGN_D2C_SW_MODE);
             if(depthProfileList->count() > 0) {
                 alignMode = ALIGN_D2C_SW_MODE;
             }
@@ -273,20 +284,19 @@ try {
 
         try {
             // Enable frame synchronization
-            pipeline.enableFrameSync();
+            g_pipeline->enableFrameSync();
         }
         catch(ob::Error &e) {
-            std::cerr << "Current device is not support frame sync!" ;
+            std::cerr << "Current device is not support frame sync!";
         }
     }
     else {
-        depthProfileList = pipeline.getStreamProfileList(OB_SENSOR_DEPTH);
+        depthProfileList = g_pipeline->getStreamProfileList(OB_SENSOR_DEPTH);
     }
 
     if(depthProfileList->count() > 0) {
         std::shared_ptr<ob::StreamProfile> depthProfile;
         try {
-            // Select the profile with the same frame rate as color.
             if(colorProfile) {
                 depthProfile = depthProfileList->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
             }
@@ -296,101 +306,117 @@ try {
         }
 
         if(!depthProfile) {
-            // If no matching profile is found, select the default profile.
             depthProfile = depthProfileList->getProfile(OB_PROFILE_DEFAULT);
         }
-        config->enableStream(depthProfile);
+        g_config->enableStream(depthProfile);
     }
-    config->setAlignMode(alignMode);
+    g_config->setAlignMode(alignMode);
+    qDebug() << "[CAM] colorProfile w/h/fps/fmt:" << (colorProfile ? colorProfile->width() : 0)
+             << (colorProfile ? colorProfile->height() : 0)
+             << (colorProfile ? colorProfile->fps() : 0)
+             << (colorProfile ? (int)colorProfile->format() : -1)
+             << " alignMode:" << (int)alignMode
+             << " depthProfileCount:" << (depthProfileList ? (int)depthProfileList->count() : -1);
 
-    // start pipeline with config
-    pipeline.start(config);
+    // 只启动一次，之后常驻运行
+    g_pipeline->start(g_config);
+
+    // 预热:丢弃前面几帧,等自动曝光/白平衡稳定。
+    // 否则刚 start 后第一帧图像偏暗,模型检测不到穴位点(实测会出现 0 kpts)。
+    for(int i = 0; i < 5; ++i) {
+        try {
+            auto warmupFrames = g_pipeline->waitForFrames(200);
+            (void)warmupFrames;
+        }
+        catch(...) {
+            break;
+        }
+    }
 
     // Create a point cloud Filter object (the device parameters will be obtained inside the Pipeline when the point cloud filter is created, so try to
     // configure the device before creating the filter)
-    ob::PointCloudFilter pointCloud;
+    g_pointCloud = std::make_shared<ob::PointCloudFilter>();
 
     // get camera intrinsic and extrinsic parameters form pipeline and set to point cloud filter
-    auto cameraParam = pipeline.getCameraParam();
-    pointCloud.setCameraParam(cameraParam);
+    auto cameraParam = g_pipeline->getCameraParam();
+    g_pointCloud->setCameraParam(cameraParam);
 
-    auto frameset = pipeline.waitForFrames(5000);
-    //OBColorPoint *Colorpoint;
+    g_formatConvert = std::make_shared<ob::FormatConvertFilter>();
+
+    g_sensorStarted = true;
+    qDebug() << "[CAM] persistent pipeline started";
+    return true;
+}
+} // namespace
+
+int obCapture(cv::Mat &colorRawMat,std::vector<OBColorPoint>& pointCloud_frame_data)
+try {
+    QElapsedTimer perfTimer;
+    perfTimer.start();
+
+    // 首次调用时初始化并启动相机，之后直接复用常驻 pipeline
+    if(!ensureSensorStarted()) {
+        qDebug() << "[CAM] ensureSensorStarted failed";
+        return -1;
+    }
+    qDebug() << "[PERF][obCapture] 0.ensureSensorStarted:" << perfTimer.restart() << "ms";
+
+    auto frameset = g_pipeline->waitForFrames(1000);
+    int waitTry = 0;
+    while((frameset == nullptr || frameset->colorFrame() == nullptr || frameset->depthFrame() == nullptr) && waitTry < 10) {
+        waitTry++;
+        qDebug() << "[CAM] frameset retry" << waitTry
+                 << " frameset:" << (frameset != nullptr)
+                 << " color:" << (frameset != nullptr && frameset->colorFrame() != nullptr)
+                 << " depth:" << (frameset != nullptr && frameset->depthFrame() != nullptr);
+        frameset = g_pipeline->waitForFrames(1000);
+    }
+    qDebug() << "[PERF][obCapture] 1.waitForFrames:" << perfTimer.restart() << "ms";
+
     if(frameset != nullptr && frameset->depthFrame() != nullptr && frameset->colorFrame() != nullptr) {
         // point position value multiply depth value scale to convert uint to millimeter (for some devices, the default depth value uint is not
         // millimeter)
         auto depthValueScale = frameset->depthFrame()->getValueScale();
-        pointCloud.setPositionDataScaled(depthValueScale);
+        g_pointCloud->setPositionDataScaled(depthValueScale);
         try {
             // Generate a colored point cloud and save it
             qDebug() << "Save RGBD PointCloud ply file..." ;
-            pointCloud.setCreatePointFormat(OB_FORMAT_RGB_POINT);
-            //static std::shared_ptr<ob::Frame> pointCloud_frame = pointCloud.process(frameset);
-            pointCloud_frame = pointCloud.process(frameset);
+            g_pointCloud->setCreatePointFormat(OB_FORMAT_RGB_POINT);
+            pointCloud_frame = g_pointCloud->process(frameset);
+            qDebug() << "[PERF][obCapture] 2.pointCloud.process:" << perfTimer.restart() << "ms";
 
-            //saveRGBPointsToPly(pointCloud_frame, "RGBPoints.ply");
             std::shared_ptr<ob::ColorFrame> colorFrame = frameset->colorFrame();
-
             qDebug() << "colorFrame->height():" << colorFrame->height() << colorFrame->width()
                      << colorFrame->format() << colorFrame->type() ;
-            cv::Mat temp(colorFrame->height(), colorFrame->width(), CV_8UC3);
-            _memccpy(temp.data, colorFrame->data(), 1, colorFrame->height() * colorFrame->width() * sizeof(CV_8UC3)); \
-            temp.copyTo(colorRawMat);
-            // colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data()).clone();
 
-            int colorCount = 0;
-            ob::FormatConvertFilter formatConvertFilter;
-            if (colorFrame != nullptr && colorCount < 5)
-            {
-                // save the colormap
-                if (colorFrame->format() != OB_FORMAT_RGB)
-                {
-                    if (colorFrame->format() == OB_FORMAT_MJPG)
-                    {
-                        formatConvertFilter.setFormatConvertType(FORMAT_MJPG_TO_RGB);
-                    }
-                    else if (colorFrame->format() == OB_FORMAT_UYVY)
-                    {
-                        formatConvertFilter.setFormatConvertType(FORMAT_UYVY_TO_RGB);
-                    }
-                    else if (colorFrame->format() == OB_FORMAT_YUYV)
-                    {
-                        formatConvertFilter.setFormatConvertType(FORMAT_YUYV_TO_RGB);
-                    }
-                    else
-                    {
-                        qDebug() << "Color format is not support!" ;
-                    }
-                    colorFrame = formatConvertFilter.process(colorFrame)->as<ob::ColorFrame>();
+            if(colorFrame->format() != OB_FORMAT_RGB) {
+                if(colorFrame->format() == OB_FORMAT_MJPG) {
+                    g_formatConvert->setFormatConvertType(FORMAT_MJPG_TO_RGB);
                 }
-                formatConvertFilter.setFormatConvertType(FORMAT_RGB_TO_BGR);
-                colorFrame = formatConvertFilter.process(colorFrame)->as<ob::ColorFrame>();
-                //saveColor(colorFrame, colorCount);
-                ///////////////////////////////////////// save  ////
-                std::vector<int> compression_params;
-                compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-                compression_params.push_back(0);
-                compression_params.push_back(cv::IMWRITE_PNG_STRATEGY);
-                compression_params.push_back(cv::IMWRITE_PNG_STRATEGY_DEFAULT);
-                std::string colorName = "Color_" + std::to_string(colorFrame->width()) + "x" + std::to_string(colorFrame->height()) + "_" + std::to_string(colorCount) + "_"
-                    + std::to_string(colorFrame->timeStamp()) + "ms.png";
-                colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data());
-                //cv::imwrite(colorName, colorRawMat, compression_params);
-                //std::cout << "Color saved:" << colorName ;
-
-                ////////////////////////////////////////////
-                colorCount++;
+                else if(colorFrame->format() == OB_FORMAT_UYVY) {
+                    g_formatConvert->setFormatConvertType(FORMAT_UYVY_TO_RGB);
+                }
+                else if(colorFrame->format() == OB_FORMAT_YUYV) {
+                    g_formatConvert->setFormatConvertType(FORMAT_YUYV_TO_RGB);
+                }
+                else {
+                    qDebug() << "Color format is not support!" ;
+                }
+                colorFrame = g_formatConvert->process(colorFrame)->as<ob::ColorFrame>();
             }
+            g_formatConvert->setFormatConvertType(FORMAT_RGB_TO_BGR);
+            colorFrame = g_formatConvert->process(colorFrame)->as<ob::ColorFrame>();
+
+            // 只做一次深拷贝。原实现先 _memccpy 到 temp 再 copyTo，随后又被
+            // cv::Mat(...,colorFrame->data()) 浅包装覆盖(ptrs 在函数返回后失效)，属于悬挂指针隐患。
+            colorRawMat = cv::Mat(colorFrame->height(), colorFrame->width(), CV_8UC3, colorFrame->data()).clone();
+            qDebug() << "[PERF][obCapture] 3.formatConvert:" << perfTimer.restart() << "ms";
+
             int pointsSize = pointCloud_frame->dataSize() / sizeof(OBColorPoint);
-            // static OBColorPoint*  Colorpoint = (OBColorPoint*)pointCloud_frame->data();
-            Colorpoint = (OBColorPoint*)pointCloud_frame->data();
-
-            pointCloud_frame_data.clear();
-            for (int i = 0; i < pointsSize;++i)
-            {
-                Colorpoint ++;
-                pointCloud_frame_data.push_back(*Colorpoint);
-            }
+            // 一次性拷贝，避免逐点 push_back(原实现还多自增一次导致整体错位一个点)
+            OBColorPoint* pts = (OBColorPoint*)pointCloud_frame->data();
+            pointCloud_frame_data.assign(pts, pts + pointsSize);
+            qDebug() << "[PERF][obCapture] 4.copyLoop:" << perfTimer.restart() << "ms";
 
             qDebug() << "Vector size is "<< pointCloud_frame_data.size();
             qDebug() << "RGBPoints.ply Saved" ;
@@ -404,13 +430,11 @@ try {
         qDebug() << "Get color frame or depth frame failed!" ;
     }
 
-    pipeline.stop();
-
     return 0;
 }
 
 catch(ob::Error &e) {
     std::cerr << "function:" << e.getName() << "\nargs:" << e.getArgs() << "\nmessage:" << e.getMessage() << "\ntype:" << e.getExceptionType() ;
-    exit(EXIT_FAILURE);
+    return -1;
 }
 

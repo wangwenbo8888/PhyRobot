@@ -4,6 +4,7 @@
 #include "Communicate.h"
 
 #include <QTime>
+#include <QElapsedTimer>
 #include <QStringLiteral>
 
 #include "AdmittanceControl.h"
@@ -18,8 +19,23 @@
 #include <QMessageBox>
 #include <QSettings>
 #include <QCoreApplication>
+#include <QApplication>
+#include <QThread>
+#include <QSemaphore>
+#include <QEventLoop>
 
 #include "PCLAlgo.h"
+
+// 常驻采集线程:getImage 的实际抓拍/推理工作在这个线程里跑,
+// 相机 pipeline 也只在该线程初始化(保持线程一致),避免阻塞 GUI 线程。
+class CaptureThread : public QThread
+{
+public:
+	explicit CaptureThread(MyWindow* w) : m_w(w) {}
+	void run() override { m_w->captureLoop(); }
+private:
+	MyWindow* m_w;
+};
 
 MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	: QWidget(parent)
@@ -41,11 +57,6 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	m_dPayloadX    = settings.value("config/payloadX",    0.0).toDouble();
 	m_dPayloadY    = settings.value("config/payloadY",    0.0).toDouble();
 	m_dPayloadZ    = settings.value("config/payloadZ",    0.0).toDouble();
-
-	// 从配置文件加载拖拽灵敏度(1~90,值越大越灵敏、越省力),未配置默认90
-	m_iDragSensivity = settings.value("config/dragSensivity", 90).toInt();
-	if (m_iDragSensivity < 1)  m_iDragSensivity = 1;
-	if (m_iDragSensivity > 90) m_iDragSensivity = 90;
 
 	m_pAccountInfo = new AccountInfo(this);
 
@@ -190,6 +201,16 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 
 MyWindow::~MyWindow()
 {
+	// 先停止常驻采集线程,避免退出时还在访问 socket/相机
+	if (m_pCaptureThread != nullptr)
+	{
+		m_captureStop = true;
+		m_captureJobSem.release();      // 唤醒可能阻塞在 acquire 的采集线程
+		m_pCaptureThread->wait(3000);
+		delete m_pCaptureThread;
+		m_pCaptureThread = nullptr;
+	}
+
 	// m_pTimer->destroyed();
 
 	if (m_pAddmittance != NULL)
@@ -499,6 +520,9 @@ void MyWindow::sktDashboard_readyRead()
 	QString str(msg);
 
 	qDebug() << msg << endl;
+
+	// 通知正在等待应答的 sendodr (可能在 GUI 线程, 也可能在采集工作线程)
+	m_dashboardAckSem.release();
 }
 
 void MyWindow::sktDashboard_error()
@@ -674,16 +698,69 @@ void MyWindow::sktmsgreturn_disconnected()
 
 void MyWindow::sendodr(QByteArray odr)
 {
-	if (cnt[pDashboard])
+	if (!cnt[pDashboard])
+	{
+		qDebug() << "[sendodr] SKIPPED (Dashboard not connected):" << odr;
+		qsleep(500);
+		return;
+	}
+
+	// 清掉可能残留的应答计数,避免上一条的应答被误判为本条的应答
+	while (m_dashboardAckSem.tryAcquire()) {}
+
+	// 写操作始终在 socket 所属(GUI)线程执行;本函数允许被采集工作线程调用
+	if (QThread::currentThread() == od.sktDashboard->thread())
 	{
 		od.sktDashboard->write(odr);
-		qDebug() << "[sendodr] Sent:" << odr;
 	}
 	else
 	{
-		qDebug() << "[sendodr] SKIPPED (Dashboard not connected):" << odr;
+		QMetaObject::invokeMethod(this, "doWriteDashboard", Qt::QueuedConnection, Q_ARG(QByteArray, odr));
 	}
-	qsleep(500);
+	qDebug() << "[sendodr] Sent:" << odr;
+
+	// 等待真实应答(通常约 10ms),不再固定等 500ms;仅无应答时才等到超时
+	QElapsedTimer ackTimer;
+	ackTimer.start();
+	if (!waitDashboardAck(m_cmdAckTimeoutMs))
+	{
+		qDebug() << "[sendodr] ACK TIMEOUT" << ackTimer.elapsed() << "ms for:" << odr;
+	}
+	else
+	{
+		qDebug() << "[sendodr] ACK in" << ackTimer.elapsed() << "ms";
+	}
+}
+
+// 由采集工作线程经队列调用,在 GUI 线程真正写入 Dashboard socket
+void MyWindow::doWriteDashboard(QByteArray odr)
+{
+	if (cnt[pDashboard] && od.sktDashboard)
+	{
+		od.sktDashboard->write(odr);
+	}
+}
+
+// 等待 Dashboard 应答:工作线程用信号量阻塞等待,GUI 线程用事件循环轮询(保持界面响应)
+bool MyWindow::waitDashboardAck(int timeoutMs)
+{
+	if (QThread::currentThread() == qApp->thread())
+	{
+		QElapsedTimer timer;
+		timer.start();
+		while (!m_dashboardAckSem.tryAcquire())
+		{
+			if (timer.elapsed() >= timeoutMs)
+			{
+				return false;
+			}
+			QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents, 10);
+			QThread::msleep(2);
+		}
+		return true;
+	}
+
+	return m_dashboardAckSem.tryAcquire(1, timeoutMs);
 }
 
 
@@ -720,16 +797,11 @@ void MyWindow::StartDrag()
 		.arg(m_dPayloadZ,    0, 'f', 2);
 	sendodr(payloadCmd.toUtf8());
 
-	// 设置拖拽灵敏度(0=所有轴),值越大拖拽越灵敏、越省力
-	// 不设置时沿用控制器软件里的旧值,导致客户反馈"拖拽费力、不灵敏"
-	DragSensivity(0, m_iDragSensivity);
-
 	// 排障:打印当前 RobotMode 和报警列表
 	// V4 RobotMode: 1=INIT 2=BRAKE_OPEN 3=POWEROFF 4=DISABLED 5=ENABLE 6=BACKDRIVE 7=RUNNING 8=SINGLE_MOVE 9=ERROR 10=PAUSE 11=COLLISION
 	qDebug() << "[Drag] BEFORE StartDrag: RobotMode =" << RobotMode
 	         << "| payloadMass =" << m_dPayloadMass
-	         << "X =" << m_dPayloadX << "Y =" << m_dPayloadY << "Z =" << m_dPayloadZ
-	         << "| dragSensivity =" << m_iDragSensivity;
+	         << "X =" << m_dPayloadX << "Y =" << m_dPayloadY << "Z =" << m_dPayloadZ;
 	sendodr("GetErrorID()");
 	qsleep(300);
 
@@ -765,13 +837,6 @@ void MyWindow::StopDrag()
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
 	qDebug() << "send stop drag time is " << current_time << endl;
-}
-
-// 设置拖拽灵敏度 index: 0=所有轴, 1~6=J1~J6; value: [1,90], 值越小阻力越大
-// 必须在 StartDrag() 指令前下发才对本次拖拽生效
-void MyWindow::DragSensivity(int index, int value)
-{
-	sendodr("DragSensivity(" + QByteArray::number(index) + "," + QByteArray::number(value) + ")");
 }
 
 void MyWindow::GetPose()
@@ -828,6 +893,7 @@ void MyWindow::RequestControl()
 
 void MyWindow::JointMovJ(double J1, double J2, double J3, double J4, double J5, double J6)
 {
+	m_motionPending = true;
 	sendodr("MovJ(joint={" + QByteArray::number(J1) + "," + QByteArray::number(J2) + "," + QByteArray::number(J3) + "," +
 		QByteArray::number(J4) + "," + QByteArray::number(J5) + "," + QByteArray::number(J6) + "})");
 }
@@ -934,12 +1000,14 @@ void MyWindow::GetCurrentCommandId()
 }
 void MyWindow::MovL(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
+	m_motionPending = true;
 	sendodr("MovL(pose={" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
 		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "})");
 }
 
 void MyWindow::MovJ(double X, double Y, double Z, double Rx, double Ry, double Rz)
 {
+	m_motionPending = true;
 	sendodr("MovJ(pose={" + QByteArray::number(X) + "," + QByteArray::number(Y) + "," + QByteArray::number(Z) + "," +
 		QByteArray::number(Rx) + "," + QByteArray::number(Ry) + "," + QByteArray::number(Rz) + "})");
 }
@@ -2300,6 +2368,13 @@ void MyWindow::setip(QString ip)
 
 void MyWindow::qsleep(int msec)
 {
+	// 非 GUI 线程(采集线程)直接睡眠,不要启动嵌套事件循环
+	if (QThread::currentThread() != qApp->thread())
+	{
+		QThread::msleep(msec);
+		return;
+	}
+
 	QTimer t;
 	t.setInterval(msec);
 	t.start();
@@ -2369,37 +2444,33 @@ void MyWindow::Wait_ForShort(int timeout)
 
 void MyWindow::Wait_Done(int timeout)
 {
-	int time_c = 0;
-
-	// Phase 1: Wait up to 500ms for motion to start (RobotMode -> RUNNING)
-	int startLimit = (timeout < 500) ? timeout : 500;
-	bool motionStarted = false;
-	while (time_c < startLimit)
+	// 没有刚下发的运动指令则无需等待(避免无谓空转)
+	if (!m_motionPending)
 	{
-		if (RobotMode == ROBOT_MODE_RUNNING)
-		{
-			motionStarted = true;
-			qDebug() << "[Wait_Done] motion started at" << time_c << "ms, RobotMode =" << RobotMode;
-			break;
-		}
-		qsleep(50);
-		time_c += 50;
-	}
-
-	if (!motionStarted)
-	{
-		qDebug() << "[Wait_Done] no RUNNING detected after" << time_c << "ms, RobotMode =" << RobotMode << "- fallback 200ms";
-		qsleep(200);
 		return;
 	}
 
-	// Phase 2: Wait for motion to complete (RobotMode -> ENABLE)
-	while (RobotMode != ROBOT_MODE_ENABLE && time_c < timeout)
+	const int pollMs = 20;      // 轮询粒度，原为 50/100ms
+	int time_c = 0;
+
+	// Phase 1: 等运动真正开始(RobotMode -> RUNNING)。
+	// sendodr 只等到命令应答,机器人进入 RUNNING 可能还要几百 ms,这里给足启动时间。
+	int startLimit = (timeout < 800) ? timeout : 800;
+	while (time_c < startLimit && RobotMode != ROBOT_MODE_RUNNING)
 	{
-		qsleep(100);
-		time_c += 100;
+		qsleep(pollMs);
+		time_c += pollMs;
 	}
-	qDebug() << "[Wait_Done] motion done at" << time_c << "ms, RobotMode =" << RobotMode;
+
+	// Phase 2: 等运动结束(RobotMode -> ENABLE)。出错时也要放行,避免死等。
+	while (RobotMode != ROBOT_MODE_ENABLE && RobotMode != ROBOT_MODE_ERROR && time_c < timeout)
+	{
+		qsleep(pollMs);
+		time_c += pollMs;
+	}
+
+	m_motionPending = false;
+	qDebug() << "[Wait_Done] done at" << time_c << "ms, RobotMode =" << RobotMode;
 }
 
 void MyWindow::poweron()
@@ -2560,15 +2631,23 @@ void MyWindow::MoveToDragReadyPos()
 	Wait_Done();
 }
 
-bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
+// ===== 采集线程实际执行体(在 CaptureThread 中运行) =====
+bool MyWindow::runCaptureFlow(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
+	QElapsedTimer perfTimer;
+	perfTimer.start();
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 	//Sync();
-	sendodr("EnableRobot(1.0,0,0,20,0)");
+	// 已使能时无需重复下发 EnableRobot(省去一次 sendodr 的固定等待)
+	if (RobotMode != ROBOT_MODE_ENABLE && RobotMode != ROBOT_MODE_RUNNING)
+	{
+		sendodr("EnableRobot(1.0,0,0,20,0)");
+	}
 
-	// V4: 拍照位置关节角度
-	JointMovJ(90.0, 0.0, 120.0, -30.0, -90.0, 270.0);
+	// V4: 拍照位置关节角度(末端 J6 再转 90°:270 -> 180,让相机视野方向摆正)
+	JointMovJ(90.0, 0.0, 120.0, -30.0, -90.0, 180.0);
 	Wait_Done();
+	qDebug() << "[PERF][getImage] 1.robot motion:" << perfTimer.restart() << "ms";
 	// 旧位姿运动代码（逆解无解，已注释）
 	//MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
 	//Wait_Done();
@@ -2577,16 +2656,20 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 
 	std::vector<OBColorPoint> pointCloud_frame_data;
 	obCapture(colorRawMat, pointCloud_frame_data);
+	qDebug() << "[PERF][getImage] 2.obCapture:" << perfTimer.restart() << "ms";
 
 	if (colorRawMat.rows == 0 || colorRawMat.cols == 0)
 	{
-		QMessageBox::information(NULL, "Info", "Capture image failed !", QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		// 工作线程内不能弹窗,错误信息带回 GUI 线程处理
+		m_captureErr = "Capture image failed !";
 		return false;
 	}
 
 	SaveImage(colorRawMat);
+	qDebug() << "[PERF][getImage] 3.saveImage:" << perfTimer.restart() << "ms";
 
-	colorRawMat = cv::imread("111.jpg");
+	// 调试残留已禁用:曾用磁盘旧图覆盖相机实时图,导致识别一直在识别固定旧图
+	//colorRawMat = cv::imread("111.jpg");
 	//std::string path = /*E://workspace//PhysicalTherapyRobot//x64//Release//*/ "yolov8_640_640_v15.onnx";
 	//std::string path = /*E://workspace//PhysicalTherapyRobot//x64//Release//*/ /*"back_keypoints_0616.onnx"*/"last_0923.onnx";
 	//std::string path = "last0923.onnx";
@@ -2595,15 +2678,26 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 	//std::vector<cv::Point> base0 = detect(colorRawMatR, path /*u8"debug/yolov8_640_640_v15.onnx"*/, img);
 	//img = colorRawMatR.clone();
 
-	bool hasKeypoints;
+	bool hasKeypoints = false;   // 必须初始化:processFrame 在无检测时不会给输出参数赋值
 	cv::Rect_<float> out_bbox;
 	std::vector<Keypoint> base0;
 	processFrame(colorRawMatR, m_net, modelScoreThreshold, modelNMSThreshold,
 		modelShape.width, modelShape.height, 15,
 		hasKeypoints, out_bbox, base0);
+	qDebug() << "[PERF][getImage] 4.onnx inference:" << perfTimer.restart() << "ms";
 
 	if (!hasKeypoints)
 	{
+		m_captureErr = "No valid detection (hasKeypoints=false).";
+		qDebug() << "[getImage] FAIL: hasKeypoints=false";
+		return false;
+	}
+
+	// 检测到框但没有任何穴位点(常见于首帧图像偏暗/姿态不对),直接返回,避免后续越界
+	if (base0.empty())
+	{
+		m_captureErr = "No acupoints detected, please adjust posture and retry.";
+		qDebug() << "[getImage] FAIL: bbox detected but 0 keypoints";
 		return false;
 	}
 
@@ -2619,6 +2713,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 	}
 
 	std::vector<Robot3d> pointsC = get3Dpoints(base, pointCloud_frame_data) /* *m */;   //需要一个变换矩阵m
+	qDebug() << "[PERF][getImage] 5.pcl normals:" << perfTimer.restart() << "ms";
 
 	// points = convert_camera2arm(pointsC);
 	std::vector<cv::Point3d> tempPoints = convert_camera2arm(pointsC);
@@ -2641,8 +2736,21 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 	tempPoints.push_back(cv::Point3d(-293.429, -320.06, -240));
 #endif
 
+	// 防止 base0 / pointsC 数量不足导致越界(否则会崩溃,图片永远出不来)
+	size_t nPts = tempPoints.size();
+	if (base0.size() < nPts) nPts = base0.size();
+	if (pointsC.size() < nPts) nPts = pointsC.size();
+	if (nPts == 0)
+	{
+		m_captureErr = "Acupoint 3D data incomplete.";
+		qDebug() << "[getImage] FAIL: size mismatch base0=" << base0.size()
+		         << "pointsC=" << pointsC.size() << "temp=" << tempPoints.size();
+		return false;
+	}
+	qDebug() << "[getImage] detected keypoints:" << base0.size() << " usable:" << nPts;
+
 	points.clear();
-	for (int i = 0; i < tempPoints.size(); ++i)
+	for (size_t i = 0; i < nPts; ++i)
 	{
 		RobotPoint p;
 		p.p2d = base0[i].position;
@@ -2656,7 +2764,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 
 	//todo: 点的顺序  //
 	qDebug() << QString("points size is %1 ").arg(points.size());
-	for (uint i = 0; i < tempPoints.size(); ++i) {
+	for (uint i = 0; i < nPts; ++i) {
 		qDebug() << i << tempPoints[i].x << tempPoints[i].y << tempPoints[i].z;
 
 		cv::circle(colorRawMat, base[i], 2, cv::Scalar(125, 123, 0), 3);
@@ -2677,11 +2785,118 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 			base[i] + cv::Point(10, 20), 1, 0.6, cv::Scalar(255), 1);
 	}
 	//cv::rectangle(colorRawMat, out_bbox, cv::Scalar(0, 255, 255));
+	qDebug() << "[PERF][getImage] 6.rest(convert/draw):" << perfTimer.elapsed() << "ms";
+	qDebug() << "[PERF][getImage] 7.total:" << perfTimer.elapsed() << "ms";
+
 	img = colorRawMat.clone();
 
-	cv::namedWindow("colorRawMat", cv::WINDOW_AUTOSIZE);
-	cv::imshow("colorRawMat", colorRawMat);
+	return true;
+}
 
+// ===== GUI 侧:提交采集任务并协作式等待,期间界面保持响应 =====
+bool MyWindow::submitCaptureJob(int jobType, cv::Mat& out)
+{
+	if (m_bCapturing)
+	{
+		qDebug() << "[CAPTURE] capture already in progress, ignored";
+		return false;
+	}
+	if (QThread::currentThread() != this->thread())
+	{
+		qDebug() << "[CAPTURE] must be called from GUI thread";
+		return false;
+	}
+	m_bCapturing = true;
+
+	// 首次调用时启动常驻采集线程(相机 pipeline 只在该线程初始化)
+	if (m_pCaptureThread == nullptr)
+	{
+		m_pCaptureThread = new CaptureThread(this);
+		m_pCaptureThread->start();
+	}
+
+	const bool prevEnabled = isEnabled();
+	setEnabled(false);                                   // 采集期间禁止重入点击
+	QApplication::setOverrideCursor(Qt::WaitCursor);     // 明确告知"忙",而不是假死
+
+	m_captureJobType = jobType;
+	m_captureResultOk = false;
+	m_captureErr.clear();
+	m_captureImg.release();                              // 清空上次结果,保持与旧实现一致的"空输入"
+	m_captureJobSem.release();                           // 提交任务给工作线程
+
+	QElapsedTimer jobTimer;
+	jobTimer.start();
+	qDebug() << "[CAPTURE] job submitted type=" << jobType;
+
+	// 等待工作线程完成的同时保持事件循环运行,不阻塞 GUI 线程
+	while (!m_captureDoneSem.tryAcquire(1, 20))
+	{
+		QCoreApplication::processEvents(QEventLoop::AllEvents, 20);
+	}
+
+	QApplication::restoreOverrideCursor();
+	setEnabled(prevEnabled);
+
+	out = m_captureImg;
+	const bool ok = m_captureResultOk;
+	m_bCapturing = false;
+
+	if (ok)
+	{
+		qDebug() << "[CAPTURE] job" << jobType << "done  elapsed=" << jobTimer.elapsed() << "ms";
+	}
+	else
+	{
+		qDebug() << "[CAPTURE] job" << jobType << "FAILED elapsed=" << jobTimer.elapsed() << "ms err=" << m_captureErr;
+	}
+	return ok;
+}
+
+bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
+{
+	const bool ok = submitCaptureJob(0, img);
+	if (!ok && !m_captureErr.isEmpty())
+	{
+		QMessageBox::information(NULL, "Info", m_captureErr, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+	}
+	return ok;
+}
+
+bool MyWindow::captureRawImage(cv::Mat& colorRawMat)
+{
+	return submitCaptureJob(1, colorRawMat);
+}
+
+// ===== 常驻采集线程主循环 =====
+void MyWindow::captureLoop()
+{
+	qDebug() << "[CAPTURE] worker thread started";
+	while (true)
+	{
+		m_captureJobSem.acquire();      // 等待任务(停止时也会被唤醒)
+		if (m_captureStop)
+		{
+			break;
+		}
+		m_captureResultOk = (m_captureJobType == 0) ? runCaptureFlow(m_captureImg)
+		                                            : runCaptureRaw(m_captureImg);
+		m_captureDoneSem.release();     // 通知 GUI 线程完成
+	}
+	qDebug() << "[CAPTURE] worker thread exiting";
+}
+
+// 仅抓一张原图并保存(不做运动/推理),在采集线程内执行
+bool MyWindow::runCaptureRaw(cv::Mat& img)
+{
+	std::vector<OBColorPoint> pointCloud_frame_data;
+	obCapture(img, pointCloud_frame_data);
+	if (img.rows == 0 || img.cols == 0)
+	{
+		m_captureErr = "Capture image failed !";
+		return false;
+	}
+	SaveImage(img);
 	return true;
 }
 
@@ -2695,36 +2910,75 @@ std::vector<Robot3d> MyWindow::get3Dpoints(std::vector<cv::Point> base, std::vec
 	//                     << ", " << pointA->r << ", " << pointA->g << ", " << pointA->b;
 	//    }
 
+	QElapsedTimer pclTimer;
+	pclTimer.start();
 	qDebug() << "Current vector size is " << pointCloud_frame_data.size();
-	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-	cloud->reserve(pointCloud_frame_data.size());
-	for (int i = 0; i < pointCloud_frame_data.size(); ++i)
-	{
-		OBColorPoint& pointA = pointCloud_frame_data[i];
-		pcl::PointXYZ point(pointA.x, pointA.y, pointA.z);
-		cloud->push_back(point);
-		//qDebug() << i << ": " << pointA.x << ", " << pointA.y << ", " << pointA.z
-		//                     << ", " << pointA.r << ", " << pointA.g << ", " << pointA.b;
-	}
-
-	pcl::PointCloud<pcl::Normal>::Ptr normals;
-	GetCloudsNormals(cloud, normals);
 
 	std::vector<Robot3d> Points;
+	if (base.empty() || pointCloud_frame_data.empty())
+	{
+		qDebug() << "[PERF][get3Dpoints] empty input (base" << base.size() << "pts" << pointCloud_frame_data.size() << ")";
+		return Points;
+	}
+
+	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+	cloud->reserve(pointCloud_frame_data.size());
+	for (int i = 0; i < (int)pointCloud_frame_data.size(); ++i)
+	{
+		OBColorPoint& pointA = pointCloud_frame_data[i];
+		cloud->push_back(pcl::PointXYZ(pointA.x, pointA.y, pointA.z));
+	}
+	qDebug() << "[PERF][get3Dpoints] a.buildCloud(" << pointCloud_frame_data.size() << "pts):" << pclTimer.restart() << "ms";
+
+	// 只对穴位点计算法线,不再对全部 92 万点计算(原来要几分钟)
+	const int total = (int)pointCloud_frame_data.size();
+	std::vector<int> kpIndices;      // 有效的穴位点下标(用于算 KdTree 邻域)
+	std::vector<int> kpBasePos;      // kpIndices[j] 对应 base[kpBasePos[j]]
 	for (uint i = 0; i < base.size(); ++i)
 	{
-		OBColorPoint& pointA = pointCloud_frame_data[int(base[i].y) * imageWidth + int(base[i].x)];                                     //��0->1279����0-719
-		pcl::Normal& normal = normals->at(int(base[i].y) * imageWidth + int(base[i].x));
-		Robot3d point;
-		point.n3d = cv::Point3d(normal.normal_x, normal.normal_y, normal.normal_z);
-		if (std::isnan(point.n3d.x) || std::isnan(point.n3d.y) || std::isnan(point.n3d.z))
+		int idx = int(base[i].y) * imageWidth + int(base[i].x);
+		if (idx >= 0 && idx < total)
 		{
-			point.n3d = cv::Point3d(0.0, 0.0, -1.0);
+			kpIndices.push_back(idx);
+			kpBasePos.push_back((int)i);
 		}
+	}
 
-		point.p3d = cv::Point3d(double(pointA.x), double(pointA.y), double(pointA.z));
+	std::vector<pcl::Normal> kpNormals;
+	GetCloudsNormalsAt(cloud, kpIndices, kpNormals);
+	qDebug() << "[PERF][get3Dpoints] b.normals(" << kpIndices.size() << "pts):" << pclTimer.restart() << "ms";
+
+	std::vector<cv::Point3d> n3d(base.size(), cv::Point3d(0.0, 0.0, -1.0));
+	for (size_t j = 0; j < kpBasePos.size() && j < kpNormals.size(); ++j)
+	{
+		pcl::Normal& normal = kpNormals[j];
+		cv::Point3d n(normal.normal_x, normal.normal_y, normal.normal_z);
+		if (std::isnan(n.x) || std::isnan(n.y) || std::isnan(n.z))
+		{
+			n = cv::Point3d(0.0, 0.0, -1.0);
+		}
+		n3d[kpBasePos[j]] = n;
+	}
+
+	Points.reserve(base.size());
+	for (uint i = 0; i < base.size(); ++i)
+	{
+		Robot3d point;
+		point.n3d = n3d[i];
+
+		int idx = int(base[i].y) * imageWidth + int(base[i].x);
+		if (idx >= 0 && idx < total)
+		{
+			OBColorPoint& pointA = pointCloud_frame_data[idx];   //��0->1279����0-719
+			point.p3d = cv::Point3d(double(pointA.x), double(pointA.y), double(pointA.z));
+		}
+		else
+		{
+			point.p3d = cv::Point3d(0.0, 0.0, 0.0);
+		}
 		Points.push_back(point);
 	}
+	qDebug() << "[PERF][get3Dpoints] c.extract(" << base.size() << "kpts):" << pclTimer.elapsed() << "ms";
 
 	return Points;
 }

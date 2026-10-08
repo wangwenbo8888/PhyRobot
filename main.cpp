@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 {
 	QApplication a(argc, argv);
 
-    //qInstallMessageHandler(outputMessage);
+    qInstallMessageHandler(outputMessage);
 
 	PhysicalTherapyRobot w;
 	w.show();

@@ -1,5 +1,6 @@
 ﻿#include "inference.h"
 #include <regex>
+#include <QDebug>
 
 #define benchmark
 #define ELOG
@@ -137,6 +138,11 @@ void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float 
     int inputWidth, int inputHeight, int numKeypoints, bool& hasKeypoints, cv::Rect_<float>& out_bbox,
     std::vector<Keypoint>& out_keyps) {
 
+    // Ensure outputs always have a deterministic value even if nothing is detected.
+    hasKeypoints = false;
+    out_keyps.clear();
+    out_bbox = cv::Rect_<float>();
+
     cv::Size original_size = cv::Size(frame.cols, frame.rows);
     cv::Size model_size = cv::Size(640, 640);
     float ratio = std::max(frame.rows / float(inputHeight), frame.cols / float(inputWidth));
@@ -174,6 +180,7 @@ void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float 
     std::vector<int> indicesList;
     std::vector<std::vector<Keypoint>> kpList;
 
+    float maxScore = -1.f;
     // 解析每个检测结果
     for (int i = 0; i < channels; i++) {
         auto row_ptr = output1.row(i).ptr<float>();
@@ -182,6 +189,7 @@ void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float 
         auto kp_ptr = row_ptr + 5;
 
         float score = *score_ptr;
+        if (score > maxScore) maxScore = score;
         if (score > modelScoreThreshold) {
             float x = *bbox_ptr++;
             float y = *bbox_ptr++;
@@ -220,12 +228,15 @@ void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float 
     }
 
     std::cout << "Found " << bboxList.size() << " potential detections" << std::endl;
+    qDebug() << "[INF] potential detections:" << (int)bboxList.size()
+             << " maxScore:" << maxScore << " confThreshold:" << confThreshold;
 
     // 应用NMS
     if (!bboxList.empty() && !scoreList.empty()) {
         cv::dnn::NMSBoxes(bboxList, scoreList, confThreshold, nmsThreshold, indicesList);
 
         std::cout << "After NMS: " << indicesList.size() << " detections" << std::endl;
+        qDebug() << "[INF] after NMS:" << (int)indicesList.size();
 
         cv::Rect_<float> bbox;
         std::vector<Keypoint> keyps;
@@ -247,6 +258,7 @@ void processFrame(cv::Mat& frame, cv::dnn::Net& net, float confThreshold, float 
         hasKeypoints = optimizedResults.hasKeypoints;
         out_bbox = optimizedResults.bbox;
         out_keyps = optimizedResults.keypoints;
+        qDebug() << "[INF] final keypoints:" << (int)out_keyps.size() << " hasKeypoints:" << hasKeypoints;
         //for (int kk = 0; kk = out_keyps.size(); kk++) {
         //    std::cout << "------------------" << out_keyps[kk].position << "-----------------------------" << std::endl;
         //}

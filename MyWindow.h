@@ -5,6 +5,8 @@
 
 #include <QTimer>
 #include <QSharedPointer>
+#include <QThread>
+#include <QSemaphore>
 
 #include "HomePage.h"
 #include "TreatInstruction.h"
@@ -92,9 +94,6 @@ public:
     // 停止机械臂拖拽模式
     void StopDrag();
 
-    // 设置拖拽灵敏度 index: 0=所有轴, 1~6=J1~J6; value: [1,90], 值越小阻力越大
-    void DragSensivity(int index, int value);
-
     void ClearError();
 
     void RobotStorage();
@@ -162,6 +161,15 @@ public:
     std::vector<cv::Point> detect(cv::Mat img, std::string ModelPath,cv::Mat& outImg);
 
     bool getImage(cv::Mat& img/*std::vector<cv::Point3d>& points, cv::Mat& colorRawMat*/);
+
+    // 只抓一张原图(不做运动/推理),供拖拽等场景使用;同样在采集线程执行
+    bool captureRawImage(cv::Mat& colorRawMat);
+
+    // 采集工作线程:实际抓拍+推理在独立线程执行,避免阻塞 GUI 线程
+    void captureLoop();
+    bool runCaptureFlow(cv::Mat& img);   // 完整流程:运动+抓拍+推理+3D
+    bool runCaptureRaw(cv::Mat& img);    // 仅抓拍原图并保存
+    bool submitCaptureJob(int jobType, cv::Mat& out);  // GUI 侧提交任务并协作等待
 
     std::vector<Robot3d> get3Dpoints(std::vector<cv::Point> base ,std::vector<OBColorPoint> pointCloud_frame_data);
 
@@ -236,6 +244,9 @@ public slots:
     void On_ContactTimeOut();
 
     void On_received_contact_state(CONTACT_STATE);
+
+    // 供采集工作线程把 socket 写操作排到 GUI 线程执行
+    void doWriteDashboard(QByteArray odr);
 
 signals:
     void FinishOneXuewei(int);
@@ -335,6 +346,9 @@ private:
     void sendodr(QByteArray odr);
     void sendrunodr(QByteArray odr);
 
+    // 等待 Dashboard 对上一条命令的真实应答(带超时兜底),替代固定 500ms 空等
+    bool waitDashboardAck(int timeoutMs);
+
     void Sync();
 
     void JointMovJ(double Jx, double J2, double J3, double J4, double J5, double J6);
@@ -412,6 +426,25 @@ private:
 
     int RobotMode = 0;
 
+    // 已下发运动指令(由 JointMovJ/MovJ/MovL 置位,Wait_Done 消费)。
+    // sendodr 改为等真实应答后,命令返回很快,不能再靠固定的 500ms 判断运动是否已开始。
+    bool m_motionPending = false;
+
+    // ===== 采集工作线程状态(getImage 在工作线程执行,避免卡死界面) =====
+    QThread* m_pCaptureThread = nullptr;   // 常驻采集线程(相机 pipeline 只在该线程初始化)
+    QSemaphore m_captureJobSem;            // GUI -> 工作线程 提交任务
+    QSemaphore m_captureDoneSem;           // 工作线程 -> GUI 完成任务
+    bool m_captureStop = false;
+    bool m_bCapturing = false;
+    int  m_captureJobType = 0;             // 0=完整流程, 1=仅抓原图
+    bool m_captureResultOk = false;
+    QString m_captureErr;
+    cv::Mat m_captureImg;
+
+    // Dashboard 应答同步(替代 sendodr 里的固定 500ms 空等)
+    QSemaphore m_dashboardAckSem;
+    int        m_cmdAckTimeoutMs = 1000;
+
     // 治疗被停止了
     bool m_bStoped;
 
@@ -423,9 +456,6 @@ private:
     double m_dPayloadX    = 0.0; // 质心X偏移(mm)
     double m_dPayloadY    = 0.0; // 质心Y偏移(mm)
     double m_dPayloadZ    = 0.0; // 质心Z偏移(mm)
-
-    // 拖拽灵敏度(1~90,值越大越灵敏、越省力),从user.ini读取,进入拖拽时下发给控制器
-    int m_iDragSensivity = 90;
 
     void Wait_ForTreat(int timeout = INT_MAX);
 

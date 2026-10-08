@@ -225,8 +225,8 @@ void ManualTreatDragBegin::On_pushButton_DragStartOrStop_Clicked()
 			if (!m_pMyWindow->IsDragTeachMode())
 			{
 				cv::Mat colorRawMat;
-				std::vector<OBColorPoint> pointCloud_frame_data;
-				obCapture(colorRawMat, pointCloud_frame_data);
+				// 统一走采集线程抓图(相机 pipeline 只在该线程初始化),内部会保存图片
+				m_pMyWindow->captureRawImage(colorRawMat);
 
 				if (colorRawMat.rows == 0 || colorRawMat.cols == 0)
 				{
@@ -235,8 +235,6 @@ void ManualTreatDragBegin::On_pushButton_DragStartOrStop_Clicked()
 					m_bStartFlag = true;
 					return;
 				}
-
-				SaveImage(colorRawMat);
 			}
 
 			m_bFirstDrag = false;
