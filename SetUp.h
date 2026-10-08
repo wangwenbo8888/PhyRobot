@@ -25,10 +25,20 @@ public slots:
 
 	void On_checkBox_DragTeachMode_stateChanged(int state);
 
+	void On_spinBox_PayloadMass_valueChanged(double v);
+
+	void On_spinBox_PayloadX_valueChanged(double v);
+
+	void On_spinBox_PayloadY_valueChanged(double v);
+
+	void On_spinBox_PayloadZ_valueChanged(double v);
+
 private:
 	Ui::SetUpClass ui;
 
 	MyWindow* m_pWindow;
 
 	QtWidgetsCommunicateTest* m_pCommTestWidget;
+
+	bool m_bUpdatingPayload = false;
 };

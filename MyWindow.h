@@ -76,11 +76,24 @@ public:
     void SetDragTeachMode(bool enable);
     bool IsDragTeachMode() const;
 
+    // 末端负载(理疗头)参数读写
+    double GetPayloadMass() const { return m_dPayloadMass; }
+    double GetPayloadX()    const { return m_dPayloadX; }
+    double GetPayloadY()    const { return m_dPayloadY; }
+    double GetPayloadZ()    const { return m_dPayloadZ; }
+    void SetPayloadMass(double v);
+    void SetPayloadX(double v);
+    void SetPayloadY(double v);
+    void SetPayloadZ(double v);
+
     // 开始机械臂拖拽模式
     void StartDrag();
 
     // 停止机械臂拖拽模式
     void StopDrag();
+
+    // 设置拖拽灵敏度 index: 0=所有轴, 1~6=J1~J6; value: [1,90], 值越小阻力越大
+    void DragSensivity(int index, int value);
 
     void ClearError();
 
@@ -88,6 +101,10 @@ public:
 
     // 机械臂移动到默认的初始位置
     void MoveToNormalPos();
+
+    // 拖拽专用待机位姿:立柱/上臂/前臂竖直向上,末端朝下,使负载沿重力方向作用,
+    // J3(肘关节)力矩接近零,避免进入拖拽时 J3 因负载力矩过大触发硬件过流(报警8752)
+    void MoveToDragReadyPos();
 
     void sktDashboard_error();
     void MyWindow_connect();
@@ -400,6 +417,15 @@ private:
 
     // 拖拽示教模式（设置中勾选）
     bool m_bDragTeachMode = false;
+
+    // 末端负载(理疗头)参数,从user.ini读取,进入拖拽时下发给控制器做重力补偿
+    double m_dPayloadMass = 0.0;  // 质量(kg)
+    double m_dPayloadX    = 0.0; // 质心X偏移(mm)
+    double m_dPayloadY    = 0.0; // 质心Y偏移(mm)
+    double m_dPayloadZ    = 0.0; // 质心Z偏移(mm)
+
+    // 拖拽灵敏度(1~90,值越大越灵敏、越省力),从user.ini读取,进入拖拽时下发给控制器
+    int m_iDragSensivity = 90;
 
     void Wait_ForTreat(int timeout = INT_MAX);
 

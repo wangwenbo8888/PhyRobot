@@ -36,6 +36,17 @@ MyWindow::MyWindow(PhysicalTherapyRobot* robot, QWidget* parent)
 	QSettings settings(iniPath, QSettings::IniFormat);
 	m_bDragTeachMode = settings.value("config/dragTeachMode", false).toBool();
 
+	// 从配置文件加载末端负载(理疗头)参数,用于拖拽时重力补偿
+	m_dPayloadMass = settings.value("config/payloadMass", 0.0).toDouble();
+	m_dPayloadX    = settings.value("config/payloadX",    0.0).toDouble();
+	m_dPayloadY    = settings.value("config/payloadY",    0.0).toDouble();
+	m_dPayloadZ    = settings.value("config/payloadZ",    0.0).toDouble();
+
+	// 从配置文件加载拖拽灵敏度(1~90,值越大越灵敏、越省力),未配置默认90
+	m_iDragSensivity = settings.value("config/dragSensivity", 90).toInt();
+	if (m_iDragSensivity < 1)  m_iDragSensivity = 1;
+	if (m_iDragSensivity > 90) m_iDragSensivity = 90;
+
 	m_pAccountInfo = new AccountInfo(this);
 
 	m_pTimer = new QTimer(this);
@@ -695,6 +706,33 @@ void MyWindow::sendrunodr(QByteArray odr)
 // 开始机械臂拖拽模式
 void MyWindow::StartDrag()
 {
+	// V4: 进入拖拽前先请求 TCP 控制权并清除任何残留报警
+	// 否则残留的非阻塞报警会使 StartDrag() 返回 -1(报警码1366:进入拖拽模式失败)
+	RequestControl();
+	sendodr("ClearError()");
+
+	// 进入拖拽前设置末端负载(理疗头)的质量与质心,用于控制器重力补偿
+	// 参数从 user.ini 读取,换理疗头时改 user.ini 即可,无需改源码重编
+	QString payloadCmd = QString("SetPayload(%1,%2,%3,%4)")
+		.arg(m_dPayloadMass, 0, 'f', 2)
+		.arg(m_dPayloadX,    0, 'f', 2)
+		.arg(m_dPayloadY,    0, 'f', 2)
+		.arg(m_dPayloadZ,    0, 'f', 2);
+	sendodr(payloadCmd.toUtf8());
+
+	// 设置拖拽灵敏度(0=所有轴),值越大拖拽越灵敏、越省力
+	// 不设置时沿用控制器软件里的旧值,导致客户反馈"拖拽费力、不灵敏"
+	DragSensivity(0, m_iDragSensivity);
+
+	// 排障:打印当前 RobotMode 和报警列表
+	// V4 RobotMode: 1=INIT 2=BRAKE_OPEN 3=POWEROFF 4=DISABLED 5=ENABLE 6=BACKDRIVE 7=RUNNING 8=SINGLE_MOVE 9=ERROR 10=PAUSE 11=COLLISION
+	qDebug() << "[Drag] BEFORE StartDrag: RobotMode =" << RobotMode
+	         << "| payloadMass =" << m_dPayloadMass
+	         << "X =" << m_dPayloadX << "Y =" << m_dPayloadY << "Z =" << m_dPayloadZ
+	         << "| dragSensivity =" << m_iDragSensivity;
+	sendodr("GetErrorID()");
+	qsleep(300);
+
 	sendodr("StartDrag()");
 
 	QDateTime current_date_time = QDateTime::currentDateTime();
@@ -727,6 +765,13 @@ void MyWindow::StopDrag()
 	QDateTime current_date_time = QDateTime::currentDateTime();
 	QString current_time = current_date_time.toString("hh:mm:ss.zzz");
 	qDebug() << "send stop drag time is " << current_time << endl;
+}
+
+// 设置拖拽灵敏度 index: 0=所有轴, 1~6=J1~J6; value: [1,90], 值越小阻力越大
+// 必须在 StartDrag() 指令前下发才对本次拖拽生效
+void MyWindow::DragSensivity(int index, int value)
+{
+	sendodr("DragSensivity(" + QByteArray::number(index) + "," + QByteArray::number(value) + ")");
 }
 
 void MyWindow::GetPose()
@@ -916,6 +961,42 @@ void MyWindow::SetDragTeachMode(bool enable)
 bool MyWindow::IsDragTeachMode() const
 {
 	return m_bDragTeachMode;
+}
+
+void MyWindow::SetPayloadMass(double v)
+{
+	m_dPayloadMass = v;
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	settings.setValue("config/payloadMass", v);
+	settings.sync();
+}
+
+void MyWindow::SetPayloadX(double v)
+{
+	m_dPayloadX = v;
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	settings.setValue("config/payloadX", v);
+	settings.sync();
+}
+
+void MyWindow::SetPayloadY(double v)
+{
+	m_dPayloadY = v;
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	settings.setValue("config/payloadY", v);
+	settings.sync();
+}
+
+void MyWindow::SetPayloadZ(double v)
+{
+	m_dPayloadZ = v;
+	QString iniPath = QCoreApplication::applicationDirPath() + "/../../user.ini";
+	QSettings settings(iniPath, QSettings::IniFormat);
+	settings.setValue("config/payloadZ", v);
+	settings.sync();
 }
 
 bool MyWindow::AdmittanceControlNew(int group, int row)
@@ -2455,7 +2536,7 @@ void MyWindow::MoveToNormalPos()
 {
 	sendodr("EnableRobot(1.0,0,0,20,0)");
 	// V4: 拍照位置关节角度 J1=90,J2=0,J3=90,J4=0,J5=-90,J6=270
-	JointMovJ(90.0, 0.0, 90.0, 0.0, -90.0, 270.0);
+	JointMovJ(90.0, 0.0, 120.0, -30.0, -90.0, 270.0);
 	Wait_Done();
 	// 旧位姿运动代码（逆解无解，已注释）
 	//QString cmd1 = QString("MovJ(pose={%1,%2,%3,180,0,%4})")
@@ -2468,6 +2549,17 @@ void MyWindow::MoveToNormalPos()
 	//Wait_Done();
 }
 
+// 拖拽专用待机位姿:J1=90(朝向正面),J2=0(上臂竖直向上),J3=0(前臂也竖直向上),
+// J4=0,J5=-90(腕部下折使末端朝下),J6=0
+// 此姿态下立柱/上臂/前臂沿重力方向竖直,负载沿J2/J1输出轴作用,
+// J3(肘关节)几乎不承受负载力矩,避免进入拖拽瞬间触发J3硬件过流(报警8752)
+void MyWindow::MoveToDragReadyPos()
+{
+	sendodr("EnableRobot(1.0,0,0,20,0)");
+	JointMovJ(90.0, 0.0, 0.0, 0.0, -90.0, 0.0);
+	Wait_Done();
+}
+
 bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& colorRawMat*/)
 {
 	//JointMovJ(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -2475,7 +2567,7 @@ bool MyWindow::getImage(cv::Mat& img/*std::vector<cv::Point3d>& points,cv::Mat& 
 	sendodr("EnableRobot(1.0,0,0,20,0)");
 
 	// V4: 拍照位置关节角度
-	JointMovJ(90.0, 0.0, 90.0, 0.0, -90.0, 270.0);
+	JointMovJ(90.0, 0.0, 120.0, -30.0, -90.0, 270.0);
 	Wait_Done();
 	// 旧位姿运动代码（逆解无解，已注释）
 	//MovJ(start_Camera_Point.x, start_Camera_Point.y, start_Camera_Point.z, 180, 0, HALF_NORMAL_ANGLE);
