@@ -213,6 +213,13 @@ MyWindow::~MyWindow()
 
 	// m_pTimer->destroyed();
 
+	// 关闭软件时让机械臂回归折叠状态。机械臂走的是 od 的 TCP(Dashboard/30099等),
+	// od 是成员,在本函数体结束后才析构,此时仍可用;未连接 Dashboard 则跳过。
+	if (cnt[pDashboard])
+	{
+		RobotStorage();
+	}
+
 	if (m_pAddmittance != NULL)
 	{
 		delete m_pAddmittance;
