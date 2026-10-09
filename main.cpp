@@ -10,6 +10,8 @@
 void outputMessage(QtMsgType t, const QMessageLogContext& context, const QString& msg)
 {
     static QMutex mutex;
+	static QFile g_logFile;
+	static bool g_logFileOk = false;
     mutex.lock();
     QString text;
     switch (int(t))
@@ -30,13 +32,19 @@ void outputMessage(QtMsgType t, const QMessageLogContext& context, const QString
     QString current_date_time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ");
     QString current_date = QString("(%1)").arg(current_date_time);
     QString message = QString("%1 %2 %3 %4").arg(current_date).arg(text).arg(context_info).arg(msg);
-    QString nowDate = QDateTime::currentDateTime().toString("yyyyMMdd");
-    QFile file(qAppName() + "." + nowDate + ".log");
-    file.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream text_stream(&file);
-    text_stream << message << "\r\n";
-    file.flush();
-    file.close();
+    // 日志文件句柄保持常开,避免每条消息 open/close(高频 qDebug 时的 IO 开销)
+    if (!g_logFileOk)
+    {
+        QString nowDate = QDateTime::currentDateTime().toString("yyyyMMdd");
+        g_logFile.setFileName(qAppName() + "." + nowDate + ".log");
+        g_logFileOk = g_logFile.open(QIODevice::WriteOnly | QIODevice::Append);
+    }
+    if (g_logFileOk)
+    {
+        QTextStream text_stream(&g_logFile);
+        text_stream << message << "\r\n";
+        text_stream.flush();
+    }
     mutex.unlock();
 }
 
@@ -45,6 +53,13 @@ int main(int argc, char* argv[])
 	QApplication a(argc, argv);
 
     qInstallMessageHandler(outputMessage);
+
+    // 全局样式 style.qss: 与各 .ui 里控件内联样式互补(内联样式优先级更高)
+    QFile qss(":/style.qss");
+    if (qss.open(QFile::ReadOnly))
+    {
+        a.setStyleSheet(QString::fromUtf8(qss.readAll()));
+    }
 
 	PhysicalTherapyRobot w;
 	w.show();

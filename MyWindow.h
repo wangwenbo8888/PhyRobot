@@ -7,6 +7,8 @@
 #include <QSharedPointer>
 #include <QThread>
 #include <QSemaphore>
+#include <QElapsedTimer>
+#include <QMutex>
 
 #include "HomePage.h"
 #include "TreatInstruction.h"
@@ -444,6 +446,11 @@ private:
     // Dashboard 应答同步(替代 sendodr 里的固定 500ms 空等)
     QSemaphore m_dashboardAckSem;
     int        m_cmdAckTimeoutMs = 1000;
+
+    // sendodr 最小命令间隔: 连续过快下发时上一条应答会被本条误判(ACK错位), 这里做个保底限速
+    QElapsedTimer m_cmdSendTimer;
+    qint64        m_cmdMinGapMs = 20;
+    QMutex        m_cmdSendMutex;
 
     // 治疗被停止了
     bool m_bStoped;

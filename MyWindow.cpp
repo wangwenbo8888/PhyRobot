@@ -705,6 +705,17 @@ void MyWindow::sendodr(QByteArray odr)
 		return;
 	}
 
+	// 最小命令间隔(保底限速): 连续过快下发时,上一条的应答会被本条误判为ACK,造成应答错位/偶发ACK TIMEOUT
+	{
+		QMutexLocker lock(&m_cmdSendMutex);
+		const qint64 sinceLast = m_cmdSendTimer.isValid() ? m_cmdSendTimer.elapsed() : 1000000;
+		m_cmdSendTimer.restart();
+		if (sinceLast < m_cmdMinGapMs)
+		{
+			QThread::msleep(int(m_cmdMinGapMs - sinceLast));
+		}
+	}
+
 	// 清掉可能残留的应答计数,避免上一条的应答被误判为本条的应答
 	while (m_dashboardAckSem.tryAcquire()) {}
 

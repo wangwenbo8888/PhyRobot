@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>style.qss</file>
     <file>LabelDrag.png</file>
     <file>DragStop.png</file>
     <file>DragStart.png</file>
